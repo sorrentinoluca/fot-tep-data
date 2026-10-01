@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Esplora l’esperimento FoT-TEP-PHD</title>
+<meta name="description" content="Scopri il nuovo esperimento di test dello studio FoT-TEP-PHD passo dopo passo: client, finestre, rappresentazioni, regole di accesso, bracci, comparatore a prototipi, inferenza appaiata, risultati revisionati, costi e limiti.">
+
+<style>
+:root{
+  --bg:#EEF1F0;--surface:#FFFFFF;--ink:#16201D;--muted:#56645F;--line:#CBD4D0;--soft:#E2E8E5;
+  --accent:#1D5BB8;--accent-soft:#DAE5F6;--on-accent:#FFFFFF;
+  --ok:#2C7A4B;--ok-soft:#DCEEE3;--bad:#B23A2A;--bad-soft:#F5DEDA;--warn:#8A5A00;--warn-soft:#FBEBC8;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1413;--surface:#161D1B;--ink:#E2E9E6;--muted:#98A6A1;--line:#2F3A37;--soft:#222B29;
+  --accent:#7AAAF0;--accent-soft:#1D2C43;--on-accent:#0C1522;
+  --ok:#62C08A;--ok-soft:#16301F;--bad:#EE8373;--bad-soft:#3A1F1A;--warn:#E4B65A;--warn-soft:#3A2E12;color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0F1413;--surface:#161D1B;--ink:#E2E9E6;--muted:#98A6A1;--line:#2F3A37;--soft:#222B29;
+  --accent:#7AAAF0;--accent-soft:#1D2C43;--on-accent:#0C1522;
+  --ok:#62C08A;--ok-soft:#16301F;--bad:#EE8373;--bad-soft:#3A1F1A;--warn:#E4B65A;--warn-soft:#3A2E12;color-scheme:dark;}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a{color:var(--accent)}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:820px;margin:0 auto;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand,.stepno{font:600 12px/1 var(--mono);letter-spacing:.06em;color:var(--muted)}
+.stepno{color:var(--ink)}
+select.ph{max-width:52vw;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.prog{height:4px;background:var(--soft)}
+.prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s}
+.wrap{max-width:820px;margin:0 auto;padding:22px 16px 56px}
+.step{display:grid;gap:16px}
+.eyebrow{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h2{font-size:clamp(22px,4.4vw,28px);line-height:1.2;margin:0;letter-spacing:-.01em;outline:none}
+.task{margin:0;padding:10px 14px;background:var(--accent-soft);border-radius:8px}
+.task b{color:var(--accent)}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:14px;min-width:0;overflow-x:auto}
+.why{margin:0;font-size:14px;color:var(--muted);max-width:70ch}
+.why span{display:block;font:600 11px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.nav .sp{flex:1}
+.btn{font-weight:600;font-size:14px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;transition:background .2s,border-color .2s,opacity .2s}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.sm{font-size:13px;padding:5px 10px}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:13px;cursor:pointer;padding:4px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.lead{margin:0;max-width:70ch}
+.small{font-size:13px;color:var(--muted);margin:0}
+.badge{display:inline-block;font:500 11px/1.4 var(--mono);border:1px solid var(--line);color:var(--muted);padding:2px 8px;border-radius:999px;margin-right:6px}
+.badge.meas{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.badge.dev{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.badge.schem{border-style:dashed}
+.badge.est{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.status{margin:0;font-weight:600;min-height:1.5em}
+.status.ok{color:var(--ok)}.status.bad{color:var(--bad)}
+.mono{font-family:var(--mono)}
+svg.plot{width:100%;height:auto;display:block;max-width:100%}
+svg text{fill:var(--ink);font:12px var(--sans)}
+svg .tkl{fill:var(--muted);font:11px var(--mono)}
+.ln{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linejoin:round}
+.ln.acc{stroke:var(--accent)}
+.ln.mut{stroke:var(--muted);opacity:.5}
+.grid{display:grid;gap:8px}
+.g8{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}
+.tile{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);text-align:center;cursor:pointer}
+.tile[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft)}
+.tile b{display:block;font-family:var(--mono)}
+.tile small{color:var(--muted)}
+.tile.own{border-color:var(--ok);background:var(--ok-soft)}
+.tile.unseen{opacity:.7}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:right;vertical-align:top}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:600}
+td.l{text-align:left}
+.bar{height:14px;background:var(--soft);border-radius:3px;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);transition:width .6s}
+.stack{display:flex;height:18px;border-radius:3px;overflow:hidden;border:1px solid var(--line)}
+.stack i{display:block;height:100%;transition:width .5s}
+.c-correct{background:var(--ok)}.c-wrong{background:var(--bad)}.c-missed{background:#c97a2a}.c-fa{background:#c97a2a}.c-abst{background:#8a94a0}.c-inv{background:#3b3f44}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-2px;margin-right:4px}
+pre{margin:0;white-space:pre-wrap;font:12px/1.45 var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px;max-height:260px;overflow:auto}
+.block{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--bg)}
+.block.on{border-color:var(--accent);background:var(--accent-soft)}
+.block.off{opacity:.45;border-style:dashed}
+.block h4{margin:0 0 4px;font:600 12px var(--mono);letter-spacing:.06em}
+input[type=range]{width:100%}
+.note{border-left:3px solid var(--warn);padding:6px 10px;background:var(--warn-soft);border-radius:4px;font-size:13px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px}
+.kv b{font-family:var(--mono)}
+.foot{max-width:820px;margin:0 auto;padding:0 16px 40px;font-size:13px;color:var(--muted)}
+.foot ul{padding-left:18px}
+/* historical Studio 2 steps (ported 29 Sep 2026) */
+.badge.hist{border-color:var(--muted);color:var(--muted);background:var(--soft)}
+.stage>.badge,.source-category{justify-self:start}
+.h-draw{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .9s ease}
+.h-draw.on{stroke-dashoffset:0}
+.h-run{fill:var(--soft);stroke:var(--line)}
+.h-grow{transform-box:fill-box;transform-origin:left center;transform:scaleX(0);transition:transform .9s ease}
+.h-grow.on{transform:scaleX(1)}
+.h-fade{opacity:0;transition:opacity .5s}
+.h-fade.on{opacity:1}
+.h-ghost{stroke:var(--muted);stroke-width:7;opacity:.28}
+.h-recipe{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:8px;background:var(--bg)}
+.h-recipe-h{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.h-rrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px;align-items:center;border-top:1px dashed var(--line);padding-top:8px}
+.h-rk{font-size:14px}.h-rk small{display:block;color:var(--muted);font-size:12px}
+.h-rv{font-family:var(--mono);color:var(--muted)}
+.h-rv.set{color:var(--ink);font-weight:600}
+.h-okm{color:var(--ok);font-weight:600;font-size:13px}
+.h-philox{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.h-philox div{border:1px solid var(--line);border-radius:6px;padding:8px;font-size:13px;display:grid;gap:2px;align-content:start}
+.h-philox b{font:600 12px var(--mono)}
+.h-shelf{display:flex;align-items:flex-end;gap:5px;padding:0 6px 6px;border-bottom:4px solid var(--line);flex-wrap:nowrap;overflow:hidden}
+.h-book{width:36px;height:112px;border-radius:3px 3px 0 0;border:1px solid var(--line);background:var(--soft);flex:none;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.h-book.blank:nth-child(odd){height:96px}.h-book.blank:nth-child(3n){height:104px;width:28px}
+.h-book.real{background:var(--accent-soft);border-color:var(--accent);cursor:pointer}
+.h-book.real span{writing-mode:vertical-rl;transform:rotate(180deg);font:600 12px var(--mono);color:var(--accent)}
+.h-book.real:hover{transform:translateY(-4px)}
+.h-rows{font:12px var(--mono);color:var(--muted);min-height:1.4em;overflow-wrap:anywhere}
+.h-stepper{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.h-stepper span{font:600 11px/1.3 var(--mono);padding:6px;border-radius:6px;border:1px solid var(--line);color:var(--muted);text-align:center;transition:all .3s}
+.h-stepper span.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.h-stepper span.done{color:var(--ink)}
+.h-vrows{display:grid;gap:6px}
+.h-vr{display:grid;grid-template-columns:minmax(90px,1.2fr) 1fr 1fr 60px;gap:8px;align-items:center;padding:6px 8px;border-radius:6px;border:1px solid var(--line);font-size:14px;transition:background .4s,border-color .4s}
+.h-vr .tn{display:block;font:11px var(--mono);color:var(--muted)}
+.h-vr .v,.h-vr .th{font-family:var(--mono)}
+.h-vr .th,.h-vr .fl{opacity:0;transition:opacity .4s}
+.h-vr.b2 .th,.h-vr.b2 .fl{opacity:1}
+.h-vr.hit.b2{background:var(--accent-soft);border-color:var(--accent)}
+.h-vr .fl{font-weight:700;font-size:13px}
+.h-vr.hit .fl{color:var(--accent)}
+.h-sentence{margin:0;padding:12px 14px;border-radius:8px;background:var(--bg);border:1px solid var(--line);font-style:italic;min-height:3em}
+.h-files{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.h-file{border:1px solid var(--line);border-radius:6px;padding:10px 8px 8px;text-align:center;font-size:12px;display:grid;gap:4px;position:relative;opacity:0;transform:translateY(8px);transition:all .5s}
+.h-file.on{opacity:1;transform:none}
+.h-file b{font:600 13px var(--mono)}
+.h-file.hl{border:2px solid var(--accent);background:var(--accent-soft)}
+.h-file.off{opacity:.55}
+.h-file.off.on{opacity:.6}
+@media (max-width:520px){.h-philox{grid-template-columns:1fr}.h-stepper{grid-template-columns:repeat(2,minmax(0,1fr))}.h-files{grid-template-columns:repeat(2,minmax(0,1fr))}.h-rrow{grid-template-columns:1fr}}
+@media (max-width:520px){.top-in{padding:8px 12px}.wrap{padding:16px 12px 48px}.stage{padding:12px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01s!important;animation:none!important}}
+/* DOC_P10_X post-hoc cards (30 Sep 2026) */
+.bar i.anchor{background:var(--ink)}
+table caption{caption-side:top;text-align:left;color:var(--muted);padding:0 0 4px;font-size:12px}
+.mono{font-family:var(--mono);font-size:12px}
+.grid>table{margin:0}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <span class="brand">FoT-TEP-PHD · nuovo test</span>
+    <label class="visually-hidden" for="phase" style="position:absolute;left:-9999px">Vai a un passaggio</label>
+    <select class="ph" id="phase" aria-label="Vai direttamente a un passaggio dell’esperimento"></select>
+    <span class="stepno" id="stepno" aria-live="polite"></span>
+  </div>
+  <div class="prog" role="progressbar" aria-label="Avanzamento nel percorso" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progbar"><i id="bar"></i></div>
+</header>
+<main class="wrap" id="app" aria-live="polite"></main>
+<footer class="foot">
+  <p>«Contenuto del paper» spiega metodi, risultati e limiti riportati nel manoscritto; «approfondimento supplementare» aggiunge esempi didattici o analisi ulteriori; «storia del progetto» ricostruisce componenti ereditati e cronologia del lavoro.</p>
+</footer>
+
+<script src="study2_assets/view_data.js"></script>
+<script>
+"use strict";
+const RM=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
+const D=window.STUDY2_DATA||null;
+const $=(s,r=document)=>r.querySelector(s);
+function h(tag,attrs={},...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(k==="class")e.className=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(k,v===true?"":v);}for(const k of kids.flat()){if(k==null)continue;e.append(k.nodeType?k:document.createTextNode(String(k)));}return e;}
+function sv(tag,attrs={},...kids){const e=document.createElementNS("http://www.w3.org/2000/svg",tag);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);for(const k of kids.flat()){if(k==null)continue;e.append(k.nodeType?k:document.createTextNode(String(k)));}return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,RM?0:ms));
+const f3=x=>(x>=0?"+":"−")+Math.abs(x).toFixed(3);
+const f5=x=>(x>=0?"+":"−")+Math.abs(x).toFixed(5);
+const pct=x=>(100*x).toFixed(1)+" %";
+const COND=["A0","A1","B0","B1","S0","PROTO"];
+const CLASSES=["F1","F2","F3","F8","F10","F13","F14","F15"];
+const OFFSET={F1:0,F2:1,F3:2,F8:3,F10:4,F13:5,F14:6,F15:7,Normal:0};
+function badge(kind,txt){const c={meas:"misurato · P10-S001",dev:"sviluppo · P05/P06/P07",schem:"schematico",est:"solo stima"};return h("span",{class:"badge "+kind},txt||c[kind]);}
+function docLink(anchor,txt){return h("span",{},txt||("Documentazione → #"+anchor));}
+function contrast(id,endpoint){return D.contrasts.find(c=>c.id===id&&c.endpoint===endpoint);}
+
+// ------------------------------------------------------------ historical Studio 2 helpers (ported 29 Sep 2026)
+// Schematic drawing helpers for the historical steps; every signal is synthetic and labelled schematic.
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){let u=0;while(!u)u=r();const v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function pathOf(p){return p.map((q,i)=>(i?"L":"M")+q[0].toFixed(1)+" "+q[1].toFixed(1)).join("");}
+function calm(seed,n,x0,x1,yc,amp){const r=mulberry(seed);const ph=r()*6,pts=[];for(let i=0;i<n;i++){const x=x0+(x1-x0)*i/(n-1);const y=yc+amp*(0.55*Math.sin(i*0.23+ph)+0.3*Math.sin(i*0.061+2*ph)+0.22*gauss(r));pts.push([x,y]);}return pts;}
+function raf2(fn){requestAnimationFrame(()=>requestAnimationFrame(fn));}
+function on(el){raf2(()=>el.classList.add("on"));}
+function animDraw(p){p.setAttribute("pathLength","1");p.classList.add("h-draw");on(p);}
+function tick(g,x,y,label,anchor){g.append(sv("line",{x1:x,x2:x,y1:y-4,y2:y+4,stroke:"var(--muted)"}),sv("text",{x:x,y:y+16,class:"tkl","text-anchor":anchor||"middle"},label));}
+function sayBox(){const p=h("p",{class:"status","aria-live":"polite"});p.say=(t,k)=>{p.textContent=t;p.className="status"+(k?" "+k:"");};return p;}
+
+// ------------------------------------------------------------ steps
+const STEPS=[];function S(o){STEPS.push(o);}
+
+// 0 — prologue
+S({ph:"Introduzione · La domanda",title:"Un impianto, otto client, un guasto ciascuno",task:"scegli un client e scopri che cosa conosce.",
+why:"Ogni client ha esperienza diagnostica di una sola classe di guasto e del funzionamento normale. Lo studio chiede se brevi frasi verificate scritte dagli altri client gli consentano di riconoscere i sette guasti mai osservati e se questa soluzione superi una semplice alternativa numerica.",
+doc:"question",
+build(api){
+  const grid=h("div",{class:"grid g8",role:"group","aria-label":"Client"});
+  const out=h("div",{class:"lead"},"Scegli un client.");
+  const tiles=CLASSES.map(c=>h("button",{type:"button",class:"tile","aria-pressed":"false",onclick:()=>pick(c)},h("b",{},"C_"+c),h("small",{},"è titolare di "+c)));
+  tiles.forEach(t=>grid.append(t));
+  function pick(c){tiles.forEach((t,i)=>{t.setAttribute("aria-pressed",CLASSES[i]===c);t.classList.toggle("own",CLASSES[i]===c);t.classList.toggle("unseen",CLASSES[i]!==c);});
+    out.replaceChildren(h("span",{},"Il client "),h("b",{class:"mono"},"C_"+c),h("span",{}," conosce "),h("b",{},c+" e Normal"),h("span",{},". Gli altri sette guasti sono "),h("b",{},"local-unseen"),h("span",{}," per lui, cioè mai osservati localmente. Nelle condizioni con conoscenza dei pari riceve gli insight verificati degli altri sette client, mai quello della propria classe."));api.done();}
+  return [badge("schem","scenario schematico"),grid,out,h("p",{class:"small"},"Le nove etichette possibili per ciascun metodo di diagnosi (i cinque bracci LLM e PROTO) sono F1, F2, F3, F8, F10, F13, F14, F15 e Normal; è ammessa anche l’astensione. ",docLink("conditions","Condizioni nella documentazione"))];
+}});
+
+// ---- passaggi storici dello Studio 2, riportati il 29 settembre 2026 da ../../fot-tep/docs/esperienza_interattiva_studio2.html
+// Collocati prima della fase attuale che li riusa. Tutti i segnali sono schematici; i numeri sono le
+// misure storiche dello Studio 2 (sezioni #s2-f02 … #s2-f03-9 della documentazione), mai evidenza del nuovo test.
+const HIST="storico · Studio 2";
+
+// H1 — Fase 02 · 1 ricetta
+S({ph:"Studio 2 · Fase 02 · 1 La ricetta",title:"La ricetta di simulazione (storica, riusata da P03)",task:"fissa per iscritto i parametri e avvia l’impianto.",
+why:"Se la ricetta non è scritta, fra sei mesi rigenerando i dati uscirebbero numeri diversi e nulla sarebbe difendibile. L’adattatore P03 dello studio attuale integra esattamente questa ricetta: scatto dei controllori di 1.8 s, un campione al minuto, burn-in di 20 ore, finestre da 5 ore.",
+doc:"s2-f02-recipe",
+build(api){
+  const say=sayBox();
+  const rows=[["Passo dei controllori","Ts_base","I controllori stabilizzano l’impianto aprendo e chiudendo le valvole. Sono digitali: agiscono a scatti.","1.8 s","Hai fissato Ts_base: ogni 1.8 s i controllori leggono le misure e muovono le valvole. Se scattassero più o meno spesso, l’impianto si comporterebbe in modo leggermente diverso e i dati «normali» cambierebbero."],
+    ["Dati salvati","Ts_save","Le equazioni dell’impianto evolvono di continuo (il solutore sceglie da solo i suoi passi); su disco va un campione ogni tanto.","1 al minuto","Hai fissato Ts_save = 1/60 h: si salva un campione al minuto, circa uno ogni 33 interventi dei controllori. È la granularità di tutte le fasi successive."],
+    ["Burn-in","","Le prime ore dopo l’avvio, mentre l’impianto si sta ancora assestando; si scartano.","20 h","Hai fissato il burn-in: le prime 20 h di ogni run si scartano. Il valore viene da una taratura storica che lo studio attuale eredita e non ha ripetuto."],
+    ["Finestra","","Il tratto di segnale su cui si calcola tutto.","5 h = 300 campioni","Hai fissato la finestra: 5 h × 60 campioni l’ora = 300 valori per sensore. Tutto lo studio ragiona su finestre così."]];
+  let fixed=0;const go=h("button",{type:"button",class:"btn pri",disabled:true,onclick:()=>api.run(start)},"Avvia run");
+  const rec=h("div",{class:"h-recipe"},h("div",{class:"h-recipe-h"},"Ricetta di simulazione"));
+  rows.forEach(([k,code,desc,v,txt])=>{const val=h("span",{class:"h-rv"},"da fissare");
+    const b=h("button",{type:"button",class:"btn sm",onclick:()=>{val.textContent=v;val.classList.add("set");b.replaceWith(h("span",{class:"h-okm"},"✓ fissato"));say.say(txt);if(++fixed===4)go.disabled=false;}},"Fissa");
+    rec.append(h("div",{class:"h-rrow"},h("span",{class:"h-rk"},k,code?h("span",{class:"mono",style:"font-size:12px;color:var(--muted)"}," · "+code):null,h("small",{},desc)),val,b));});
+  const svg=sv("svg",{viewBox:"0 0 600 170",class:"plot",role:"img","aria-label":"Run schematico e segnale di XMEAS-1"});
+  const runR=sv("rect",{x:20,y:118,width:560,height:18,rx:3,class:"h-run h-grow"});
+  const sigG=sv("g"),winG=sv("g",{class:"h-fade"});
+  winG.append(sv("rect",{x:300,y:113,width:60,height:28,rx:3,fill:"var(--accent)",opacity:.35}),sv("text",{x:330,y:160,"text-anchor":"middle"},"finestra = 5 h = 300 campioni"));
+  const lab=sv("text",{x:20,y:160,class:"h-fade"},"run");
+  svg.append(runR,sigG,winG,lab,sv("text",{x:20,y:14,class:"tkl"},"XMEAS-1 (schematico)"));
+  async function start(){go.disabled=true;runR.classList.add("on");lab.classList.add("on");await sleep(250);const p=sv("path",{d:pathOf(calm(11,140,20,580,62,26)),class:"ln acc"});sigG.append(p);animDraw(p);await sleep(950);winG.classList.add("on");
+    say.say("Il run è partito con la tua ricetta. La linea è XMEAS-1, salvato una volta al minuto; la fetta evidenziata è una finestra da 300 campioni.","ok");api.done();}
+  return [h("div",{class:"row"},badge("hist",HIST),badge("schem","segnale schematico")),h("p",{class:"lead"},"Il TEP è un impianto chimico simulato in MATLAB/Simulink, con 41 sensori (XMEAS) che misurano pressioni, temperature, portate. Qui ne segui uno solo: XMEAS-1. Il modello Simulink e il MEX dei guasti Philox fissati qui sono quelli che l’adattatore P03 attuale integra."),rec,h("div",{class:"row"},go),svg,say,
+    h("p",{class:"small"},"Run: una simulazione dell’impianto per un certo numero di ore. Finestra: un tratto di 5 ore di un run, l’unità su cui si ragiona sempre. ",docLink("s2-f02-recipe","Ricetta storica nella documentazione"))];
+}});
+
+// H2 — Fase 02 · 2 stream
+S({ph:"Studio 2 · Fase 02 · 2 Stream",title:"Ogni run ha la sua sequenza casuale (storico, riusato da P03/P04)",task:"scegli il numero di «stream» e rilancia.",
+why:"La stessa chiave, lo stesso stream e lo stesso contatore Philox ripetono i numeri casuali; riprodurre al byte un intero run dipende anche da modello, ricetta, solutore, versioni software e percorso di esportazione. Stream diversi danno sequenze casuali distinte. Il registro attuale riserva intervalli disgiunti: 80000–80001 per la profilazione P03, 82000–82095 per il test inedito.",
+doc:"s2-f02-streams",
+build(api){
+  const say=sayBox();
+  const shelf=h("div",{class:"h-shelf",role:"group","aria-label":"Libri di numeri casuali"});
+  [null,null,7,null,null,8,null,null].forEach(k=>{if(k==null)shelf.append(h("span",{class:"h-book blank","aria-hidden":"true"}));else shelf.append(h("button",{type:"button",class:"h-book real",onclick:()=>pick(k),"aria-label":"stream "+k},h("span",{},"stream "+k)));});
+  const rows=h("div",{class:"h-rows"},"righe lette: —");
+  const svg=sv("svg",{viewBox:"0 0 600 140",class:"plot",role:"img","aria-label":"Rumore schematico generato dal libro aperto"});const gP=sv("g"),gC=sv("g");svg.append(gP,gC,sv("text",{x:20,y:14,class:"tkl"},"XMEAS-1 · rumore generato dal libro aperto (schematico)"));
+  let last=null,lastD=null,same=false,diff=false;
+  function pick(k){gP.replaceChildren();if(lastD)gP.append(sv("path",{d:lastD,class:"ln h-ghost"}));
+    const d=pathOf(calm(k*7919+3,120,20,580,75,34));const p=sv("path",{d:d,class:"ln acc"});gC.replaceChildren(p);animDraw(p);
+    const r=mulberry(k*104729+1);rows.textContent="stream "+k+" · righe lette: "+Array.from({length:5},()=>r().toFixed(4)).join("  ")+" …";
+    if(last===null)say.say("Hai aperto il libro «stream "+k+"»: questo schema rappresenta Philox che legge uno stream tramite il contatore per fornire l’ingresso casuale di un run. Ora riapri lo stesso libro.");
+    else if(last===k){same=true;say.say("Stesso libro, stesse righe: questi segnali schematici coincidono. In un run reale si ripetono i numeri di Philox con la stessa chiave, lo stesso stream e lo stesso contatore; per riprodurre l’intero run servono anche modello e ambiente di esecuzione invariati."+(diff?"":" Ora prova l’altro libro."),"ok");}
+    else{diff=true;say.say("Libro diverso, righe diverse, segnale schematico diverso: una sequenza casuale distinta. Riutilizzare uno stream non dà una realizzazione casuale indipendente."+(same?"":" Ora riapri lo stesso libro."));}
+    last=k;lastD=d;if(same&&diff)api.done();}
+  return [h("div",{class:"row"},badge("hist",HIST),badge("schem","segnale schematico")),h("p",{class:"lead"},"Anche l’impianto sano è disturbato da rumore casuale: rumore dei sensori su tutte le 41 misure e dodici processi casuali interni (composizioni, temperature, cinetica). Senza rumore ogni run sarebbe la copia degli altri e non avrebbe senso chiedersi quanto un segnale è «strano»."),
+    h("div",{class:"h-philox"},h("div",{},h("b",{},"chiave"),"fissa per tutto lo studio: la biblioteca"),h("div",{},h("b",{},"stream"),"uno per run: quale libro aprire"),h("div",{},h("b",{},"contatore"),"quale riga del libro leggere")),
+    h("p",{class:"small"},"I numeri casuali li produce Philox4×32-10: ogni numero dipende da questi tre ingredienti, quindi è ripetibile a comando."),shelf,rows,svg,say,
+    h("p",{class:"small"},"Linea larga e chiara: il segnale schematico precedente. Linea sottile: quello appena generato. Gli stream sono riservati per scopo (storici e riusati: 30000–30039 guasti di sviluppo, 60000–60039 Normal di sviluppo; attuali: 80000–80001 profilazione P03, 82000–82095 test inedito): nessun libro si usa due volte. ",docLink("s2-f02-streams","Tabella degli stream"))];
+}});
+
+// H6 — 03.3 simulazioni di guasto per lo sviluppo
+S({ph:"Studio 2 · 03.3 · Guasti di sviluppo",title:"Simulare un guasto (storico, riusato da P03–P07)",task:"accendi il guasto F1 a 25 h.",
+why:"Questi 40 run (8 guasti × 5, stream 30000–30039) sono i dati su cui è stato costruito il metodo; nello studio attuale sono l’insieme di sviluppo per fatti verificati, prototipi ed esempi locali, e le loro ore pre-innesco danno l’inviluppo di validità di P04. I run del test inedito di P04 conservano la stessa struttura da 65 h ma sono run nuovi, mai visti da alcun passo di sviluppo.",
+doc:"s2-f03-3",
+build(api){
+  const say=sayBox();
+  const T=65,X0=20,X1=580,hx=t=>X0+t/T*(X1-X0);
+  const base=calm(88,170,X0,X1,88,12);
+  const svg=sv("svg",{viewBox:"0 0 600 205",class:"plot",role:"img","aria-label":"Run schematico da 65 ore con innesco del guasto a 25 ore"});
+  svg.append(sv("rect",{x:X0,y:16,width:hx(20)-X0,height:118,fill:"var(--muted)",opacity:.14}),sv("text",{x:(X0+hx(20))/2,y:30,"text-anchor":"middle",class:"tkl"},"burn-in: scartato"),
+    sv("rect",{x:hx(20),y:16,width:hx(25)-hx(20),height:118,fill:"var(--ok)",opacity:.12}),sv("text",{x:(hx(20)+hx(25))/2,y:44,"text-anchor":"middle",class:"tkl"},"ctrl"));
+  const pre=sv("path",{d:pathOf(base.filter(p=>p[0]<=hx(25)+1)),class:"ln"});
+  const post=sv("path",{d:pathOf(base.filter(p=>p[0]>=hx(25)-2)),class:"ln mut"});
+  const sl=sv("g");const mark=sv("g",{class:"h-fade"});
+  mark.append(sv("line",{x1:hx(25),x2:hx(25),y1:16,y2:132,stroke:"var(--accent)","stroke-dasharray":"4 3"}),sv("text",{x:hx(25)+6,y:62},"F1 acceso"));
+  svg.append(pre,post,sv("rect",{x:X0,y:140,width:X1-X0,height:18,rx:3,class:"h-run"}),sl,mark,sv("text",{x:X0,y:12,class:"tkl"},"XMEAS-1 (schematico)"));
+  [0,20,25,30,35,40,45,50,55,60,65].forEach(t=>tick(svg,hx(t),162,String(t),"middle"));
+  svg.append(sv("text",{x:X1,y:198,"text-anchor":"end",class:"tkl"},"ore"));
+  const b=h("button",{type:"button",class:"btn pri",onclick:()=>api.run(start)},"Innesca F1");
+  const bd=h("span",{class:"badge dev",hidden:true},"×5 run per ciascuno degli 8 guasti = 40 run → 320 finestre");
+  async function start(){b.disabled=true;mark.classList.add("on");post.style.transition="opacity .4s";post.style.opacity="0";
+    const f=base.filter(p=>p[0]>=hx(25)).map(([x,y],i)=>[x,y-42+(i<3?(3-i)*-4:0)]);f.unshift([hx(25),base.find(p=>p[0]>=hx(25))[1]]);
+    const p=sv("path",{d:pathOf(f),class:"ln acc"});svg.insertBefore(p,sl);animDraw(p);await sleep(900);
+    const w=(hx(65)-hx(25))/8;
+    for(let i=0;i<8;i++){const g=sv("g",{class:"h-fade"});g.append(sv("rect",{x:hx(25)+i*w+1,y:137,width:w-2,height:24,rx:2,fill:"var(--accent)",opacity:.3+0.06*i}),sv("text",{x:hx(25)+i*w+w/2,y:153,"text-anchor":"middle",style:"font:600 11px var(--mono)"},"W"+(i+1)));sl.append(g);on(g);await sleep(90);}
+    bd.hidden=false;say.say("A 25 h si accende F1 e XMEAS-1 salta e resta alto. Le 40 h dopo il guasto diventano 8 finestre da 5 h: W1 = 25–30 h, W2 = 30–35 h … W8 = 60–65 h. Ogni run accende un solo IDV.","ok");api.done();}
+  return [h("div",{class:"row"},badge("hist",HIST),badge("schem","segnale schematico")),h("p",{class:"lead"},"Un run di 65 h: 0–20 h burn-in (si scarta), 20–25 h controllo interno (impianto ancora sano; non è una finestra di sviluppo, le sue medie alimentano l’inviluppo di validità attuale di P04), a 25 h si accende un solo guasto. Righe per run: 3,901; colonne: 54 (41 XMEAS + 12 XMV + tempo)."),svg,h("div",{class:"row"},b),bd,say,
+    h("p",{class:"small"},"Il passaggio successivo del percorso attuale (P04) applica la stessa struttura a 96 run inediti e sceglie una delle otto finestre con una regola fissa. ",docLink("s2-f03-3","La 03.3 storica nella documentazione"))];
+}});
+
+// 1 — run, windows and the Latin rule
+S({ph:"P04 · Simulazioni e finestre",title:"Una simulazione, le sue otto finestre e quella selezionata",task:"scegli un tipo di guasto e quale delle sue otto simulazioni considerare; la regola fissa mostra la finestra selezionata.",
+why:"Ogni simulazione dura 65 h: le prime 20 h di assestamento sono scartate, le 5 h successive sono sane, il guasto inizia a 25 h e seguono otto finestre da 5 h. Per ciascun tipo di guasto le otto simulazioni sono ordinate per numero del flusso casuale; la posizione nella lista è k. Uno spostamento iniziale diverso per tipo fa ruotare la finestra scelta: dopo l’ottava si riparte dalla prima. La regola era fissata prima di generare il test e non legge segnali o risultati; ogni tipo copre una volta tutte le otto finestre. È una scelta motivata per riassumere le 40 h dopo l’insorgenza, non per misurare con precisione ciascuna ora.",
+doc:"window-rule",
+build(api){
+  let cls="F1",k=1;
+  const svg=sv("svg",{viewBox:"0 0 670 190",class:"plot",role:"img","aria-label":"Segnale schematico su 65 ore con otto finestre successive all’insorgenza"});
+  const W=600,X0=30,X=hh=>X0+hh/65*W;
+  svg.append(sv("line",{x1:X(0),y1:150,x2:X(65),y2:150,class:"tk",stroke:"currentColor"}));
+  [0,25,45,65].forEach(t=>{svg.append(sv("line",{x1:X(t),y1:150,x2:X(t),y2:156,stroke:"currentColor"}));svg.append(sv("text",{x:X(t),y:170,class:"tkl","text-anchor":"middle"},t+" h"));});
+  const wins=[];for(let o=1;o<=8;o++){const r=sv("rect",{x:X(25+5*(o-1)),y:40,width:X(5)-X0,height:100,fill:"var(--soft)",stroke:"var(--line)"});svg.append(r);wins.push(r);svg.append(sv("text",{x:X(27.5+5*(o-1)),y:34,class:"tkl","text-anchor":"middle"},"w"+o));}
+  // schematic signal
+  let d="M"+X(0)+" 100";for(let t=0;t<=65;t+=0.5){const base=100+(t<25?Math.sin(t*1.3)*3:Math.sin(t*1.3)*3-Math.min(40,(t-25)*3));d+=" L"+X(t)+" "+base;}
+  const postFault=sv("path",{d,class:"ln acc"});svg.append(postFault);
+  const onsetMark=sv("line",{x1:X(25),y1:20,x2:X(25),y2:150,stroke:"var(--bad)","stroke-dasharray":"3,3"});svg.append(onsetMark);
+  const onsetText=sv("text",{x:X(25)+4,y:18,class:"tkl"},"insorgenza del guasto");svg.append(onsetText);
+  const sel=h("div",{class:"row"});
+  const clsBtns=[...CLASSES,"Normal"].map(c=>h("button",{type:"button",class:"btn sm","aria-pressed":c===cls,onclick:()=>{cls=c;update();}},c));
+  sel.append(h("span",{class:"small"},"Tipo:"),...clsBtns);
+  const rng=h("input",{type:"range",min:1,max:8,value:1,"aria-label":"Numero d’ordine della simulazione: 1–8 per guasto, 1–32 per Normal"});
+  rng.addEventListener("input",()=>{k=+rng.value;update();});
+  const out=h("p",{class:"lead"});
+  function update(){rng.max=cls==="Normal"?32:8;k=Math.min(k,+rng.max);rng.value=k;postFault.style.display=cls==="Normal"?"none":"";onsetMark.style.display=cls==="Normal"?"none":"";onsetText.style.display=cls==="Normal"?"none":"";clsBtns.forEach((b,i)=>b.setAttribute("aria-pressed",[...CLASSES,"Normal"][i]===cls));const o=OFFSET[cls];const ord=((k-1+o)%8)+1;
+    wins.forEach((r,i)=>r.setAttribute("fill",i===ord-1?"var(--accent-soft)":"var(--soft)"));wins.forEach((r,i)=>r.setAttribute("stroke",i===ord-1?"var(--accent)":"var(--line)"));
+    out.replaceChildren("Tipo ",h("b",{},cls)," (spostamento iniziale "+o+"), simulazione n. "+k+" → finestra selezionata = ",h("b",{},String(ord)),", finestra ["+(25+5*(ord-1))+", "+(30+5*(ord-1))+") h.");api.done();}
+  update();
+  return [badge("schem","segnale schematico"),badge("dev","regola da P01 §4.2 / P04"),svg,sel,h("label",{class:"small"},"Numero d’ordine della simulazione nel tipo selezionato: ",rng),out,
+    h("p",{class:"small"},"La finestra 1 copre [25,30) h; la 8 copre [60,65) h. Lo spostamento iniziale va da 0 (F1) a 7 (F15) e distribuisce i tempi tra i tipi. Le 32 simulazioni Normal usano ciascuna finestra quattro volte. ",docLink("window-rule","Regola e motivazioni nella documentazione")),h("p",{class:"small"},"Gli otto tipi di guasto derivano dallo sviluppo storico; il burn-in di 20 h fu tarato allora, l’innesco a 25 h conserva il formato e la finestra unica da 5 h è una scelta di protocollo. Queste scelte non sono dimostrate ottimali dal nuovo test.")];
+}});
+
+// H8 — 03.6 verbalizzatore (prima del passaggio attuale P03 sulle evidenze)
+S({ph:"Studio 2 · 03.6 · Il verbalizzatore",title:"Il verbalizzatore: dal segnale al testo (storico, la pipeline congelata che P03 integra)",task:"porta una finestra attraverso i quattro passi del traduttore.",
+why:"In questo studio si riassumono le 41 serie numeriche in testo per l’LLM; il traduttore è un programma deterministico: stesso input, stesso testo, sempre, e il nome del guasto non compare mai. È la pipeline storica congelata della catena attuale: P03 la integra e aggiunge la resa inglese, P04 la esegue sui run inediti, P05 ricava i fatti dalle sue evidenze, P06 legge le sue firme.",
+doc:"s2-f03-6",
+build(api){
+  const say=sayBox();
+  const steps=["1 · Indicatori","2 · Soglie V2","3 · JSON + testo","4 · Quattro file"];
+  const sp=steps.map(t=>h("span",{},t));
+  const svg=sv("svg",{viewBox:"0 0 600 110",class:"plot",role:"img","aria-label":"Finestra schematica di F1 su XMEAS-1"});
+  const pts=calm(111,90,20,580,40,9).map(([x,yy],i)=>[x,yy+((i%9===4)?14:0)]);
+  svg.append(sv("line",{x1:20,x2:580,y1:84,y2:84,stroke:"var(--muted)","stroke-dasharray":"5 4"}),sv("text",{x:580,y:102,"text-anchor":"end",class:"tkl"},"livello del sano (N1–N5)"),sv("path",{d:pathOf(pts),class:"ln acc"}),sv("text",{x:20,y:12,class:"tkl"},"una finestra di F1 · XMEAS-1 · 300 campioni (schematico)"));
+  const ind=[["spostamento","shift_sigma","+80","1.97",true,"sì, positivo"],["pendenza","slope_sigma_h","0.3","0.75",false,"no"],["rumore","residual_std_ratio","1.1","1.37",false,"no"],["salto","diff_std_ratio","1.6","1.41",true,"sì"]];
+  const rows=ind.map(([n,tn,v,t,hit,fl])=>h("div",{class:"h-vr"+(hit?" hit":""),hidden:true},h("span",{},n,h("span",{class:"tn"},tn)),h("span",{class:"v"},v),h("span",{class:"th"},"soglia "+t),h("span",{class:"fl"},fl)));
+  const json=h("pre",{hidden:true},'{ "XMEAS(1)": {\n    "spostamento": { "flag": true, "segno": "+" },\n    "pendenza":    { "flag": false },\n    "rumore":      { "flag": false },\n    "salto":       { "flag": true } },\n  … altre 40 variabili … }');
+  const sent=h("p",{class:"h-sentence",hidden:true},"");
+  const files=[["features",".features.csv","4 indicatori × 41 variabili",""],["evidence",".evidence.json","i flag sì/no e i segni",""],["testo",".txt","l’unico che il modello legge","hl"],["firma",".signature.csv","697 numeri (17 × 41) · non va al modello","off"]].map(([n,ext,c,cl])=>h("div",{class:"h-file "+cl},h("b",{},n),h("span",{class:"mono"},ext),h("span",{},c)));
+  const filesEl=h("div",{class:"h-files",hidden:true},files);
+  const bd=h("span",{class:"badge dev",hidden:true},"così per tutte le 320 finestre × 4 file = 1,280 file");
+  let beat=0;const b=h("button",{type:"button",class:"btn pri",onclick:()=>api.run(step)},"Passo successivo");
+  const S1="XMEAS-1 mostra uno spostamento di livello positivo e salti minuto-minuto più ampi del normale.";
+  async function step(){if(beat>=4)return;b.disabled=true;if(beat>0){sp[beat-1].classList.remove("on");sp[beat-1].classList.add("done");}sp[beat].classList.add("on");beat++;
+    if(beat===1){for(const r of rows){r.hidden=false;await sleep(140);}say.say("Passo 1, calcolo degli indicatori. Dove: su ogni finestra da 5 h (300 campioni) di ciascuna delle 41 XMEAS, normalizzando sul sano N1–N5. Chi: un programma Python locale, senza alcun modello linguistico. Escono 4 numeri per variabile.");}
+    else if(beat===2){rows.forEach(r=>r.classList.add("b2"));say.say("Passo 2, confronto con le soglie V2: le stesse quattro calibrate nel primo studio storico sulle finestre sane di N1–N5 (spostamento 1.9695, pendenza 0.7469, rumore residuo 1.3682, salto 1.4051). Spostamento e salto le superano: flag «sì» (per lo spostamento si registra anche il segno).");}
+    else if(beat===3){json.hidden=false;await sleep(300);sent.hidden=false;for(let i=1;i<=S1.length;i+=3){sent.textContent=S1.slice(0,i);await sleep(18);}sent.textContent=S1;say.say("Passo 3: i flag di tutte le 41 variabili formano il JSON della finestra; dal JSON il programma scrive il testo neutrale, senza nomi di guasto, IDV o meccanismo. Storicamente in italiano; il derivato P03 attuale rende gli stessi flag in inglese. Un controllo finale lo verifica su ogni testo.");}
+    else{sp[3].classList.add("done");filesEl.hidden=false;for(const f of files){on(f);await sleep(160);}bd.hidden=false;say.say("Passo 4: quattro file per finestra. Solo il .txt arriva al modello linguistico; la firma (697 bandierine 0/1, 0.5 per nessun segno) va al comparatore numerico — storicamente la baseline a prototipi, oggi PROTO di P06. A quale guasto appartiene ogni finestra lo sa solo chi valuta.","ok");api.done();return;}
+    b.disabled=false;}
+  return [h("div",{class:"row"},badge("hist",HIST),badge("schem","valori illustrativi")),h("div",{class:"h-stepper"},sp),svg,h("div",{class:"row"},b),h("div",{class:"h-vrows"},rows),json,sent,filesEl,bd,say,
+    h("p",{class:"small"},"Queste quattro soglie V2 dei descrittori, con la guardia di validità di N1–N5, sono le sole soglie che lo studio attuale eredita; la soglia di allarme storica sul punteggio di anomalia e il selettore di finestre non sono riusati (le finestre inedite vengono dalla regola ciclica di P04). ",docLink("s2-f03-6","La 03.6 storica nella documentazione"))];
+}});
+
+// 2 — indicators to representations
+S({ph:"P03 · Dalla finestra alle evidenze",title:"Da una finestra al testo e a una firma di 697 numeri",task:"passa da ciò che legge l’LLM a ciò che legge la regola a prototipi.",
+why:"Tutti i sistemi leggono la stessa finestra attraverso la stessa pipeline congelata: gli indicatori per variabile vengono confrontati con quattro soglie fisse. L’LLM riceve una descrizione neutra in inglese delle osservazioni sopra soglia; la regola a prototipi riceve la firma numerica (41 variabili × 17 indicatori). Nessuna delle due rappresentazioni contiene etichette o identificativi.",
+doc:"chain",
+build(api){
+  const ind=[["scostamento di livello",0.82],["pendenza",0.31],["variabilità residua",0.12],["variazione tra campioni consecutivi",0.55],["dispersione",0.64]];
+  const rows=ind.map(([n,v])=>h("div",{class:"kv"},h("span",{},n+" (XMEAS-1)"),h("div",{class:"bar",role:"img","aria-label":n+": indicatore "+v},h("i",{style:"width:"+(v*100)+"%"}))));
+  const txt=h("pre",{},"OSSERVAZIONE DA CLASSIFICARE (senza etichetta):\nTra 45 e 50 h, il maggiore scostamento di livello sopra soglia è su XMEAS-1 (positivo). La maggiore variazione sopra soglia tra campioni consecutivi è su XMEAS-10 …\n[traduzione didattica di una rappresentazione schematica nello stile del verbalizzatore inglese P03; non è un caso reale. Il modello riceveva il testo in inglese.]");
+  const sig=h("pre",{},"firma (697 campi di attività e segno, 41 XMEAS × 17, raggruppati per variabile):\nflag di attività: 1 0 0 1 …\ncampi di segno: 1 0.5 … (estratti schematici; 0.5 = nessun segno)\nLe componenti non sono magnitudini degli indicatori; la dispersione è esclusa.");
+  const b1=h("button",{type:"button",class:"btn","aria-pressed":"true",onclick:()=>set(0)},"Testo neutro (LLM)");
+  const b2=h("button",{type:"button",class:"btn","aria-pressed":"false",onclick:()=>set(1)},"Firma (PROTO)");
+  const view=h("div",{},txt);
+  function set(i){b1.setAttribute("aria-pressed",i===0);b2.setAttribute("aria-pressed",i===1);view.replaceChildren(i===0?txt:sig);api.done();}
+  return [badge("schem","indicatori e testo schematici"),h("div",{class:"grid"},rows),h("div",{class:"row"},b1,b2),view,
+    h("p",{class:"small"},"Il riferimento di normalizzazione (N1–N5) è un insieme Normal di sviluppo condiviso, usato nello stesso modo da ogni sistema: un riferimento comune, non dati federati privati. L’intervallo assoluto in ore è visibile in tutte le condizioni come contesto con insorgenza fissa.")];
+}});
+
+// 3 — verified facts and paired renderings
+S({ph:"P05 · Insight verificati",title:"Un fatto viene accettato solo se ricorre; gli stessi fatti hanno due rappresentazioni",task:"porta il cursore del supporto ad almeno 0.50, poi confronta lo stesso fatto scritto in frasi e nei campi di un record.",
+why:"La conoscenza dei pari deve essere vera rispetto alle evidenze di sviluppo e identica nel contenuto tra i bracci con frasi (B0/B1) e quello con campi di un record (S0). Nessun modello linguistico ha scritto gli insight: modelli testuali deterministici rappresentano i fatti accettati e un controllo di riconversione conferma la corrispondenza di 30/30 fatti in entrambe le direzioni.",
+doc:"facts",
+build(api){
+  const ex=D.p05Example;
+  const rng=h("input",{type:"range",min:0,max:40,value:20,"aria-label":"Finestre che sostengono un fatto candidato, su 40"});
+  const st=h("p",{class:"status"});
+  function upd(){const k=+rng.value;const ok=k/40>=0.5;st.textContent="supporto "+k+"/40 = "+(k/40).toFixed(2)+(ok?" → accettato (≥ 0.50)":" → rifiutato (< 0.50)");st.className="status "+(ok?"ok":"bad");if(ok)api.done();}
+  rng.addEventListener("input",upd);upd();
+  const bp=h("button",{type:"button",class:"btn","aria-pressed":"true",onclick:()=>show(0)},"Frasi (B0/B1)");
+  const bs=h("button",{type:"button",class:"btn","aria-pressed":"false",onclick:()=>show(1)},"Campi del record (S0)");
+  const view=h("pre",{});
+  function show(i){bp.setAttribute("aria-pressed",i===0);bs.setAttribute("aria-pressed",i===1);view.textContent=i===0?ex.proseExcerpt+"\n[estratto originale in inglese del testo reale P05-INS-F1; sha256 "+ex.proseSha256.slice(0,12)+"…]":JSON.stringify(ex.structuredExcerpt,null,1)+"\n[primi due fatti del record strutturato reale P05-INS-F1, conservati nella forma originale; sha256 "+ex.structuredSha256.slice(0,12)+"…]";}
+  show(0);
+  return [badge("dev","biblioteche di sviluppo P05"),h("label",{class:"small"},"Finestre che sostengono un fatto candidato (su 40): ",rng),st,
+    h("p",{class:"small"},"Risultato della regola reale sull’insieme di sviluppo: "+ex.acceptedFacts+" fatti accettati su "+ex.candidateFacts+" candidati. F3 e F15 hanno soltanto un fatto «tutte quiete», che descrive anche la maggior parte delle finestre Normal."),
+    h("div",{class:"row"},bp,bs),view,h("p",{class:"small"},docLink("representations","Rappresentazioni appaiate nella documentazione"))];
+}});
+
+// 4 — access rules
+S({ph:"P05 · Mappa degli accessi",title:"Che cosa può vedere ogni ricevente, in ogni condizione",task:"scegli un ricevente e una condizione.",
+why:"La regola di accesso viene fissata prima del test ed esportata: in B0, B1 e S0 un ricevente vede gli insight degli altri sette client e mai il proprio; A0 e A1 non ne vedono alcuno. L’unica conoscenza fornita della classe propria consiste negli esempi locali (due finestre del proprio guasto e una propria finestra Normal), identici in ogni condizione; la conoscenza pregressa del modello sul catalogo pubblico TEP è una limitazione separata e dichiarata. Gli ID degli insight nominano la propria classe (P05-INS-Fk); soltanto il caso da classificare, senza etichetta, è privo di identificativi.",
+doc:"representations",
+build(api){
+  let rec="C_F1",cond="B0";
+  const recBtns=CLASSES.map(c=>h("button",{type:"button",class:"btn sm","aria-pressed":c==="F1",onclick:()=>{rec="C_"+c;upd();}},"C_"+c));
+  const condBtns=["A0","A1","B0","B1","S0"].map(c=>h("button",{type:"button",class:"btn sm","aria-pressed":c===cond,onclick:()=>{cond=c;upd();}},c));
+  const out=h("div",{class:"grid"});
+  function upd(){recBtns.forEach((b,i)=>b.setAttribute("aria-pressed","C_"+CLASSES[i]===rec));condBtns.forEach((b,i)=>b.setAttribute("aria-pressed",["A0","A1","B0","B1","S0"][i]===cond));
+    const own=rec.slice(2);const peers=CLASSES.filter(c=>c!==own).map(c=>"P05-INS-"+c);
+    const hasPeer=["B0","B1","S0"].includes(cond),policy=["A1","B1"].includes(cond);
+    out.replaceChildren(
+      h("div",{class:"block on"},h("h4",{},"ESEMPI LOCALI"),"2 finestre di "+own+" + 1 finestra Normal di "+rec+" (identici in tutte le cinque condizioni)"),
+      h("div",{class:"block "+(hasPeer?"on":"off")},h("h4",{},"INSIGHT ACCESSIBILI DEI PARI"+(cond==="S0"?" (strutturati)":"")),hasPeer?peers.join(", ")+" — l’insight della classe propria P05-INS-"+own+" è escluso dall’accesso":"nessuno"),
+      h("div",{class:"block "+(policy?"on":"off")},h("h4",{},"POLITICA DECISIONALE LOCAL-FIRST"),policy?"presente: usa prima gli esempi locali; considera gli insight dei pari solo quando le evidenze locali non sostengono un’etichetta; astieniti in assenza di supporto":"assente"),
+      h("div",{class:"block on"},h("h4",{},"OSSERVAZIONE DA CLASSIFICARE (senza etichetta)"),"la rappresentazione del caso, uguale in ogni condizione"));api.done();}
+  upd();
+  return [badge("dev","regola di accesso da P05 ACCESS_MAP / P07 TEMPLATE"),h("div",{class:"row"},h("span",{class:"small"},"Ricevente:"),...recBtns),h("div",{class:"row"},h("span",{class:"small"},"Condizione:"),...condBtns),out];
+}});
+
+// 5 — switching arms and their sizes
+S({ph:"P07 · Cinque bracci",title:"Cambia braccio: che cosa cambia e che cosa resta fisso",task:"cambia braccio e leggi la dimensione media misurata della richiesta.",
+why:"Le cinque condizioni LLM condividono un modello, un messaggio di sistema, lo stesso blocco locale, il caso da classificare e lo schema di risposta; differiscono soltanto per due blocchi opzionali. Poiché i blocchi aggiungono byte, i bracci differiscono anche per lunghezza del prompt: è il fattore di confondimento alla base di P09-F002.",
+doc:"conditions",
+build(api){
+  let arm="B0";
+  const btns=["A0","A1","B0","B1","S0"].map(c=>h("button",{type:"button",class:"btn","aria-pressed":c===arm,onclick:()=>{arm=c;upd();}},c));
+  const kv=h("div",{class:"kv"});
+  const bars=h("div",{class:"grid"});
+  function upd(){btns.forEach((b,i)=>b.setAttribute("aria-pressed",["A0","A1","B0","B1","S0"][i]===arm));const c=D.cost[arm];
+    kv.replaceChildren(h("span",{},"blocco dei pari"),h("b",{},["B0","B1"].includes(arm)?"frasi":arm==="S0"?"struttura":"nessuno"),h("span",{},"politica"),h("b",{},["A1","B1"].includes(arm)?"presente":"assente"),
+      h("span",{},"byte medi della rappresentazione della conoscenza / richiesta"),h("b",{},(+c.representationBytesMean).toLocaleString("en-US")),h("span",{},"byte medi della richiesta"),h("b",{},(+c.requestBytesMean).toFixed(1)),
+      h("span",{},"token medi del prompt (endpoint)"),h("b",{},(+c.inputTokensMean).toFixed(1)),h("span",{},"token medi di completamento"),h("b",{},(+c.outputTokensMean).toFixed(1)),h("span",{},"latenza media"),h("b",{},(+c.latencySecondsMean).toFixed(2)+" s"),h("span",{},"n"),h("b",{},c.inputTokensMeasuredN));
+    bars.replaceChildren(...["A0","A1","B0","B1","S0"].map(a=>{const v=+D.cost[a].inputTokensMean;return h("div",{class:"kv"},h("span",{class:a===arm?"":"small"},a),h("div",{class:"bar",role:"img","aria-label":a+": token medi del prompt "+v.toFixed(0)},h("i",{style:"width:"+(v/3300*100)+"%"+(a===arm?"":";opacity:.45")})));}));api.done();}
+  upd();
+  return [badge("meas","cost.csv"),h("div",{class:"row"},...btns),kv,h("p",{class:"small"},"Token medi del prompt per richiesta, per braccio:"),bars,
+    h("p",{class:"small"},"Fissi per tutti i bracci: qwen3.5-122b, temperatura 0, seed 20260927, budget di ragionamento di 1,024 token, massimo 2,048 token di completamento, risposta JSON rigorosa con quattro campi. ",docLink("cost","Costi nella documentazione"))];
+}});
+
+// H9 — 03.9 baseline a prototipi (prima del passaggio attuale P06 sul comparatore)
+S({ph:"Studio 2 · 03.9 · Baseline a prototipi",title:"La baseline a prototipi (regola storica, recuperata da P06)",task:"costruisci il «ritratto medio» di F1 e confronta una firma con esso.",
+why:"Serve un metodo semplice, senza apprendimento, per sapere se il modello linguistico fa tanto o poco. P06 ha recuperato questa regola globale dal baseline.py storico; i suoi nove prototipi coincidono numericamente con quelli storici (differenza assoluta massima 0, un controllo di parità di sviluppo), mentre il file dei prototipi attuale è una serializzazione propria. La variante locale storica e l’esecuzione post-hoc non vengono riusate. I 40 run Normal di sviluppo (stream 60000–60039) definiti qui sono la metà Normal dell’insieme P05 attuale.",
+doc:"s2-f03-9",
+build(api){
+  const say=sayBox();
+  const L=24,r=mulberry(1515);
+  const pF=Array.from({length:L},()=>{const u=r();return u<.4?.9:(u<.8?.08:.5);});
+  const pO=pF.map((p,i)=>i%3===0?p:1-p),pN=pF.map(()=>.05+r()*.08);
+  const samp=p=>p.map(q=>r()<q?1:0);
+  let test=samp(pF);const dist=p=>p.reduce((s,q,i)=>s+Math.abs(test[i]-q),0);
+  if(!(dist(pF)<dist(pO)&&dist(pF)<dist(pN)))test=pF.map(q=>q>.5?1:0);
+  function strip(vals,x,yy,cw,grey){const g=sv("g");vals.forEach((v,i)=>{g.append(sv("rect",{x:x+i*cw,y:yy,width:cw-2,height:14,rx:1.5,fill:"var(--soft)"}));g.append(sv("rect",{x:x+i*cw,y:yy,width:cw-2,height:14,rx:1.5,fill:"var(--ink)","fill-opacity":grey?v.toFixed(2):(v?1:0)}));});return g;}
+  const s1=sv("svg",{viewBox:"0 0 600 130",class:"plot",role:"img","aria-label":"Sei firme schematiche di F1 che collassano in un prototipo"});const rows=[];
+  for(let k=0;k<6;k++){const g=strip(samp(pF),120,6+k*20,18);g.style.transition="transform .7s ease,opacity .7s";rows.push(g);s1.append(g);}
+  s1.append(sv("text",{x:0,y:58,class:"tkl"},"firme di F1"));
+  const proto=strip(pF,120,56,18,true);proto.classList.add("h-fade");const pl=sv("text",{x:0,y:48,class:"h-fade",style:"font:700 12px var(--sans);fill:var(--accent)"},"prototipo F1");
+  s1.append(proto,pl);
+  const s2=sv("svg",{viewBox:"0 0 600 150",class:"plot",style:"display:none",role:"img","aria-label":"Una firma di test schematica confrontata con tre prototipi"});
+  const items=[["F1",pF],["altro guasto",pO],["Normal",pN]];const ds=items.map(([,p])=>dist(p));const dmax=Math.max(...ds);
+  s2.append(sv("text",{x:0,y:21,style:"font:700 12px var(--sans)"},"firma di test"),strip(test,110,10,14));
+  const bars=items.map(([n,p],i)=>{const yy=50+i*32;const lab=sv("text",{x:0,y:yy+11},n);s2.append(lab,strip(p,110,yy,14,true));const bar=sv("rect",{x:460,y:yy+2,width:0,height:10,rx:2,fill:"var(--muted)",style:"transition:width .7s ease"});s2.append(bar);return {bar,lab,d:ds[i]};});
+  s2.append(sv("text",{x:460,y:40,class:"tkl"},"distanza"));
+  const bd=h("span",{class:"badge dev"},"40 firme di F1 (5 run × 8 finestre); 320 Normal per il prototipo Normal");
+  const b1=h("button",{type:"button",class:"btn pri",onclick:()=>api.run(avg)},"Fai la media");const b2=h("button",{type:"button",class:"btn",disabled:true,onclick:()=>api.run(cmp)},"Confronta");
+  async function avg(){b1.disabled=true;rows.forEach((g,k)=>{g.style.transform="translateY("+(56-(6+k*20))+"px)";g.style.opacity="0";});await sleep(650);proto.classList.add("on");pl.classList.add("on");
+    say.say("Il prototipo è la media componente per componente delle 40 firme di sviluppo di F1: grigio più scuro = bandierina accesa più spesso (una frequenza, non più 0/1). Lo stesso per ogni guasto e per Normal: nove prototipi globali.");b2.disabled=false;}
+  async function cmp(){b2.disabled=true;s1.style.display="none";s2.style.display="block";bd.hidden=true;await sleep(200);bars.forEach(o=>o.bar.setAttribute("width",(o.d/dmax*125).toFixed(1)));await sleep(800);
+    const best=bars.reduce((a,c)=>c.d<a.d?c:a);best.bar.setAttribute("fill","var(--accent)");best.lab.style.fill="var(--accent)";best.lab.style.fontWeight="700";
+    say.say("La firma di test va al prototipo più vicino (distanza L1 media sulle 697 componenti): qui F1. Nessun apprendimento, solo una distanza; un pareggio perfetto entro 1e-12 si astiene. È anche distribuibile: il prototipo di ogni guasto si ricostruisce dalle medie e dai conteggi che ciascun client calcola sui propri dati. È, parola per parola, la regola P06 del passaggio successivo.","ok");api.done();}
+  return [h("div",{class:"row"},badge("hist",HIST),badge("schem","firme schematiche, accorciate")),h("p",{class:"lead"},"Una firma è la fila di bandierine 0/1 del verbalizzatore (qui accorciata): quadratino scuro = flag acceso. Le firme Normal vengono da 40 run Normal di sviluppo, 5 per client, generati come i run di guasto (65 h, nessun IDV)."),s1,s2,bd,h("div",{class:"row"},b1,b2),say,
+    h("p",{class:"small"},"Storicamente la regola aveva anche una variante locale (due prototipi per agente) ed è stata eseguita post-hoc sul lotto di test storico; nessuna delle due fa parte dello studio attuale, dove PROTO è un sistema prespecificato del disegno P01. ",docLink("s2-f03-9","La 03.9 storica nella documentazione"))];
+}});
+
+// 6 — PROTO
+S({ph:"P06 · Il comparatore numerico",title:"La regola a prototipi: vince la media di classe più vicina",task:"premi «Classifica» per osservare il confronto di una firma schematica con i nove prototipi.",
+why:"C1 chiede se l’LLM con le descrizioni testuali dei pari superi la più semplice alternativa numerica distribuibile: ogni client invia la media e il conteggio della propria classe; un caso viene assegnato alla classe con la media più vicina (distanza assoluta media su 697 componenti). Nessun addestramento e nessuna soglia diagnostica aggiunta alla distanza minima; le firme derivano da soglie fissate sullo sviluppo. La predizione è indipendente dal ricevente; astensione solo quando due distanze di classe rientrano in una tolleranza assoluta fissa di 1e-12 dal minimo, cosa mai avvenuta nei 96 nuovi casi.",
+doc:"proto-rule",
+build(api){
+  const labels=[...CLASSES,"Normal"];
+  const dist=[0.061,0.148,0.092,0.077,0.131,0.119,0.142,0.095,0.088];
+  const rows=labels.map((l,i)=>h("div",{class:"kv"},h("span",{},l),h("div",{class:"bar",role:"img","aria-label":"distanza da "+l+" "+dist[i]},h("i",{style:"width:0%;background:var(--muted)"}))));
+  const st=h("p",{class:"status"});
+  const btn=h("button",{type:"button",class:"btn pri",onclick:()=>api.run(play)},"Classifica");
+  async function play(){st.textContent="";for(let i=0;i<rows.length;i++){rows[i].querySelector("i").style.width=(dist[i]/0.16*100)+"%";await sleep(120);}await sleep(200);const m=dist.indexOf(Math.min(...dist));rows[m].querySelector("i").style.background="var(--ok)";st.textContent="Minore distanza L1 media: "+labels[m]+" (valori schematici) → predizione "+labels[m]+" (nessuna seconda distanza entro la tolleranza di 1e-12, quindi nessuna astensione). La stessa predizione viene copiata su tutti gli otto riceventi.";st.className="status ok";api.done();}
+  return [badge("schem","distanze schematiche"),badge("dev","regola recuperata in P06, congelata prima della classificazione"),h("div",{class:"grid"},rows),h("div",{class:"row"},btn),st,
+    h("p",{class:"small"},"Nove prototipi: otto medie di guasto su 40 firme di sviluppo ciascuna e una media Normal su 320. Serializzazione canonica: 27,234 byte, misurata una sola volta sull’insieme di sviluppo. Sono «prototipi numerici di classe», non FedProto.")];
+}});
+
+// 7 — cases vs runs
+S({ph:"P01 · Unità",title:"96 simulazioni, 96 casi, 768 coppie: perché 448 non è 448",task:"scegli la classe di una simulazione e conta le sue coppie per località.",
+why:"Ogni caso viene inviato a tutti gli otto riceventi. Una simulazione di guasto produce una coppia local-seen (il titolare) e sette coppie local-unseen; una simulazione Normal produce otto coppie normali. Le otto risposte alla stessa finestra non sono indipendenti: la simulazione fisica è l’unità di inferenza e tutti i suoi riceventi e condizioni restano insieme nell’analisi.",
+doc:"units",
+build(api){
+  const btns=[...CLASSES,"Normal"].map(c=>h("button",{type:"button",class:"btn sm","aria-pressed":"false",onclick:()=>pick(c)},c));
+  const grid=h("div",{class:"grid g8"});const out=h("p",{class:"lead"},"Scegli la classe di una simulazione.");
+  function pick(c){btns.forEach((b,i)=>b.setAttribute("aria-pressed",[...CLASSES,"Normal"][i]===c));grid.replaceChildren(...CLASSES.map(r=>{const loc=c==="Normal"?"normal":(r===c?"local-seen":"local-unseen");return h("div",{class:"tile "+(loc==="local-seen"?"own":loc==="local-unseen"?"unseen":"")},h("b",{},"C_"+r),h("small",{},loc));}));
+    out.replaceChildren("Una simulazione "+c+" → 8 coppie: ",h("b",{},c==="Normal"?"8 normali":"1 local-seen + 7 local-unseen"),". Nell’intero test: 64 simulazioni di guasto × 7 = ",h("b",{},"448 local-unseen"),", 64 × 1 = ",h("b",{},"64 local-seen"),", 32 × 8 = ",h("b",{},"256 normali")," coppie per condizione; 768 × 5 bracci = ",h("b",{},"3,840 risposte LLM"),"; con PROTO, ",h("b",{},"4,608 righe"),".");api.done();}
+  return [badge("dev","disegno da P01 §2/§4"),h("div",{class:"row"},...btns),grid,out,h("p",{class:"small"},"Per un contrasto, ogni simulazione contribuisce con un numero: la media di (correct_X − correct_Y) sulle coppie previste. ",docLink("p10-inference","Inferenza appaiata"))];
+}});
+
+// 8 — the campaign
+S({ph:"P09 · La campagna",title:"3,840 richieste sigillate, una risposta ciascuna, in un ordine indipendente dalla verità",task:"riproduci l’animazione del contatore della campagna.",
+why:"L’insieme delle richieste e il loro ordine determinato dal seed sono stati pubblicati prima di qualsiasi invio, quindi la sequenza non può dipendere dalla verità. Ogni chiave ha ricevuto esattamente una risposta completata; astensioni e risposte invalide sono state mantenute come esiti, mai ritentate per il contenuto.",
+doc:"p09-facts",
+build(api){
+  const P=D.p09;const bar=h("div",{class:"bar",role:"progressbar","aria-valuemin":0,"aria-valuemax":P.completed,"aria-valuenow":0},h("i",{style:"width:0%"}));
+  const kv=h("div",{class:"kv"});const btn=h("button",{type:"button",class:"btn pri",onclick:()=>api.run(play)},"Riproduci");
+  function set(n){bar.querySelector("i").style.width=(n/P.completed*100)+"%";bar.setAttribute("aria-valuenow",n);kv.replaceChildren(h("span",{},"chiavi completate"),h("b",{},n.toLocaleString("en-US")+" / "+P.completed.toLocaleString("en-US")),h("span",{},"con etichetta / astensioni / invalide"),h("b",{},n<P.completed?"…":P.labelled+" / "+P.abstain+" / "+P.invalid),h("span",{},"mancanti"),h("b",{},n<P.completed?"…":String(P.missing)),h("span",{},"tempo trascorso, in serie"),h("b",{},n<P.completed?"…":P.wallClockHours+" h ("+P.firstStartUtc+" → "+P.lastFinishUtc+")"),h("span",{},"token del prompt / di completamento"),h("b",{},n<P.completed?"…":P.promptTokens.toLocaleString("en-US")+" / "+P.completionTokens.toLocaleString("en-US")));}
+  async function play(){for(let n=0;n<=P.completed;n+=240){set(Math.min(n,P.completed));await sleep(60);}set(P.completed);api.done();}
+  set(0);
+  return [badge("meas","rapporto P09 / P09-S001"),bar,kv,h("div",{class:"row"},btn),h("p",{class:"small"},"I token di ragionamento non sono stati riportati dall’endpoint (sconosciuti, non zero). La campagna è stata eseguita in un processo indipendente dalla sessione sull’host di inferenza; durante l’esecuzione non sono state aperte la verità o la distribuzione delle predizioni.")];
+}});
+
+// 9 — the join and the family
+S({ph:"P10 · La famiglia prestabilita",title:"Dopo la prima e unica unione con la verità: C1, C2, C3",task:"mostra i tre contrasti uno alla volta.",
+why:"Le predizioni sono state unite alla verità una sola volta, dopo aver classificato i casi in tutte le sei condizioni. Soltanto questi tre contrasti local-unseen ricevono la correzione di Holm per confronti multipli; ogni altro confronto è soltanto estimativo. Un intervallo che attraversa lo zero non dimostra né una differenza né l’equivalenza, perché nessun margine era stato prestabilito.",
+doc:"family",
+build(api){
+  const fam=["C1","C2","C3"].map(id=>contrast(id,"local_unseen"));
+  const svg=sv("svg",{viewBox:"0 0 640 170",class:"plot",role:"img","aria-label":"Grafico dei contrasti C1, C2, C3 con intervalli t al 95%"});
+  const x0=-0.15,x1=0.65,xa=150,xb=560,X=v=>xa+(v-x0)/(x1-x0)*(xb-xa);
+  svg.append(sv("line",{x1:xa,y1:140,x2:xb,y2:140,stroke:"var(--muted)"}));
+  [-0.1,0,0.2,0.4,0.6].forEach(v=>{svg.append(sv("line",{x1:X(v),y1:140,x2:X(v),y2:146,stroke:"var(--muted)"}));svg.append(sv("text",{x:X(v),y:160,class:"tkl","text-anchor":"middle"},(v>0?"+":"")+v.toFixed(1)));});
+  svg.append(sv("line",{x1:X(0),y1:20,x2:X(0),y2:140,stroke:"var(--muted)","stroke-dasharray":"4,4"}));
+  const rows=fam.map((c,i)=>{const y=40+i*36;const g=sv("g",{opacity:0});g.append(sv("text",{x:8,y:y+4},c.id+" "+c.name));g.append(sv("line",{x1:X(+c.t95Lower),y1:y,x2:X(+c.t95Upper),y2:y,stroke:"var(--accent)","stroke-width":3}));g.append(sv("circle",{cx:X(+c.estimate),cy:y,r:5,fill:"var(--accent)"}));svg.append(g);return g;});
+  const tbl=h("table",{},h("thead",{},h("tr",{},h("th",{},"Contrasto"),h("th",{},"Stima"),h("th",{},"Intervallo t al 95 %"),h("th",{},"p di Holm"),h("th",{},"Interpretazione"))),h("tbody",{}));
+  let k=0;const btn=h("button",{type:"button",class:"btn pri",onclick:()=>api.run(reveal)},"Mostra il successivo");
+  const read={C1:"ipotesi nulla non rifiutata; nessuna equivalenza (nessun margine)",C2:"ipotesi nulla rifiutata; ammessa una conclusione direzionale",C3:"ipotesi nulla non rifiutata; nessuna equivalenza"};
+  const cv2=D.coverage,c2ls=contrast("C2","local_seen"),c2n=contrast("C2","normal"),cr=D.classRates.local_unseen;
+  const comp=h("div",{class:"note"},badge("est","risultati complementari richiesti (P10-F001)")," C2 va letto insieme ai suoi costi: mantenimento delle prestazioni sul guasto proprio "+cv2.local_seen.A0.correct+"/64 → "+cv2.local_seen.B0.correct+"/64 ("+f3(+c2ls.estimate)+" ["+f3(+c2ls.t95Lower)+", "+f3(+c2ls.t95Upper)+"]) e falsi allarmi su Normal "+cv2.normal.A0.false_alarm+" → "+cv2.normal.B0.false_alarm+" su 256 (decisioni corrette su Normal "+f3(+c2n.estimate)+" ["+f3(+c2n.t95Lower)+", "+f3(+c2n.t95Upper)+"]). C1 va letto insieme all’asimmetria delle astensioni (B0 "+cv2.local_unseen.B0.abstain+" astensioni e "+cv2.local_unseen.B0.invalid+" risposte invalide su local-unseen rispetto a PROTO "+cv2.local_unseen.PROTO.abstain+"/"+cv2.local_unseen.PROTO.invalid+") e all’eterogeneità tra classi (F1: PROTO "+cr.F1.PROTO[0]+"/56 rispetto a B0 "+cr.F1.B0[0]+"/56; F8: "+cr.F8.PROTO[0]+"/56 rispetto a "+cr.F8.B0[0]+"/56). Il passaggio successivo li mostra per intero (visibili prima e dopo la comparsa dei contrasti).");
+  async function reveal(){if(k>=3)return;const c=fam[k];rows[k].setAttribute("opacity",1);const p=+c.holmAdjustedP;tbl.tBodies[0].append(h("tr",{},h("td",{class:"l"},c.id+" "+c.name),h("td",{},f5(+c.estimate)),h("td",{},"["+f5(+c.t95Lower)+", "+f5(+c.t95Upper)+"]"),h("td",{},p<1e-4?p.toExponential(2):p.toFixed(3)),h("td",{class:"l"},read[c.id])));k++;if(k===3){btn.disabled=true;api.done();}await sleep(200);}
+  return [badge("meas","contrasts.csv"),svg,tbl,h("div",{class:"row"},btn),comp,h("p",{class:"small"},"Local-unseen: 448 osservazioni appaiate da 64 simulazioni di guasto, pesi uguali per classe, incertezza raggruppata per simulazione. Conteggi corrispondenti: A0 "+D.coverage.local_unseen.A0.correct+"/448, B0 "+D.coverage.local_unseen.B0.correct+"/448, S0 "+D.coverage.local_unseen.S0.correct+"/448, PROTO "+D.coverage.local_unseen.PROTO.correct+"/448.")];
+}});
+
+// 10 — companions
+S({ph:"P10-F001 · Risultati complementari",title:"Il miglioramento non viene mai mostrato da solo",task:"leggi la vista con i risultati complementari (predefinita); puoi aprire la vista indicata come incompleta per vedere che cosa nasconderebbe un riepilogo del solo miglioramento.",
+why:"Il protocollo richiede di leggere il miglioramento local-unseen insieme ai risultati local-seen e Normal, e il risultato nullo C1 insieme all’asimmetria delle astensioni e all’eterogeneità tra classi. La revisione indipendente (P10-F001) ha rinviato proprio questo compito al paper; qui la vista con i risultati complementari compare all’apertura e al ripristino, mentre quella incompleta è un confronto didattico facoltativo ed esplicitamente indicato.",
+doc:"companions",
+build(api){
+  const lu=contrast("C2","local_unseen"),ls=contrast("C2","local_seen"),no=contrast("C2","normal");
+  const cv=D.coverage;
+  const bComp=h("button",{type:"button",class:"btn","aria-pressed":"true",onclick:()=>set(1)},"Con risultati complementari (predefinito)");
+  const bGain=h("button",{type:"button",class:"btn","aria-pressed":"false",onclick:()=>set(0)},"Vista incompleta: solo miglioramento (didattica)");
+  const view=h("div",{class:"grid"});
+  function row(lbl,c,kind){return h("tr",{},h("td",{class:"l"},lbl),h("td",{},f3(+c.estimate)),h("td",{},"["+f3(+c.t95Lower)+", "+f3(+c.t95Upper)+"]"),h("td",{class:"l"},kind==="H"?badge("meas","famiglia di Holm"):badge("est")));}
+  function set(i){bGain.setAttribute("aria-pressed",i===0);bComp.setAttribute("aria-pressed",i===1);
+    const t=h("table",{},h("thead",{},h("tr",{},h("th",{},"B0 − A0"),h("th",{},"Stima"),h("th",{},"95 % t"),h("th",{},"Ruolo"))),h("tbody",{},row("local-unseen",lu,"H")));
+    if(i===0){view.replaceChildren(t,h("p",{class:"note"},badge("schem","vista incompleta")," Questa vista è deliberatamente incompleta: mostra ciò che riporterebbe un riepilogo favorevole e che P10-F001 vieta. Torna a «Con risultati complementari» per vedere i costi richiesti."));return;}
+    t.tBodies[0].append(row("local-seen (mantenimento)",ls,"E"),row("normale (decisioni corrette su Normal)",no,"E"));
+    const cls=D.classRates.local_unseen;
+    const het=h("table",{},h("thead",{},h("tr",{},h("th",{},"Classe (local-unseen /56)"),h("th",{},"B0"),h("th",{},"PROTO"))),h("tbody",{},...CLASSES.map(c=>h("tr",{},h("td",{class:"l"},c),h("td",{},cls[c].B0[0]),h("td",{},cls[c].PROTO[0])))));
+    view.replaceChildren(t,
+      h("p",{class:"lead"},"Mantenimento: A0 "+cv.local_seen.A0.correct+"/64 → B0 "+cv.local_seen.B0.correct+"/64 (B0: "+cv.local_seen.B0.wrong_fault+" guasti sbagliati, "+cv.local_seen.B0.abstain+" astensioni). Normal: corretti "+cv.normal.A0.correct+"/256 → "+cv.normal.B0.correct+"/256; falsi allarmi "+cv.normal.A0.false_alarm+" → "+cv.normal.B0.false_alarm+"; astensioni "+cv.normal.A0.abstain+" → "+cv.normal.B0.abstain+". L’accuratezza su Normal non è 1 − frazione di falsi allarmi, perché esistono le astensioni."),
+      h("p",{class:"lead"},"Accanto a C1: B0 si astiene "+cv.local_unseen.B0.abstain+" volte e risponde in modo invalido "+cv.local_unseen.B0.invalid+" volte su local-unseen; PROTO "+cv.local_unseen.PROTO.abstain+" / "+cv.local_unseen.PROTO.invalid+". Eterogeneità tra classi dietro il risultato nullo aggregato:"),het,
+      h("p",{class:"small"},"Le proporzioni per classe sono descrittive (8 simulazioni per classe). Le righe soltanto estimative riportano intervalli, senza conclusioni di significatività (P10-F002)."));api.done();}
+  set(1);
+  return [badge("meas","contrasts.csv / coverage.csv / class_rates.csv"),h("div",{class:"row"},bComp,bGain),view];
+}});
+
+// 11 — policy and representation: coverage explorer
+S({ph:"P10 · Esiti per braccio",title:"Ogni coppia è contabilizzata: cambia braccio e indicatore",task:"scegli un indicatore e confronta le barre degli esiti dei sei sistemi.",
+why:"I denominatori fissi mantengono visibili astensioni e risposte invalide. Con gli insight, la politica local-first (B1 rispetto a B0) migliora il mantenimento delle prestazioni sul guasto proprio e riduce i falsi allarmi soprattutto aumentando le astensioni; senza insight (A1 rispetto ad A0) riduce anche il mantenimento (50/64 rispetto a 57/64). B0 rispetto a S0 (frasi rispetto a campi) non mostra una differenza rilevabile sui guasti mai osservati (intervallo che attraversa lo zero, non uguaglianza); PROTO non si è astenuto su questi casi (la sua regola di parità ammette l’astensione; P20) e mantiene alta la specificità su Normal.",
+doc:"coverage",
+build(api){
+  let ep="local_unseen";
+  const eps=[["local_unseen","Local-unseen (448)"],["local_seen","Local-seen (64)"],["normal","Normal (256)"]];
+  const btns=eps.map(([k,l])=>h("button",{type:"button",class:"btn sm","aria-pressed":k===ep,onclick:()=>{ep=k;upd();}},l));
+  const box=h("div",{class:"grid"});
+  const legend=h("div",{class:"legend"},...[["c-correct","corretto"],["c-wrong","guasto sbagliato"],["c-missed","guasto classificato Normal / falso allarme"],["c-abst","astensione"],["c-inv","invalido"]].map(([c,l])=>h("span",{},h("i",{class:c}),l)));
+  function upd(){btns.forEach((b,i)=>b.setAttribute("aria-pressed",eps[i][0]===ep));box.replaceChildren(...COND.map(s=>{const d=D.coverage[ep][s];const n=d.denominator;const seg=(cls,v)=>h("i",{class:cls,style:"width:"+(v/n*100)+"%",title:v});
+    return h("div",{class:"kv"},h("span",{},h("b",{},s)," ",d.correct+"/"+n),h("div",{class:"stack",role:"img","aria-label":s+": "+d.correct+" corretti, "+d.wrong_fault+" guasti sbagliati, "+(d.missed_as_normal+d.false_alarm)+" guasti classificati Normal o falsi allarmi, "+d.abstain+" astensioni, "+d.invalid+" invalidi su "+n},seg("c-correct",d.correct),seg("c-wrong",d.wrong_fault),seg("c-missed",d.missed_as_normal+d.false_alarm),seg("c-abst",d.abstain),seg("c-inv",d.invalid)));}));api.done();}
+  upd();
+  return [badge("meas","coverage.csv"),h("div",{class:"row"},...btns),legend,box,h("p",{class:"small"},"Le righe sulla politica sono soltanto estimative: B1 − B0 local-unseen "+f3(+contrast("S4b","local_unseen").estimate)+" ["+f3(+contrast("S4b","local_unseen").t95Lower)+", "+f3(+contrast("S4b","local_unseen").t95Upper)+"], local-seen "+f3(+contrast("S4b","local_seen").estimate)+" ["+f3(+contrast("S4b","local_seen").t95Lower)+", "+f3(+contrast("S4b","local_seen").t95Upper)+"]. ",docLink("estimation-only","Tutti i 18 contrasti"))];
+}});
+
+// 12 — costs
+S({ph:"P10 · Costi",title:"Che cosa è stato misurato e che cosa resta esplicitamente non disponibile",task:"cambia la grandezza; i valori mancanti restano tali.",
+why:"Byte delle rappresentazioni, token dell’endpoint e latenza sono misurati per richiesta nei bracci LLM. PROTO ha un unico contenuto condiviso misurato sull’insieme di sviluppo e non usa token o latenza dell’endpoint; token di ragionamento, traffico di rete e costo monetario non sono stati misurati. Non viene formulata alcuna conclusione di convenienza economica.",
+doc:"cost",
+build(api){
+  const Q=[["representationBytesMean","byte della rappresentazione della conoscenza / richiesta"],["inputTokensMean","token del prompt / richiesta"],["outputTokensMean","token di completamento / richiesta"],["latencySecondsMean","latenza s / richiesta"]];
+  let q=0;const btns=Q.map(([k,l],i)=>h("button",{type:"button",class:"btn sm","aria-pressed":i===0,onclick:()=>{q=i;upd();}},l));
+  const box=h("div",{class:"grid"});
+  function upd(){btns.forEach((b,i)=>b.setAttribute("aria-pressed",i===q));const key=Q[q][0];const vals=COND.map(s=>{const c=D.cost[s];if(s==="PROTO"){return key==="representationBytesMean"?{v:+c.protoSharedRepresentationBytes,note:" (un unico contenuto condiviso, insieme di sviluppo)"}:{v:null,note:"non misurato (nessun endpoint)"};}return {v:+c[key],note:""};});
+    const mx=Math.max(...vals.map(x=>x.v||0));box.replaceChildren(...COND.map((s,i)=>{const x=vals[i];return h("div",{class:"kv"},h("span",{},h("b",{},s)," ",x.v==null?"—":x.v.toLocaleString("en-US",{maximumFractionDigits:2}),h("span",{class:"small"},x.note)),h("div",{class:"bar",role:"img","aria-label":s+" "+(x.v==null?"non misurato":x.v)},h("i",{style:"width:"+(x.v==null?0:x.v/mx*100)+"%"+(x.v==null?";background:var(--line)":"")})));}));api.done();}
+  upd();
+  return [badge("meas","cost.csv"),h("div",{class:"row"},...btns),box,h("p",{class:"small"},"Totali su 3,840 chiamate: "+D.p09.promptTokens.toLocaleString("en-US")+" token del prompt e "+D.p09.completionTokens.toLocaleString("en-US")+" token di completamento; token di ragionamento sconosciuti. I byte misurano le dimensioni delle rappresentazioni, non il traffico di rete.")];
+}});
+
+// 13 — citations and an illustrated decision
+S({ph:"P10 · Citazioni",title:"Che cosa hanno citato i riceventi e che cosa questo non dimostra",task:"scegli un braccio per vedere la verifica delle citazioni, poi leggi la sequenza decisionale illustrativa.",
+why:"Il campo di risposta used_insight_ids è stato verificato rispetto all’insieme degli accessi di ogni ricevente. Le sette citazioni B0 di un ID inaccessibile nominano tutte l’insight della classe propria del ricevente, escluso dal disegno; nessuna nomina l’insight inaccessibile di un altro client. Non è evidenza di fuga di conoscenza dei pari; qualsiasi spiegazione basata sullo schema degli ID è un’interpretazione.",
+doc:"cost",
+build(api){
+  let arm="B0";const btns=["A0","A1","B0","B1","S0"].map(c=>h("button",{type:"button",class:"btn sm","aria-pressed":c===arm,onclick:()=>{arm=c;upd();}},c));
+  const kv=h("div",{class:"kv"});
+  function upd(){btns.forEach((b,i)=>b.setAttribute("aria-pressed",["A0","A1","B0","B1","S0"][i]===arm));const c=D.citations[arm];kv.replaceChildren(h("span",{},"citazioni prodotte"),h("b",{},c.citationCount),h("span",{},"insight accessibile dei pari"),h("b",{},c.citations_accessible_peer),h("span",{},"ID P05 noto ma inaccessibile (classe propria)"),h("b",{},c.citations_inaccessible_known_p05+" in "+c.rows_inaccessible_known_p05+" righe"),h("span",{},"riferimenti agli esempi locali"),h("b",{},c.citations_local_example_reference+" in "+c.rows_local_example_reference+" righe"),h("span",{},"stringhe sconosciute"),h("b",{},c.citations_unknown_string));api.done();}
+  upd();
+  const seq=h("ol",{class:"small"},h("li",{},"leggere gli esempi locali (guasto proprio F1 e Normal);"),h("li",{},"leggere i sette insight accessibili dei pari (F2, F3, F8, F10, F13, F14, F15);"),h("li",{},"confrontare le osservazioni sopra soglia del caso da classificare con i fatti;"),h("li",{},"produrre un’etichetta oppure astenersi, elencando gli ID degli insight utilizzati."));
+  return [badge("meas","citations.csv"),h("div",{class:"row"},...btns),kv,h("div",{class:"note"},badge("schem","sequenza decisionale illustrativa")," L’elenco seguente spiega che cosa il prompt chiede al ricevente. È una spiegazione del compito, non una traccia di ragionamento recuperata dal modello.",seq)];
+}});
+
+// 14 — limits and review snapshot
+S({ph:"Revisione · Limiti",title:"Che cosa sostiene l’evidenza e che cosa no",task:"apri ogni limitazione, poi concludi.",
+why:"La revisione indipendente si è chiusa con limitazioni e nessun rilievo bloccante. I limiti sono parte del risultato: associazioni tra i bracci configurati anziché attribuzione causale, conoscenza pregressa non controllata del catalogo dei guasti, nessun margine di equivalenza, otto simulazioni per classe, riferimento di sviluppo condiviso, classi deboli e una lacuna di provenienza.",
+doc:"limitations",
+build(api){
+  const L=[["P09-F002 · associazione, non attribuzione","I bracci differiscono per presenza del blocco e per lunghezza/serializzazione del prompt; il test prespecificato a sei condizioni non aveva alcun placebo di pari lunghezza; identità del backend non attestata per ogni chiamata. Un braccio placebo post hoc di pari lunghezza in byte (P21, passaggio successivo) restringe la lettura ma è soltanto estimativo, di una campagna successiva e non appaiato per token, quindi C2 resta un’associazione tra bracci configurati."],["P07-F003 · conoscenza pregressa","Il modello ricevente richiama il catalogo TEP; etichette F1–F15 mantenute per decisione dell’autore; A0/A1 non sono prive di conoscenza."],["Nessuna equivalenza","Gli intervalli C1 e C3 attraversano lo zero; nessun margine prestabilito; otto simulazioni per classe."],["P10-F003 · provenienza","La revisione dell’adattatore della prima unione non è in Git; i controlli sugli output sostengono che l’esportazione non sia cambiata; top_k non fissato."],["P10-F004/F005 · presentazione","Intestazione CSV duplicata corretta soltanto nel derivato; le citazioni della classe propria non sono una fuga di conoscenza."],["P06-F002 / P09-F001 · controlli","Test parziali del wrapper; controllo di ricostruzione in parte circolare. Nessuno dei due cambia un numero pubblicato."],["Ambito","Benchmark simulato; insight deterministici da modelli testuali; nessun protocollo, garanzia di riservatezza o avversario; byte ≠ traffico di rete."]];
+  let opened=0;const items=L.map(([t,d])=>{const p=h("p",{class:"small",hidden:true},d);const b=h("button",{type:"button",class:"btn sm","aria-expanded":"false",onclick:()=>{const o=p.hidden;p.hidden=!o;b.setAttribute("aria-expanded",String(o));if(o&&!b.dataset.seen){b.dataset.seen=1;opened++;if(opened>=3)api.done();}}},t);return h("div",{class:"block"},b,p);});
+  const snap=h("div",{class:"kv"},h("span",{},"Versione candidata P10"),h("b",{},D.p10.candidate.slice(0,7)),h("span",{},"passaggio di revisione"),h("b",{},D.p10.reviewStep+" · "+({closed_with_limits:"chiusa con limitazioni",closed:"chiusa"}[D.p10.reviewStatus]||D.p10.reviewStatus)),h("span",{},"sha256 delle righe sigillate"),h("b",{},D.p10.sourceRowsSha256.slice(0,16)+"…"),h("span",{},"dati di visualizzazione generati"),h("b",{},D.generatedUtc));
+  return [badge("meas","verbale di revisione P10-S001"),h("div",{class:"grid"},items),h("p",{class:"small"},"Fotografia delle fonti / della revisione:"),snap,h("p",{class:"small"},docLink("review","Tabella della revisione nella documentazione")," · ",docLink("limitations","Limitazioni"))];
+}});
+
+// 15 — comparatori numerici post hoc (P10.1 / P10.2), fuori dal test prespecificato
+// Soltanto fonti pubbliche revisionate; in questa pagina non è incorporata alcuna riga privata:
+//   orchestrator/claude/P10.1/artifacts/results/coverage.csv
+//   orchestrator/codex_1/P10.2.4/candidate_002/coverage.csv + seed_summary.csv
+//   orchestrator/codex_1/P10_SESSION_03/artifacts/tables/coverage.csv   (gli ancoraggi B0/PROTO)
+//   orchestrator/claude/P10.3/artifacts/v3/                            (SOLO v3: le tabelle
+//                                                                       congiunte di v1 e v2 sono
+//                                                                       ritirate dall'uso editoriale)
+// Revisioni: P10.1.6; P10.2.6 closed_with_limits; P10.3-S003 closed_with_limits.
+const PH={"acc":{"CENTRAL":{"local_seen":[{"mean":0.759375,"phase":"P10.1","recipe":"LIN","sd":0.008558},{"mean":0.7625,"phase":"P10.1","recipe":"MLP","sd":0.006988},{"mean":0.609375,"phase":"P10.2","recipe":"adaboost","sd":0.0},{"mean":0.80625,"phase":"P10.2","recipe":"bilstm_attention","sd":0.046351},{"mean":0.853125,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.034233},{"mean":0.796875,"phase":"P10.2","recipe":"knn","sd":0.0},{"mean":0.809375,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.068465},{"mean":0.765625,"phase":"P10.2","recipe":"lstm_attention","sd":0.066291},{"mean":0.825,"phase":"P10.2","recipe":"mlp32","sd":0.068465},{"mean":0.765625,"phase":"P10.2","recipe":"random_forest","sd":0.0},{"mean":0.71875,"phase":"P10.2","recipe":"solo_testo","sd":0.0},{"mean":0.88125,"phase":"P10.2","recipe":"tcn","sd":0.068643},{"mean":0.75,"phase":"P10.2","recipe":"xgboost","sd":0.0}],"local_unseen":[{"mean":0.759375,"phase":"P10.1","recipe":"LIN","sd":0.008558},{"mean":0.7625,"phase":"P10.1","recipe":"MLP","sd":0.006988},{"mean":0.609375,"phase":"P10.2","recipe":"adaboost","sd":0.0},{"mean":0.80625,"phase":"P10.2","recipe":"bilstm_attention","sd":0.046351},{"mean":0.853125,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.034233},{"mean":0.796875,"phase":"P10.2","recipe":"knn","sd":0.0},{"mean":0.809375,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.068465},{"mean":0.765625,"phase":"P10.2","recipe":"lstm_attention","sd":0.066291},{"mean":0.825,"phase":"P10.2","recipe":"mlp32","sd":0.068465},{"mean":0.765625,"phase":"P10.2","recipe":"random_forest","sd":0.0},{"mean":0.71875,"phase":"P10.2","recipe":"solo_testo","sd":0.0},{"mean":0.88125,"phase":"P10.2","recipe":"tcn","sd":0.068643},{"mean":0.75,"phase":"P10.2","recipe":"xgboost","sd":0.0}],"normal":[{"mean":0.875,"phase":"P10.1","recipe":"LIN","sd":0.0},{"mean":0.88125,"phase":"P10.1","recipe":"MLP","sd":0.013975},{"mean":1.0,"phase":"P10.2","recipe":"adaboost","sd":0.0},{"mean":0.30625,"phase":"P10.2","recipe":"bilstm_attention","sd":0.243469},{"mean":0.80625,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.080889},{"mean":0.09375,"phase":"P10.2","recipe":"knn","sd":0.0},{"mean":0.35,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.479257},{"mean":0.55625,"phase":"P10.2","recipe":"lstm_attention","sd":0.494797},{"mean":0.3625,"phase":"P10.2","recipe":"mlp32","sd":0.496865},{"mean":0.875,"phase":"P10.2","recipe":"random_forest","sd":0.0},{"mean":0.84375,"phase":"P10.2","recipe":"solo_testo","sd":0.0},{"mean":0.6375,"phase":"P10.2","recipe":"tcn","sd":0.334097},{"mean":0.875,"phase":"P10.2","recipe":"xgboost","sd":0.0}]},"FEDAVG":{"local_seen":[{"mean":0.746875,"phase":"P10.1","recipe":"LIN","sd":0.006988},{"mean":0.75,"phase":"P10.1","recipe":"MLP","sd":0.0},{"mean":0.39375,"phase":"P10.2","recipe":"bilstm_attention","sd":0.032022},{"mean":0.35,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.013975},{"mean":0.75,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.0},{"mean":0.41875,"phase":"P10.2","recipe":"lstm_attention","sd":0.03563},{"mean":0.734375,"phase":"P10.2","recipe":"mlp32","sd":0.011049},{"mean":0.36875,"phase":"P10.2","recipe":"tcn","sd":0.028384}],"local_unseen":[{"mean":0.746875,"phase":"P10.1","recipe":"LIN","sd":0.006988},{"mean":0.75,"phase":"P10.1","recipe":"MLP","sd":0.0},{"mean":0.39375,"phase":"P10.2","recipe":"bilstm_attention","sd":0.032022},{"mean":0.35,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.013975},{"mean":0.75,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.0},{"mean":0.41875,"phase":"P10.2","recipe":"lstm_attention","sd":0.03563},{"mean":0.734375,"phase":"P10.2","recipe":"mlp32","sd":0.011049},{"mean":0.36875,"phase":"P10.2","recipe":"tcn","sd":0.028384}],"normal":[{"mean":1.0,"phase":"P10.1","recipe":"LIN","sd":0.0},{"mean":1.0,"phase":"P10.1","recipe":"MLP","sd":0.0},{"mean":1.0,"phase":"P10.2","recipe":"bilstm_attention","sd":0.0},{"mean":1.0,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.0},{"mean":1.0,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.0},{"mean":1.0,"phase":"P10.2","recipe":"lstm_attention","sd":0.0},{"mean":1.0,"phase":"P10.2","recipe":"mlp32","sd":0.0},{"mean":1.0,"phase":"P10.2","recipe":"tcn","sd":0.0}]},"LOCAL":{"local_seen":[{"mean":0.7625,"phase":"P10.1","recipe":"LIN","sd":0.006988},{"mean":0.94375,"phase":"P10.1","recipe":"MLP","sd":0.070399},{"mean":0.765625,"phase":"P10.2","recipe":"adaboost","sd":0.0},{"mean":0.790625,"phase":"P10.2","recipe":"bilstm_attention","sd":0.106319},{"mean":0.878125,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.053446},{"mean":0.984375,"phase":"P10.2","recipe":"knn","sd":0.0},{"mean":0.7375,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.006988},{"mean":0.784375,"phase":"P10.2","recipe":"lstm_attention","sd":0.092042},{"mean":0.75,"phase":"P10.2","recipe":"mlp32","sd":0.0},{"mean":0.765625,"phase":"P10.2","recipe":"random_forest","sd":0.0},{"mean":0.80625,"phase":"P10.2","recipe":"solo_testo","sd":0.017815},{"mean":0.93125,"phase":"P10.2","recipe":"tcn","sd":0.086008},{"mean":0.734375,"phase":"P10.2","recipe":"xgboost","sd":0.0}],"local_unseen":[{"mean":0.0,"phase":"P10.1","recipe":"LIN","sd":0.0},{"mean":0.0,"phase":"P10.1","recipe":"MLP","sd":0.0},{"mean":0.0,"phase":"P10.2","recipe":"adaboost","sd":0.0},{"mean":0.0,"phase":"P10.2","recipe":"bilstm_attention","sd":0.0},{"mean":0.0,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.0},{"mean":0.0,"phase":"P10.2","recipe":"knn","sd":0.0},{"mean":0.007589,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.003385},{"mean":0.0,"phase":"P10.2","recipe":"lstm_attention","sd":0.0},{"mean":0.000446,"phase":"P10.2","recipe":"mlp32","sd":0.000998},{"mean":0.0,"phase":"P10.2","recipe":"random_forest","sd":0.0},{"mean":0.0,"phase":"P10.2","recipe":"solo_testo","sd":0.0},{"mean":0.0,"phase":"P10.2","recipe":"tcn","sd":0.0},{"mean":0.0,"phase":"P10.2","recipe":"xgboost","sd":0.0}],"normal":[{"mean":0.970313,"phase":"P10.1","recipe":"LIN","sd":0.00214},{"mean":0.8,"phase":"P10.1","recipe":"MLP","sd":0.068465},{"mean":0.980469,"phase":"P10.2","recipe":"adaboost","sd":0.0},{"mean":0.84375,"phase":"P10.2","recipe":"bilstm_attention","sd":0.060072},{"mean":0.878125,"phase":"P10.2","recipe":"fusione_bilstm_tfidf","sd":0.079452},{"mean":0.75,"phase":"P10.2","recipe":"knn","sd":0.0},{"mean":0.980469,"phase":"P10.2","recipe":"lineare_elasticnet","sd":0.0},{"mean":0.804688,"phase":"P10.2","recipe":"lstm_attention","sd":0.116108},{"mean":0.971094,"phase":"P10.2","recipe":"mlp32","sd":0.00214},{"mean":0.972656,"phase":"P10.2","recipe":"random_forest","sd":0.0},{"mean":0.905469,"phase":"P10.2","recipe":"solo_testo","sd":0.006419},{"mean":0.916406,"phase":"P10.2","recipe":"tcn","sd":0.058698},{"mean":0.988281,"phase":"P10.2","recipe":"xgboost","sd":0.0}]}},"anchors":{"B0":{"local_seen":{"abstain":7,"acc":0.625,"correct":40,"invalid":0,"n":64},"local_unseen":{"abstain":28,"acc":0.595982,"correct":267,"invalid":3,"n":448},"normal":{"abstain":8,"acc":0.691406,"correct":177,"invalid":0,"n":256}},"PROTO":{"local_seen":{"abstain":0,"acc":0.59375,"correct":38,"invalid":0,"n":64},"local_unseen":{"abstain":0,"acc":0.59375,"correct":266,"invalid":0,"n":448},"normal":{"abstain":0,"acc":0.90625,"correct":232,"invalid":0,"n":256}}},"deterministic":[["knn","CENTRAL"],["knn","LOCAL"],["xgboost","CENTRAL"],["xgboost","LOCAL"]],"joint":{"B0":{"F1F2F8":[{"band":"withheld","cases":2,"cls":"F1","dest":"abstain","near":"withheld","pairs":2,"pub":8,"tier":"none"},{"band":"withheld","cases":8,"cls":"F1","dest":"correct","near":"withheld","pairs":54,"pub":8,"tier":"none"},{"band":"withheld","cases":3,"cls":"F1","dest":"to_F8","near":"withheld","pairs":3,"pub":8,"tier":"none"},{"band":"withheld","cases":2,"cls":"F1","dest":"to_other_fault","near":"withheld","pairs":5,"pub":8,"tier":"none"},{"band":"gt_tol_high","cases":8,"cls":"F2","dest":"correct","near":"withheld","pairs":64,"pub":8,"tier":"margin_band"},{"band":"withheld","cases":5,"cls":"F8","dest":"abstain","near":"withheld","pairs":13,"pub":8,"tier":"none"},{"band":"withheld","cases":5,"cls":"F8","dest":"correct","near":"withheld","pairs":7,"pub":8,"tier":"none"},{"band":"withheld","cases":5,"cls":"F8","dest":"to_F1","near":"withheld","pairs":27,"pub":8,"tier":"none"},{"band":"withheld","cases":1,"cls":"F8","dest":"to_F2","near":"withheld","pairs":6,"pub":8,"tier":"none"},{"band":"withheld","cases":3,"cls":"F8","dest":"to_other_fault","near":"withheld","pairs":11,"pub":8,"tier":"none"}],"F3F15":[{"band":"le_0","cases":1,"cls":"F3","dest":"abstain","near":"Normal","pairs":1,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":5,"cls":"F3","dest":"correct","near":"Normal","pairs":6,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":6,"cls":"F3","dest":"to_F15","near":"Normal","pairs":9,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":8,"cls":"F3","dest":"to_Normal","near":"Normal","pairs":48,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":1,"cls":"F15","dest":"abstain","near":"Normal","pairs":5,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":6,"cls":"F15","dest":"correct","near":"Normal","pairs":7,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":1,"cls":"F15","dest":"invalid","near":"Normal","pairs":2,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":5,"cls":"F15","dest":"to_F3","near":"Normal","pairs":5,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":7,"cls":"F15","dest":"to_Normal","near":"Normal","pairs":44,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":1,"cls":"F15","dest":"to_other_fault","near":"Normal","pairs":1,"pub":8,"tier":"nearest_other+margin_band"}]},"PROTO":{"F1F2F8":[{"band":"withheld","cases":1,"cls":"F1","dest":"correct","near":"withheld","pairs":8,"pub":8,"tier":"none"},{"band":"withheld","cases":2,"cls":"F1","dest":"to_F8","near":"withheld","pairs":16,"pub":8,"tier":"none"},{"band":"withheld","cases":4,"cls":"F1","dest":"to_Normal","near":"withheld","pairs":32,"pub":8,"tier":"none"},{"band":"withheld","cases":1,"cls":"F1","dest":"to_other_fault","near":"withheld","pairs":8,"pub":8,"tier":"none"},{"band":"gt_tol_high","cases":8,"cls":"F2","dest":"correct","near":"withheld","pairs":64,"pub":8,"tier":"margin_band"},{"band":"withheld","cases":6,"cls":"F8","dest":"correct","near":"withheld","pairs":48,"pub":8,"tier":"none"},{"band":"withheld","cases":1,"cls":"F8","dest":"to_Normal","near":"withheld","pairs":8,"pub":8,"tier":"none"},{"band":"withheld","cases":1,"cls":"F8","dest":"to_other_fault","near":"withheld","pairs":8,"pub":8,"tier":"none"}],"F3F15":[{"band":"le_0","cases":8,"cls":"F3","dest":"to_Normal","near":"Normal","pairs":64,"pub":8,"tier":"nearest_other+margin_band"},{"band":"le_0","cases":8,"cls":"F15","dest":"to_Normal","near":"Normal","pairs":64,"pub":8,"tier":"nearest_other+margin_band"}]}},"margins":{"F1F2F8":[{"boundary":"0.000230900286944","cases":8,"cls":"F1","gtHigh":1,"gtLow":0,"inTol":0,"le0":7,"near":"Normal:4|F2:1|F8:2|F15:1"},{"boundary":"0.000230900286944","cases":8,"cls":"F2","gtHigh":8,"gtLow":0,"inTol":0,"le0":0,"near":"Normal:6|F15:2"},{"boundary":"0.000230900286944","cases":8,"cls":"F8","gtHigh":6,"gtLow":0,"inTol":0,"le0":2,"near":"Normal:1|F1:1|F10:1|F13:5"},{"boundary":"0.000230900286944","cases":24,"cls":"F1+F2+F8","gtHigh":15,"gtLow":0,"inTol":0,"le0":9,"near":"Normal:11|F1:1|F2:1|F8:2|F10:1|F13:5|F15:3"}],"F3F15":[{"boundary":"0.000230900286944","cases":8,"cls":"F3","gtHigh":0,"gtLow":0,"inTol":0,"le0":8,"near":"Normal:8"},{"boundary":"0.000230900286944","cases":8,"cls":"F15","gtHigh":0,"gtLow":0,"inTol":0,"le0":8,"near":"Normal:8"},{"boundary":"0.000230900286944","cases":16,"cls":"F3+F15","gtHigh":0,"gtLow":0,"inTol":0,"le0":16,"near":"Normal:16"}]},"nearest":{"F1":"F2","F10":"Normal","F13":"F8","F14":"Normal","F15":"Normal","F2":"F15","F3":"Normal","F8":"F13","Normal":"F15"},"nearestD":{"F1":"0.0939741750359","F10":"0.0139683464849","F13":"0.0825143472023","F14":"0.026831510043","F15":"0.00059406384505","F2":"0.0702116212339","F3":"0.000719601865136","F8":"0.0825143472023","Normal":"0.00059406384505"},"provenance":{"p10":"orchestrator/codex_1/P10_SESSION_03/artifacts/tables/coverage.csv","p101":"orchestrator/claude/P10.1/artifacts/results/coverage.csv","p102":"orchestrator/codex_1/P10.2.4/candidate_002/coverage.csv + seed_summary.csv","p103":"orchestrator/claude/P10.3/artifacts/v3/ (v3 only; v1 and v2 joint tables must not be reused)","reviews":"P10.1.6; P10.2.6 closed_with_limits; P10.3-S003 closed_with_limits"},"trio":{"B0":{"F1F2F8":[{"abstain":2,"cls":"F1","correct":54,"errors":10,"invalid":0,"n":64,"toGroup":3,"toNormal":0,"toOther":5},{"abstain":0,"cls":"F2","correct":64,"errors":0,"invalid":0,"n":64,"toGroup":0,"toNormal":0,"toOther":0},{"abstain":13,"cls":"F8","correct":7,"errors":57,"invalid":0,"n":64,"toGroup":33,"toNormal":0,"toOther":11},{"abstain":15,"cls":"F1+F2+F8","correct":125,"errors":67,"invalid":0,"n":192,"toGroup":36,"toNormal":0,"toOther":16}],"F3F15":[{"abstain":1,"cls":"F3","correct":6,"errors":58,"invalid":0,"n":64,"toGroup":9,"toNormal":48,"toOther":0},{"abstain":5,"cls":"F15","correct":7,"errors":57,"invalid":2,"n":64,"toGroup":5,"toNormal":44,"toOther":1},{"abstain":6,"cls":"F3+F15","correct":13,"errors":115,"invalid":2,"n":128,"toGroup":14,"toNormal":92,"toOther":1}]},"PROTO":{"F1F2F8":[{"abstain":0,"cls":"F1","correct":8,"errors":56,"invalid":0,"n":64,"toGroup":16,"toNormal":32,"toOther":8},{"abstain":0,"cls":"F2","correct":64,"errors":0,"invalid":0,"n":64,"toGroup":0,"toNormal":0,"toOther":0},{"abstain":0,"cls":"F8","correct":48,"errors":16,"invalid":0,"n":64,"toGroup":0,"toNormal":8,"toOther":8},{"abstain":0,"cls":"F1+F2+F8","correct":120,"errors":72,"invalid":0,"n":192,"toGroup":16,"toNormal":40,"toOther":16}],"F3F15":[{"abstain":0,"cls":"F3","correct":0,"errors":64,"invalid":0,"n":64,"toGroup":0,"toNormal":64,"toOther":0},{"abstain":0,"cls":"F15","correct":0,"errors":64,"invalid":0,"n":64,"toGroup":0,"toNormal":64,"toOther":0},{"abstain":0,"cls":"F3+F15","correct":0,"errors":128,"invalid":0,"n":128,"toGroup":0,"toNormal":128,"toOther":0}]}},"within":{"F1|F2":"0.0939741750359","F1|F8":"0.127152080344","F2|F8":"0.189777618364","F3|F15":"0.000986370157819"}};
+const PH_MODES=[["LOCAL","LOCAL — un modello per client"],["FEDAVG","FEDAVG — parametri mediati"],["CENTRAL","CENTRAL — tutti i dati insieme"]];
+const PH_EPS=[["local_unseen","Local-unseen (448)"],["local_seen","Local-seen (64)"],["normal","Normal (256)"]];
+const PH_DET=new Set(PH.deterministic.map(d=>d[0]+"/"+d[1]));
+
+S({ph:"P10.1–P10.2 · Comparatori (post hoc)",title:"Che cosa otterrebbero i modelli classici sugli stessi 96 casi?",
+task:"scegli un endpoint e una modalità, poi leggi le barre rispetto ai due ancoraggi fissi.",
+why:"Il test prespecificato ha fissato un solo comparatore numerico, PROTO. Queste tredici ricette sono state applicate agli stessi 96 casi sigillati in un secondo momento, quando gli esiti a sei condizioni erano già noti: sono quindi contesto e non un verdetto, senza valore p, senza appartenenza alla famiglia Holm, senza affermazioni di equivalenza e senza classifica. Due aspetti richiedono attenzione. FEDAVG e CENTRAL sono indipendenti dal ricevente, quindi i loro tassi su local-unseen e local-seen sono uguali per costruzione: aritmetica, non un risultato. Un modello LOCAL è addestrato su due sole etichette, il proprio guasto e Normal, ma la sua testa non è mascherata e 71 delle 42,240 etichette emesse da LOCAL in P10.2 cadono fuori da quella coppia; la sua accuratezza quasi nulla su local-unseen è un esito osservato a parte, non una stima causale del costo di non condividere nulla.",
+doc:"comparator-accuracy",
+build(api){
+  let ep="local_unseen", mode="CENTRAL";
+  const say=sayBox();
+  const epBtns=PH_EPS.map(([k,l])=>h("button",{type:"button",class:"btn sm","aria-pressed":k===ep,onclick:()=>{ep=k;upd();}},l));
+  const mdBtns=PH_MODES.map(([k,l])=>h("button",{type:"button",class:"btn sm","aria-pressed":k===mode,onclick:()=>{mode=k;upd();}},k));
+  const box=h("div",{class:"grid"});
+  const note=h("p",{class:"small"});
+  function anchorRow(name){
+    const a=PH.anchors[name][ep];
+    return h("div",{class:"kv"},
+      h("span",{},h("b",{},name),h("small",{}," ancoraggio · "+a.correct+"/"+a.n+" · "+pct(a.acc)+" · astensioni "+a.abstain+" · non valide "+a.invalid)),
+      h("div",{class:"bar",role:"img","aria-label":name+", ancoraggio sigillato di P10: "+a.correct+" corrette su "+a.n+", "+pct(a.acc)+", "+a.abstain+" astensioni, "+a.invalid+" non valide"},
+        h("i",{class:"anchor",style:"width:"+(100*a.acc)+"%"})));
+  }
+  function upd(){
+    epBtns.forEach((b,i)=>b.setAttribute("aria-pressed",PH_EPS[i][0]===ep));
+    mdBtns.forEach((b,i)=>b.setAttribute("aria-pressed",PH_MODES[i][0]===mode));
+    const rows=(PH.acc[mode]||{})[ep]||[];
+    const kids=[anchorRow("B0"),anchorRow("PROTO")];
+    rows.forEach(r=>{
+      const detFlag=PH_DET.has(r.recipe+"/"+mode);
+      const lab=r.phase+" · "+r.recipe;
+      kids.push(h("div",{class:"kv"},
+        h("span",{},h("b",{},r.recipe),h("small",{}," "+r.phase+" · "+pct(r.mean)+" \u00b1 "+(100*r.sd).toFixed(1)),
+          detFlag?h("small",{title:"tutti e cinque i seed sono identici byte per byte sul modello addestrato e sull\u2019intera vista dei punteggi: un\u2019enumerazione deterministica ripetuta cinque volte, non cinque replicazioni"}," · det."):null),
+        h("div",{class:"bar",role:"img","aria-label":lab+" in modalità "+mode+" su "+ep+": media sui seed "+pct(r.mean)+", sd campionaria "+(100*r.sd).toFixed(1)+" punti su cinque seed"+(detFlag?", enumerazione deterministica su cinque seed":"")},
+          h("i",{style:"width:"+(100*r.mean)+"%"}))));
+    });
+    box.replaceChildren(...kids);
+    const bits=[];
+    if(mode!=="LOCAL")bits.push("FEDAVG e CENTRAL sono indipendenti dal ricevente: i loro tassi su local-unseen e local-seen sono uguali per costruzione, quindi passare da un endpoint all\u2019altro non può muovere queste barre.");
+    else bits.push("LOCAL si addestra su due sole etichette (proprio guasto + Normal). Delle 42,240 etichette emesse dalle esecuzioni LOCAL di P10.2, 71 cadono fuori da {Normal, proprio guasto}; P10.1 ne emette 0 su 7,680.");
+    if(mode==="CENTRAL")bits.push("CENTRAL aggrega tutte le 640 finestre di sviluppo: è un riferimento centralizzato esterno alla regola di accesso dello studio, non un limite superiore alle prestazioni.");
+    if([...PH_DET].some(k=>k.endsWith("/"+mode)))bits.push("Le righe contrassegnate «det.» hanno cinque seed identici byte per byte — k-NN e XGBoost, 90 dei 525 job, 17 modelli addestrati distinti — quindi la loro dispersione nulla è enumerazione, non accordo fra replicazioni.");
+    note.replaceChildren(bits.join(" "));
+    say.say("Modalità "+mode+" su "+PH_EPS.find(e=>e[0]===ep)[1]+": "+rows.length+" ricette accanto ai due ancoraggi fissi.");
+    api.done();
+  }
+  upd();
+  return [badge("est","post hoc · P10.1/P10.2 · descrittivo, soltanto estimativo · non presente in view_data.js"),
+    h("p",{class:"lead"},"Accuratezza media sui cinque seed (20260928–20261002) con la deviazione standard campionaria di quei cinque valori. Le due barre scure di ancoraggio sono le righe sigillate fisse di P10 per B0 e PROTO. Gli stessi denominatori del test principale; nessun contrasto qui porta un valore p."),
+    h("div",{class:"row"},...epBtns),h("div",{class:"row"},...mdBtns),box,note,say,
+    h("div",{class:"note"},"Post hoc e secondario. La famiglia di comparatori è stata aggiunta dopo che gli esiti a sei condizioni erano noti, riusa un insieme di test già analizzato e sta fuori dalla famiglia Holm C1–C3. Da leggere con i limiti dichiarati: gruppi deterministici su cinque seed, una cella pubblicata decisa da una parità, l\u2019asimmetria delle astensioni (nessuna delle due fasi può astenersi, mentre B0 si astiene su 43 delle sue 768 coppie e PROTO su nessuna), teste LOCAL non mascherate e una cronologia di estrazione che si appoggia al racconto dell\u2019esecutore (P10.2.6-F002, limite di evidenza accettato)."),
+    h("p",{class:"small"},docLink("comparator-accuracy","Tabelle complete nel percorso guidato"),", ",docLink("comparator-limits","i dieci limiti dichiarati"),".")];
+}});
+
+// 16 — Lotto B sul nuovo test: dove finiscono gli errori e quanto distano le firme
+S({ph:"P10.3 · Lotto B (descrittivo)",title:"Dove sbagliano i sistemi, e quanto distano le firme?",
+task:"scegli un sistema e un gruppo di guasti, poi leggi le destinazioni accanto alla geometria delle firme.",
+why:"Un solo numero di accuratezza nasconde come un metodo sbaglia: chiamare Normal un guasto e chiamarlo col nome di un altro guasto sono errori diversi. Questo passo apre le destinazioni di ciascun errore e vi affianca un fatto puramente geometrico sui prototipi di sviluppo. Le due cose sono mostrate insieme perché chi legge le vuole entrambe. Mostrarle insieme non è evidenza che una causi l\u2019altra, e questo passo non avanza alcuna affermazione causale. Per PROTO in particolare la corrispondenza è un\u2019identità della sua stessa regola del prototipo più vicino (controllo H15), non un quadro presente nei dati; il controllo H15b conferma che nessuno degli altri 175 sistemi la soddisfa.",
+doc:"lotto-b-joint",
+build(api){
+  let sys="B0", grp="F1F2F8";
+  const say=sayBox();
+  const sysBtns=["B0","PROTO"].map(k=>h("button",{type:"button",class:"btn sm","aria-pressed":k===sys,onclick:()=>{sys=k;upd();}},k));
+  const grpBtns=[["F1F2F8","F1/F2/F8 — gruppo storico"],["F3F15","F3/F15 — messo in evidenza dai nuovi dati"]].map(([k,l])=>h("button",{type:"button",class:"btn sm","aria-pressed":k===grp,onclick:()=>{grp=k;upd();}},l));
+  const destWrap=h("div",{}); const jointWrap=h("div",{}); const geoWrap=h("div",{});
+  function destTable(){
+    const rows=(PH.trio[sys]||{})[grp]||[];
+    const t=h("table",{},h("caption",{class:"small"},"Destinazioni degli errori, "+sys+", gruppo "+grp.replace("F1F2F8","F1/F2/F8").replace("F3F15","F3/F15")+" — conteggi di coppie, entrambe le località"),
+      h("thead",{},h("tr",{},h("th",{},"Classe vera"),h("th",{},"n"),h("th",{},"Corrette"),h("th",{},"Errori"),h("th",{},"→ gruppo"),h("th",{},"→ Normal"),h("th",{},"→ altro guasto"),h("th",{},"astens."),h("th",{},"non val."))),
+      h("tbody",{},...rows.map(r=>h("tr",{},h("td",{class:"l"},r.cls.indexOf("+")>0?h("b",{},r.cls):r.cls),
+        h("td",{},r.n),h("td",{},r.correct),h("td",{},r.errors),h("td",{},r.toGroup),h("td",{},r.toNormal),h("td",{},r.toOther),h("td",{},r.abstain),h("td",{},r.invalid)))));
+    return t;
+  }
+  function jointTable(){
+    const rows=(PH.joint[sys]||{})[grp]||[];
+    return h("table",{},h("caption",{class:"small"},"Vista congiunta (v3, con controllo di divulgazione): destinazione × classe altra più vicina × banda di margine. «withheld» indica che la colonna è stata aggregata via per quella classe; ogni riga è vincolata soltanto a un\u2019intera classe di 8 casi."),
+      h("thead",{},h("tr",{},h("th",{},"Classe vera"),h("th",{},"Destinazione"),h("th",{},"Altra più vicina"),h("th",{},"Banda di margine"),h("th",{},"Livello"),h("th",{},"Casi"),h("th",{},"Coppie"))),
+      h("tbody",{},...rows.map(r=>h("tr",{},h("td",{class:"l"},r.cls),h("td",{class:"l"},r.dest),h("td",{class:"l"},r.near),h("td",{class:"l"},r.band),h("td",{class:"l"},h("small",{},r.tier)),h("td",{},r.cases),h("td",{},r.pairs)))));
+  }
+  function geoBlock(){
+    const mg=PH.margins[grp]||[];
+    const within=grp==="F1F2F8"
+      ? [["mean_l1(F1,F2)",PH.within["F1|F2"]],["mean_l1(F1,F8)",PH.within["F1|F8"]],["mean_l1(F2,F8)",PH.within["F2|F8"]]]
+      : [["mean_l1(F3,F15)",PH.within["F3|F15"]]];
+    const cls=grp==="F1F2F8"?["F1","F2","F8"]:["F3","F15"];
+    return h("div",{class:"grid"},
+      h("table",{},h("caption",{class:"small"},"Geometria delle firme dei prototipi di sviluppo, con la metrica propria del comparatore mean_l1(x,p) = Σ|x−p|/697. In questa tabella non entra la predizione di alcun sistema."),
+        h("thead",{},h("tr",{},h("th",{},"Distanza interna al gruppo"),h("th",{},"Valore"))),
+        h("tbody",{},...within.map(([k,v])=>h("tr",{},h("td",{class:"l mono"},k),h("td",{class:"mono"},v))))),
+      h("table",{},h("thead",{},h("tr",{},h("th",{},"Classe"),h("th",{},"Prototipo altro più vicino"),h("th",{},"Distanza"),h("th",{},"Casi"),h("th",{},"margine ≤ 0"),h("th",{},"> tolleranza"))),
+        h("tbody",{},...cls.map(c=>{const m=mg.find(x=>x.cls===c)||{};
+          return h("tr",{},h("td",{class:"l"},c),h("td",{class:"l"},PH.nearest[c]),h("td",{class:"mono"},PH.nearestD[c]),h("td",{},m.cases),h("td",{},m.le0),h("td",{},(m.gtLow||0)+(m.gtHigh||0)));}))));
+  }
+  function upd(){
+    sysBtns.forEach((b,i)=>b.setAttribute("aria-pressed",["B0","PROTO"][i]===sys));
+    grpBtns.forEach((b,i)=>b.setAttribute("aria-pressed",["F1F2F8","F3F15"][i]===grp));
+    destWrap.replaceChildren(destTable()); jointWrap.replaceChildren(jointTable()); geoWrap.replaceChildren(geoBlock());
+    const tot=((PH.trio[sys]||{})[grp]||[]).find(r=>r.cls.indexOf("+")>0);
+    say.say(sys+", gruppo "+grp+": "+(tot?tot.correct+" corrette e "+tot.errors+" errori su "+tot.n+" coppie, di cui "+tot.toGroup+" su un altro membro del gruppo e "+tot.toNormal+" su Normal.":"nessuna riga di totale."));
+    api.done();
+  }
+  upd();
+  return [badge("est","post hoc · P10.3 v3 · solo descrittivo: conteggi, distanze, margini — nessun test, nessuna causa"),
+    h("p",{class:"lead"},"Il gruppo F1/F2/F8 fu scelto nel Lotto B storico dopo aver visto i risultati storici; F3/F15 è la coppia che i nuovi dati mettono in evidenza. Nessuno dei due è uno strato prespecificato. Tutte le cifre provengono dagli artefatti v3 revisionati; le tabelle congiunte di v1 e v2 sono ritirate dall\u2019uso editoriale per un rilievo di divulgazione (P10.3-F001) e non sono mostrate in alcun punto di questa pagina."),
+    h("div",{class:"row"},...sysBtns),h("div",{class:"row"},...grpBtns),
+    destWrap,jointWrap,geoWrap,say,
+    h("div",{class:"note"},"Descrittivo, mai causale. Le destinazioni e la geometria sono affiancate e nulla qui spiega un errore. F3 e F15 distano 0.000986370157819, circa 95 volte meno della coppia più vicina interna a F1/F2/F8, e per entrambe il prototipo più vicino di un\u2019altra classe è Normal — ma la limitazione dello studio secondo cui F3/F15 hanno un solo fatto verificato del tipo «tutto tranquillo» è una lettura distinta e altrettanto non dimostrata. Otto casi per classe. Il controllo H29 è UNVERIFIED (le righe consegnate non portano vettori di probabilità, quindi la sensibilità alle parità fra le due fasi non ha potuto essere riderivata) e i pannelli alti di v3 non sono mai stati approvati visivamente da nessuno."),
+    h("p",{class:"small"},docLink("lotto-b-joint","La vista congiunta nel percorso guidato"),", ",docLink("lotto-b-disclosure","perché v1/v2 non vanno citate"),", ",docLink("lotto-b-limits","che cosa questo non sostiene"),".")];
+}});
+
+// 17 — lavoro successivo: braccio placebo P21 di pari lunghezza in byte (post hoc, soltanto estimativo)
+// Valori statici dagli aggregati pubblici P21, NON da view_data.js:
+//   orchestrator/codex_1/P21/SESSION_01_V2/contrasts_pl0.csv  sha256 ea8468c248da6517e7e3a366c3d4bc3f3a40d7b2e09d460c949a82b238a97398
+//   orchestrator/codex_1/P21/SESSION_01_V2/cost_pl0.csv       sha256 28b5d9fc0e4089d70fd39ce21c7192cceac7aa3ba55e727a8c10b279956b8a36
+//   orchestrator/codex_1/P21/SESSION_01_V2/coverage_pl0.csv   sha256 3b81fc0909770336c39a471d4390dc8826fd5b9f498d6f073d50153dc4f36771
+const PL0={lu:{plA:[-0.02901785714285714,-0.04740961793111284,-0.01062609635460144],bPl:[0.5714285714285714,0.5246743593715877,0.6181827834855551]},ls:{plA:[0,-0.06290718033376076,0.06290718033376076],bPl:[-0.265625,-0.36810318293348615,-0.16314681706651385]},no:{plA:[-0.015625,-0.03779222766062225,0.0065422276606222456],bPl:[-0.05078125,-0.07849028457577781,-0.02307221542422219]},cov:{lu:[11,448],ls:[57,64],no:[190,256]},tok:{PL0:2025.9375,B0:2805.9375,A0:795.8125},bytes:7099.5,abst:{PL0:190,A0:88,B0:43}};
+S({ph:"P21 · Lavoro successivo (post hoc)",title:"Un braccio placebo di pari lunghezza in byte, fuori dal test prespecificato",task:"rivela i due contrasti successivi uno alla volta; poi leggi i limiti che li accompagnano.",
+why:"La limitazione P09-F002 dice che C2 è un’associazione: B0 differisce da A0 per la presenza di un blocco dei pari e quindi per lunghezza del prompt. Dopo che i risultati di P10 erano noti, l’autore ha invocato un braccio successivo e specificato separatamente (P21): B0 con il blocco dei pari sostituito, per ciascun ricevente, da testo generico di monitoraggio di processo esattamente della stessa lunghezza in byte UTF-8. I suoi due contrasti ripartiscono C2 aritmeticamente, non causalmente; sono soltanto estimativi, provengono da una campagna successiva senza attestazione del backend, e la parità in byte non ha prodotto parità nei token. Questo passaggio è separato, visivamente e logicamente, dalla famiglia P10: nulla di quanto precede cambia.",
+doc:"later-pl0",
+build(api){
+  const f=(v)=>f3(v[0])+" ["+f3(v[1])+", "+f3(v[2])+"]";
+  const tbl=h("table",{},h("thead",{},h("tr",{},h("th",{},"Contrasto (local-unseen, 448 coppie)"),h("th",{},"Stima"),h("th",{},"Intervallo t al 95 %"),h("th",{},"Ruolo"))),h("tbody",{}));
+  const rows=[["PL0 − A0",PL0.lu.plA,"sotto A0; l’intervallo esclude lo zero — non corrisponde a nessuno dei due rami previsti (regola 3: riportato così come misurato)"],["B0 − PL0",PL0.lu.bPl,"il placebo di pari lunghezza in byte non ha riprodotto il vantaggio di B0"]];
+  let k=0;const btn=h("button",{type:"button",class:"btn pri",onclick:()=>api.run(reveal)},"Rivela il successivo");
+  const sum=h("p",{class:"small",hidden:true},"Identità: (PL0 − A0) + (B0 − PL0) = B0 − A0 = C2 su ogni endpoint; la somma cambia con l'endpoint: local-unseen "+f3(PL0.lu.plA[0]+PL0.lu.bPl[0])+", local-seen "+f3(PL0.ls.plA[0]+PL0.ls.bPl[0])+", Normal "+f3(PL0.no.plA[0]+PL0.no.bPl[0])+" — contabilità aritmetica sulle stesse 768 chiavi, non nuova evidenza. Local-seen: PL0 − A0 "+f(PL0.ls.plA)+", B0 − PL0 "+f(PL0.ls.bPl)+"; Normal: "+f(PL0.no.plA)+", "+f(PL0.no.bPl)+".");
+  async function reveal(){if(k>=rows.length)return;const r=rows[k];tbl.tBodies[0].append(h("tr",{},h("td",{class:"l"},r[0]),h("td",{},f3(r[1][0])),h("td",{},"["+f3(r[1][1])+", "+f3(r[1][2])+"]"),h("td",{class:"l"},badge("est","solo stima"),h("small",{}," "+r[2]))));k++;if(k===rows.length){btn.disabled=true;sum.hidden=false;api.done();}await sleep(200);}
+  const lim=h("ul",{class:"small"},
+    h("li",{},"Copertura PL0: "+PL0.cov.lu[0]+"/"+PL0.cov.lu[1]+" local-unseen, "+PL0.cov.ls[0]+"/"+PL0.cov.ls[1]+" ritenzione local-seen, "+PL0.cov.no[0]+"/"+PL0.cov.no[1]+" Normal; "+PL0.abst.PL0+" astensioni su 768 coppie (A0 "+PL0.abst.A0+", B0 "+PL0.abst.B0+")."),
+    h("li",{},"Pari byte, non pari token: i blocchi dei pari di PL0 e B0 hanno in media "+PL0.bytes.toLocaleString("en-US")+" byte ciascuno, ma i token di ingresso medi sono "+PL0.tok.PL0.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})+" (PL0) contro "+PL0.tok.B0.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})+" (B0)."),
+    h("li",{},"Campagna successiva (28–29 set 2026), nessuna attestazione del backend per chiamata, forma degli identificativi cambiata: nessuna attribuzione causale, nessun valore p, nessuna appartenenza alla famiglia Holm, nessuna equivalenza, nessun nuovo test in cieco."),
+    h("li",{},"Revisione: C (P21-S001) e D (P21-S002) chiuse con limitazioni; formulazione di E chiusa con limitazioni (P21-S005); P21-F002/F004 aperti non bloccanti; nessun singolo revisore ha certificato l’intero P21."));
+  return [badge("est","braccio post hoc successivo · P21 · solo stima · non in view_data.js"),h("p",{class:"lead"},"PL0 = B0 con il blocco dei pari sostituito da testo generico di identica lunghezza in byte (sette record placebo, senza etichette, variabili, direzioni, soglie o intervalli; progettato per escludere contenuto diagnostico, non prova di vuoto semantico)."),tbl,h("div",{class:"row"},btn),sum,lim,h("p",{class:"small"},docLink("later-pl0","Sezione P21 nella documentazione"))];
+}});
+
+// 18 — epilogo
+S({ph:"Epilogo · Che cosa resta da fare",title:"A che punto è lo studio",task:"sei arrivato alla fine; puoi ripetere qualsiasi passaggio dal selettore.",
+why:"P11 ha prodotto i sorgenti del paper, la guida per l’autore, la documentazione e questa pagina dai risultati revisionati; non ha generato PDF. Questa tabella è una fotografia datata (29 settembre 2026, 10:00 UTC), non un cruscotto in tempo reale. Alla fotografia del 29 settembre P13 era sospesa e P22 parziale; aggiornamento del 30 settembre: P11.2 è nel sorgente del paper, P22/P13/P14 sono in sospeso per decisione dell’autore e la replica Windows pubblica P10.3 è stata revisionata con limiti. Una pagina che descrive una fase non dimostra che sia stata eseguita; lo stato corrente è nella pagina di avanzamento.",
+doc:"pending",
+build(api){api.done();
+  return [h("table",{},h("thead",{},h("tr",{},h("th",{},"Fase"),h("th",{},"Stato alla fotografia del 29 settembre 2026, 10:00 UTC (stato corrente nella pagina di avanzamento)"))),h("tbody",{},h("tr",{},h("td",{class:"l"},"P01–P10"),h("td",{class:"l"},"eseguite e revisionate (chiuse con limitazioni)")),h("tr",{},h("td",{class:"l"},"P11 / P12"),h("td",{class:"l"},"eseguite; revisioni P11-S003 e P12-S005 chiuse con limitazioni; le modifiche successive al manoscritto sono registrate in orchestrator/claude/P11/POST_CLOSURE_EDITS.md")),h("tr",{},h("td",{class:"l"},"P15 / P16"),h("td",{class:"l"},"confronto documentale e valutazione consultiva; revisioni chiuse (P15-S005, P16-S010); nessun risultato cambiato")),h("tr",{},h("td",{class:"l"},"P19 / P20"),h("td",{class:"l"},"risultati complementari descrittivi aggiunti al manoscritto; P19-S001 chiusa con limitazioni; P20-S001 chiusa con limitazioni, correzione della formulazione P20-F001 (P20-S002) in attesa di riverifica")),h("tr",{},h("td",{class:"l"},"P21"),h("td",{class:"l"},"braccio placebo post hoc successivo eseguito e analizzato (passaggio precedente); revisioni di fase chiuse con limitazioni, due rilievi non bloccanti su D aperti")),h("tr",{},h("td",{class:"l"},"Aggiornamento 30 settembre"),h("td",{class:"l"},"P11.2 nel sorgente TeX: revisione chiusa con limitazioni; scostamento stimato accettato dall’autore. P22/P13/P14 in sospeso in attesa della revisione personale del paper. Replica Windows P10.3 v3 pubblica: 55 test superati, 32 saltati, 17/17 hash verificati; etichette sovrapposte nei pannelli alti. Nessun PDF compilato.")),h("tr",{},h("td",{class:"l"},"P22"),h("td",{class:"l"},"passaggio di prontezza sui soli sorgenti: parziale, in attesa delle decisioni dell’autore su metadati e disponibilità (P22-S001 chiusa)")),h("tr",{},h("td",{class:"l"},"P13 / P14"),h("td",{class:"l"},"P13 sospesa su indicazione dell’autore (nessun PDF generato); P14 a carico dell’autore, non avviata")))),
+    h("p",{class:"lead"},"Conclusione: aggiungere il blocco verificato dei pari migliora l’accuratezza del ricevente LLM (24/448 → 267/448 sui guasti mai osservati), ma senza un vantaggio rilevabile rispetto alle medie di classe dei pari usate dalla regola a prototipi sulle stesse finestre (266/448), e con un costo misurato sul guasto proprio del ricevente e sulla specificità Normal, con astensioni che il prototipo non ha prodotto su questi casi (la sua regola di parità le ammette; P20). Associazioni tra bracci configurati su un benchmark simulato; nessuna attribuzione causale al linguaggio."),
+    h("p",{class:"small"},docLink("pending","Fasi ancora da svolgere nella documentazione"))];
+}});
+
+
+// Paper coverage alignment, 30 September 2026. English master / Italian derivative.
+// Source: Overleaf manuscript/paper.tex, SHA-256 c7654842fd09cb7e48bb84cea6ce53cd010489a451c1c7d79d417d35c1f9f193.
+const PAPER_COPY={
+  "footer": "«Contenuto del paper» spiega metodi, risultati e limiti riportati nel manoscritto; «approfondimento supplementare» aggiunge esempi didattici o analisi ulteriori; «storia del progetto» ricostruisce componenti ereditati e cronologia del lavoro.",
+  "categories": [
+    "Contenuto del paper",
+    "Approfondimento supplementare",
+    "Storia del progetto"
+  ],
+  "choose": "scegli un argomento per leggerne la spiegazione.",
+  "background": [
+    "Paper · Contesto scientifico",
+    "Che cosa confrontiamo e come si collega ai lavori precedenti?",
+    "Il contributo è un confronto di sistemi completi sugli stessi casi di processo, con estrema disomogeneità delle etichette tra client. Non valuta FoT o FedProto come algoritmi completi.",
+    "Paper §§ I–II",
+    [
+      [
+        "FoT e collaborazione testuale",
+        "FoT (Yao et al.) distilla le tracce di ragionamento dei client in una biblioteca di insight attraverso più cicli. Qui modelli testuali deterministici rendono una sola volta fatti verificati sullo sviluppo: nessun LLM scrive gli insight, nessun server ne fonde il testo e non avviene distillazione iterativa. Ogni ricevente legge sette insight dei pari intatti, in ordine fisso di numero di guasto."
+      ],
+      [
+        "FedAvg e FedProto",
+        "FedAvg (McMahan et al.) media i parametri dei modelli; qui viene valutato soltanto nei confronti post hoc. FedProto (Tan et al.) condivide prototipi di rappresentazioni apprese per guidare l’addestramento locale. PROTO classifica invece direttamente tramite la distanza da medie di classe di caratteristiche calibrate fisse."
+      ],
+      [
+        "Estrema disomogeneità delle etichette",
+        "Secondo la tassonomia di Li et al., ogni client possiede una sola classe di guasto distinta e anche Normal. Le etichette dei guasti sono disgiunte; Normal è un’etichetta comune. Tutti gli otto client osservano un unico impianto simulato, senza ulteriore eterogeneità di processo tra siti."
+      ],
+      [
+        "Gli altri lavori collegati",
+        "FICAL studia la collaborazione in contesto nell’uso di strumenti; FedICL raffina iterativamente le risposte; FedTextGrad aggrega prompt ottimizzati con gradienti testuali; gli studi di apprendimento sociale scambiano esperienza tra modelli linguistici. T2SP e signals-to-semantics collegano serie temporali e linguaggio. FaultExplainer usa esiti di rilevamento PCA e variabili contribuenti; Lee et al. studiano riassunti statistici rispetto a letture grezze. Sono contesti collegati, non sistemi riprodotti in questo esperimento."
+      ],
+      [
+        "La domanda scientifica",
+        "Il paper individua una lacuna nei confronti tra frasi dei pari e medie numeriche di classe ricavate da uno stesso insieme di sviluppo, con guasti assegnati a proprietari distinti. C1 confronta sistemi, C2 aggiunge l’intero blocco dei pari e C3 ne cambia la rappresentazione. Local-unseen significa che al ricevente non sono stati forniti esempi locali, non che il modello preaddestrato non abbia mai incontrato quel guasto. Un risultato primario nullo era stato dichiarato pubblicabile in anticipo."
+      ]
+    ]
+  ],
+  "information": [
+    "Paper · Informazioni disponibili",
+    "La stessa finestra non significa le stesse informazioni",
+    "C1 cambia insieme riassunto dello sviluppo, rappresentazione del caso e regola decisionale. Non può isolare un effetto della rappresentazione testuale rispetto a quella numerica.",
+    "Paper § III",
+    [
+      [
+        "Che cosa legge l’LLM",
+        "Il testo inglese del caso nomina la variabile attiva principale per ciascuno dei quattro indicatori confrontati con soglie, oppure segnala che nessuna le supera. Aggiunge la variabilità rapida quando gli indicatori residuo e minuto-minuto superano entrambi le proprie soglie, e il rapporto di dispersione massimo. Il caso omette ID di run e stream, nomi di file ed etichette di guasto; resta visibile l’intervallo assoluto osservato."
+      ],
+      [
+        "Che cosa legge PROTO",
+        "La firma del caso contiene 697 campi di attività e segno, 17 per variabile XMEAS. Per una finestra codificano attività rispetto alle soglie e segni, non le magnitudini degli indicatori. La firma copre tutte le 41 variabili e omette il rapporto di dispersione: testo e firma conservano informazioni diverse. I prototipi di classe sono medie di questi campi sulle finestre di sviluppo."
+      ],
+      [
+        "Riassunti di sviluppo diversi",
+        "PROTO dispone di tutte le otto medie di guasto, su 40 finestre ciascuna, e di una media Normal su 320 finestre. Il ricevente LLM ha due esempi del proprio guasto e un esempio Normal locale, più sette insight dei guasti dei pari in B0/B1/S0; non ha un insight Normal separato. Le risorse sono diverse pur derivando dallo stesso insieme di sviluppo."
+      ],
+      [
+        "Taratura, fatti e conoscenza pregressa",
+        "Un riferimento Normal di sviluppo comune normalizza gli indicatori di tutti i sistemi ed è distinto dall’insieme Normal di ciascun client. I fatti sono verificati su tre intervalli temporali e accettati se valgono in almeno metà delle finestre del loro intervallo: passano 30 candidati su 144. Ogni fatto riporta anche la frequenza nelle finestre Normal del proprietario. Il controllo di riconversione verifica i fatti codificati, non come l’LLM li usa. La conoscenza pregressa del catalogo pubblico TEP resta non controllata."
+      ]
+    ]
+  ],
+  "protocol": [
+    "Paper · Disegno della valutazione",
+    "Che cosa è stato fissato prima del test e verificato dopo?",
+    "Le evidenze di sviluppo servono a definire i sistemi; i 96 run inediti costituiscono l’unico livello confermativo. La specifica locale datata non è una preregistrazione esterna.",
+    "Paper § IV",
+    [
+      [
+        "Sviluppo e test",
+        "Gli 80 run storici di sviluppo, due run di profilazione, un pilota di sviluppo di 120 chiavi e una prova offline hanno fissato o confermato pipeline, prompt, parser, comparatore e impostazioni di generazione. Piano degli stream e regola della finestra precedono la generazione dei 96 run nuovi del 27 settembre 2026. Il successivo pilota e la prova hanno usato soltanto finestre di sviluppo, senza aprire casi inediti."
+      ],
+      [
+        "Perché ricostruire le biblioteche",
+        "Una verifica storica di fedeltà aveva trovato affermazioni contraddette e input del produttore non corrispondenti all’insieme di sviluppo. Le biblioteche sono state ricostruite da fatti verificati sulle fonti. Questo ripara la veridicità senza dimostrare utilità diagnostica. I testi degli insight precedenti non sono riusati."
+      ],
+      [
+        "Perché C1 usa PROTO",
+        "Un ricevente isolato precedente, con pseudoetichette opache e prompt italiani o misti, non nominava quasi mai una classe non osservata. Ciò ha motivato PROTO come comparatore C1, ma non costituisce evidenza sul nuovo A0, che vede etichette reali. Una precedente modifica congiunta di insight e politica aveva ridotto l’accuratezza sul guasto proprio senza identificare separatamente i due effetti. Il nuovo campione local-seen è rimasto di 64 coppie."
+      ],
+      [
+        "Campionamento e valutazione",
+        "Una finestra da 5 ore per run, scelta ciclicamente, distribuisce uniformemente ciascuna classe sulle 40 ore dopo l’innesco. Tutti i 96 run hanno superato i controlli di validità; nessuno è stato sostituito. Le richieste seguono una sola permutazione casuale fissa tra condizioni, casi e riceventi. Si valuta l’etichetta esatta, senza credito top-k o alias, sulla prima risposta HTTP completata per chiave. Astensioni, invalidi e mancanti restano non corretti nel denominatore fisso; nessun nuovo tentativo per il contenuto."
+      ],
+      [
+        "Contratto di risposta",
+        "Ogni condizione LLM usa predicted_label, abstain, used_insight_ids e reasoning_summary. Un invalido può derivare da schema, spazio delle etichette, incoerenza o troncamento. Correttezza, matrici di confusione e distribuzioni delle etichette predette del test non sono state ispezionate prima delle predizioni di tutte le sei condizioni; la successiva unione con la verità è registrata con tempi e hash."
+      ]
+    ]
+  ],
+  "statistics": [
+    "Paper · Inferenza statistica",
+    "Ogni run contribuisce con una differenza appaiata",
+    "L’incertezza va calcolata per run: sette coppie di riceventi dello stesso run di guasto sono correlate, non sette repliche indipendenti.",
+    "Paper §§ IV–V",
+    [
+      [
+        "Stimatore",
+        "Per X−Y ogni run contribuisce con la differenza media di correttezza esatta su sette non proprietari, un proprietario o otto riceventi Normal. Gli endpoint di guasto mediano le otto medie di classe con pesi uguali: Δ = (1/8) Σ media di classe. Gli errori standard sono stratificati per classe, con gradi di libertà Welch–Satterthwaite; Normal usa l’analogo a un campione sui 32 run."
+      ],
+      [
+        "Holm e intervalli",
+        "Solo C1, C2 e C3 local-unseen formano la famiglia bilaterale di Holm, che controlla l’errore familiare a 0,05. I loro intervalli t al 95% sono basati sul modello e non corretti per molteplicità: non sono intervalli simultanei per l’intera famiglia. Tutti gli altri contrasti sono soltanto estimativi. Attraversare lo zero non dimostra equivalenza o non inferiorità, e nessun margine era prestabilito."
+      ],
+      [
+        "Controlli di sensibilità",
+        "Il bootstrap stratificato per run usa 10.000 repliche. Il controllo sign-flip condizionato al modello usa 100.000 estrazioni e assume simmetria delle differenze per run sotto l’ipotesi nulla. Nessuno sostituisce l’analisi t primaria. Per C1–C3 gli estremi bootstrap differiscono da quelli t per meno di 0,01 e il sign-flip porta alle stesse conclusioni qualitative."
+      ],
+      [
+        "Riassunti post hoc sui seed",
+        "I comparatori numerici riusano gli stessi casi di test con cinque seed di addestramento. Gli inviluppi degli intervalli raccolgono cinque intervalli per run, uno per seed; non sono intervalli di confidenza al 95% della media sui seed. I seed di addestramento non replicano la popolazione di test."
+      ]
+    ]
+  ],
+  "errors": [
+    "Paper · Profili diagnostici",
+    "Accuratezze simili, errori e ruoli diversi",
+    "Accordi e profili per classe sono descrittivi: non dimostrano che un sistema combinato saprebbe scegliere la risposta corretta.",
+    "Paper § V.A–B"
+  ],
+  "errorCards": [
+    [
+      "Accordo sui guasti non osservati",
+      "B0 e PROTO concordano nella correttezza su 345/448 coppie e differiscono su 103: 52 sono corrette solo per B0 e 51 solo per PROTO. Dei successi esclusivi, 45 di B0 sono su F1 e 39 di PROTO su F8. Vantaggi opposti tra classi si compensano quasi del tutto nella differenza aggregata."
+    ],
+    [
+      "Errori e accuratezza condizionata",
+      "I 182 errori local-unseen di PROTO sono 147 guasti classificati Normal e 35 etichette di guasto sbagliate. I 181 esiti non corretti di B0 sono 91 classificati Normal, 59 guasti sbagliati, 28 astensioni e 3 invalidi. I 91 Normal errati di B0 sono F3 (48) e F15 (43). Fra le risposte valide con etichetta, B0 è a 267/417 = 64,0%, ma questo non sostituisce 267/448 sul denominatore fisso. F8 resta debole anche tra le risposte con etichetta: 4/43 corrette."
+    ],
+    [
+      "Decisioni su Normal",
+      "Tutte le 177 coppie Normal corrette per B0 lo sono anche per PROTO; 55 sono corrette soltanto per PROTO. I falsi allarmi sono 71 contro 24. I 24 di PROTO corrispondono a tre run fisici; B0 non è corretto per alcun ricevente su quei run. Questo confronto descrittivo non ha un intervallo appaiato calcolato. A0 produce già 47 falsi allarmi: il divario B0–PROTO non può essere attribuito interamente agli insight."
+    ],
+    [
+      "Guasto proprio e guasto dei pari",
+      "Su F1, B0 è corretto in 52/56 coppie non proprietarie ma solo 2/8 proprietarie; A0 è corretto su 7/8 proprietari. F13 mostra la stessa direzione, 38/56 contro 4/8, ma F8, F3 e F15 no. Cambiare ruolo cambia insieme esempi locali e insight accessibili: non identifica l’origine della differenza."
+    ]
+  ],
+  "policy": [
+    "Paper · Tutti i contrasti appaiati",
+    "Esplora politica, rappresentazione e interazione",
+    "Cambiare rappresentazione o aggiungere la politica local-first cambia i compromessi. La tabella conserva tutti i contrasti prestabiliti disponibili e ne esplicita il ruolo inferenziale.",
+    "Paper § V.D"
+  ],
+  "policyNote": "Senza pari, A1 si astiene su 309/448 coppie local-unseen e ne classifica correttamente una. Con i pari, B1 rispetto a B0 riduce l’accuratezza local-unseen ma aumenta quella sul guasto proprio, 48/64 contro 40/64; i falsi allarmi Normal scendono da 71 a 41 mentre le astensioni salgono da 8 a 35. S0 strutturato raggiunge 48/64 sul guasto proprio contro 40/64 di B0. L’interazione insight×politica sul guasto proprio è +0,234 [0,108, 0,361]; quella local-unseen è +0,007 [−0,029, 0,042]. Questi confronti sulla politica sono soltanto estimativi. Non è riportato un intervallo per l’interazione Normal: qui non viene inventato.",
+  "secondary": [
+    "Paper · Leggere i comparatori",
+    "Quali configurazioni ottengono di più e che cosa significa?",
+    "Queste analisi post hoc danno contesto a C1, non conferma indipendente o un effetto isolato della federazione o della rappresentazione.",
+    "Paper § V.E",
+    [
+      [
+        "Ambito e input",
+        "Tredici ricette, 34 configurazioni e cinque seed riusano 640 finestre di sviluppo e gli stessi 96 casi di test. Regressione logistica e MLP 64 usano validazione incrociata sullo sviluppo con raggruppamento per run; altre undici ricette usano impostazioni storiche congelate. Gli input comprendono firme, sequenze dei sensori, testo e fusione sequenza–testo. LOCAL addestra separatamente per client; CENTRAL aggrega dati oltre la regola di accesso e non è un limite superiore."
+      ],
+      [
+        "Quattro sopra, quattro sotto",
+        "Quattro configurazioni FedAvg basate sulla firma ottengono il 73,4–75,0% local-unseen, sopra B0 (59,6%) e PROTO (59,4%). Quattro configurazioni basate su sequenze, inclusa la fusione, ottengono il 35,0–41,9%. Le differenze stimate rispetto a B0 vanno da −0,246 a +0,154; gli inviluppi degli intervalli per seed ai due estremi sono [−0,351, −0,138] e [+0,106, +0,202], non intervalli di confidenza delle medie sui seed."
+      ],
+      [
+        "F1 e F8 conservano informazione utile",
+        "FedAvg MLP 64 ed elastic-net ottengono entrambi 336/448 con ogni seed: tutti i run di F1, F2, F8, F10, F13 e F14, nessuno di F3/F15. Il TF-IDF solo testo CENTRAL riconosce sette run su otto sia di F1 sia di F8 con ogni seed; il restante run di ciascuna classe è etichettato come l’altra. Entrambe le rappresentazioni conservano informazione utile su questi casi osservati, senza spiegare gli errori dei sistemi principali o dimostrare equivalenza generale."
+      ],
+      [
+        "Leggere i guasti insieme a Normal",
+        "Tutte le otto configurazioni FedAvg ottengono 256/256 su Normal e zero su F3/F15 con ogni seed. Nessuna media LOCAL local-unseen supera lo 0,8%. CENTRAL k-NN raggiunge 49/56 su F15 ma solo 24/256 su Normal. I comparatori numerici non possono astenersi: l’accuratezza a denominatore fisso non equipara le conseguenze pratiche di astensione e diagnosi sbagliata."
+      ]
+    ]
+  ],
+  "costs": [
+    "Paper · Interpretare i costi",
+    "Costo della richiesta, biblioteca e addestramento sono quantità diverse",
+    "Le misure descrivono questo servizio e questo carico seriale. Non dimostrano risparmio di comunicazione, costi di impiego o convenienza economica.",
+    "Paper § VI",
+    [
+      [
+        "Richieste e tokenizzazione",
+        "B0 usa circa 3,5 volte i token del prompt di A0, con latenza media 8,42 contro 8,04 s. Il blocco dei pari S0 è più piccolo in byte di quello B0 ma produce più token del prompt. I conteggi dipendono dalla tokenizzazione del servizio: byte e token sono misure diverse."
+      ],
+      [
+        "Biblioteche preparate",
+        "Gli otto insight in prosa occupano 8.114 byte UTF-8 con due ritorni a capo tra insight; i record strutturati 7.904 con uno, esclusi metadati e separatori finali. Ogni ricevente ne legge solo sette. I 27.234 byte di PROTO comprendono nove etichette, conteggi e medie da 697 componenti in JSON compatto, esclusi metadati di provenienza e input del caso. Il suo tempo di esecuzione sul nuovo test non è stato misurato."
+      ],
+      [
+        "Richieste del placebo successivo",
+        "Medie PL0 su 768 chiamate: 7.099,5 byte del blocco dei pari, 2.025,9 token del prompt, 1.139,7 token di completamento e 7,96 s di latenza. Queste chiamate successive sono escluse dai totali dei cinque bracci, 3.840 chiamate e 8,71 ore. PL0 non riporta citazioni; su local-unseen si astiene 156 volte contro le 72 di A0."
+      ],
+      [
+        "Addestramento e ambito delle citazioni",
+        "I modelli FedAvg hanno 6.282–45.257 parametri. Regressione logistica e MLP 64 usano 50 cicli di addestramento; le sei configurazioni congelate ne usano 40. Non è stato valutato un modello comune di ammortamento. L’audit delle citazioni verifica la disponibilità degli ID, non se sostengano o determinino la diagnosi; le risposte sono valutate indipendentemente dalle citazioni e il controllo non valuta la riservatezza."
+      ]
+    ]
+  ],
+  "limits": [
+    "Paper · Limiti e riproducibilità",
+    "Che cosa è riproducibile e che cosa resta aperto?",
+    "I risultati riguardano sistemi configurati su un impianto simulato. Gli esperimenti futuri sono proposte del paper, non attività avviate da questa pagina.",
+    "Paper §§ VII–IX; Reproducibility and Data",
+    [
+      [
+        "Campione e significato operativo",
+        "Il campione è stato scelto per fattibilità, senza calcolo prospettico della potenza. I run indipendenti sono otto per classe. C1 va da −6,3 a +6,7 punti percentuali e C3 da −3,5 a +0,8: nessuno dimostra equivalenza. Pesi e composizione dei guasti influenzano l’accuratezza aggregata. F3/F15 costituiscono un quarto dell’endpoint local-unseen. Classificare finestre di cinque ore non misura ritardo di rilevamento o allarme precoce. Per scegliere un sistema servono anche costi dei diversi errori, dell’astensione e frequenze delle classi nell’impiego previsto."
+      ],
+      [
+        "Modello e limiti causali",
+        "Sono stati provati un modello, un template inglese, un ordine fisso degli insight e un budget di ragionamento di 1.024 token. La revisione del pilota ha trovato associazioni simili al catalogo in almeno 15/119 risposte completate; il loro contributo alle predizioni del test non è misurato. Non sono stati provati campionamenti ripetuti o sensibilità al budget sul nuovo test; i token di ragionamento non erano disponibili e top_k non era fissato. L’ordine intercalato casuale riduce il confondimento d’ordine nella campagna principale; resta possibile una deriva non misurata del backend tra campagne."
+      ],
+      [
+        "Federazione e riservatezza",
+        "Lo studio principale valuta riassunti offline, non un protocollo federativo operativo. Tutti i client condividono un impianto simulato e il riferimento di taratura. Gli insight deterministici non provano un produttore LLM o la propagazione di insight errati in una federazione iterativa. Solo FedAvg è valutato post hoc. Un servizio riceve tutti i prompt in chiaro; riservatezza, avversari e siti eterogenei non sono stati valutati."
+      ],
+      [
+        "Riproduzione offline",
+        "Codice, specifica, template, aggregati, manifest SHA-256 e revisioni sono versionati privatamente. Il pacchetto offline ricalcola le statistiche da 4.608 righe sigillate, collega 3.840 righe LLM al ledger e 768 righe PROTO alle predizioni sigillate sui campi indicati, e rigenera otto output di presentazione. Include anche codice, sigilli, manifest e 17 pannelli dei comparatori. Predizioni individuali, risposte grezze e verità richiedono un supplemento privato; non esiste attualmente un dataset o pacchetto di riproduzione pubblico."
+      ],
+      [
+        "Ambito verificato e disponibilità",
+        "L’esecuzione pulita usa Linux/aarch64 e CPython 3.10.12; un revisore indipendente interno l’ha riprodotta su macOS x86_64 con CPython 3.11.5. L’esecuzione Windows di quel pacchetto completo non è verificata; la replica pubblica P10.3 più circoscritta citata nella storia del progetto è un controllo diverso. La rigenerazione completa di simulazioni, inferenze, punteggi PROTO e nuova unione con la verità non è stata eseguita. La revisione originale dell’adattatore di valutazione manca in Git. Le decisioni dell’autore sulla dichiarazione di disponibilità restano aperte."
+      ],
+      [
+        "Le prossime domande scientifiche",
+        "Il paper propone un controllo prespecificato appaiato per token nella stessa campagna, un secondo modello ricevente con attestazione del backend, più run per classe e un margine di equivalenza prestabilito. Un’accuratezza vicina a PROTO da sola non dimostra competitività con le alternative parametriche. Ai miglioramenti local-unseen vanno affiancati i costi sul guasto proprio e su Normal."
+      ]
+    ]
+  ],
+  "labels": {
+    "class": "Classe di guasto",
+    "owner": "Proprietario · corretti / 8",
+    "unseen": "Non proprietari · corretti / 56",
+    "ep": "Endpoint",
+    "contrast": "Contrasto",
+    "estimate": "Stima",
+    "interval": "Intervallo t 95% · non corretto",
+    "role": "Ruolo",
+    "confirm": "Famiglia di Holm",
+    "est": "Solo stima",
+    "classTask": "cambia il ruolo del ricevente per confrontare i risultati per classe.",
+    "policyTask": "scegli un endpoint e leggi contrasti e ruolo inferenziale.",
+    "bootstrap": "Bootstrap 95% · non corretto"
+  }
+};
+function paperTable(headers,rows){return h("table",{},h("thead",{},h("tr",{},...headers.map(x=>h("th",{},x)))),h("tbody",{},...rows.map(row=>h("tr",{},...row.map((x,i)=>h("td",{class:i===0?"l":""},x))))));}
+function paperTopics(cards,api){
+  const view=h("div",{class:"block",role:"region","aria-live":"polite"});
+  const buttons=cards.map(([title],i)=>h("button",{type:"button",class:"btn sm","aria-pressed":i===0,onclick:()=>show(i)},title));
+  function show(i){buttons.forEach((b,j)=>b.setAttribute("aria-pressed",i===j));view.replaceChildren(h("h3",{},cards[i][0]),h("p",{class:"lead"},cards[i][1]));api.done();}
+  show(0);return [h("div",{class:"row"},buttons),view];
+}
+function insertPaper(after,key,custom){
+  const c=PAPER_COPY[key];const step={ph:c[0],title:c[1],task:PAPER_COPY.choose,why:c[2],category:0,paperRef:c[3],build(api){return [badge("meas",c[3]),...paperTopics(c[4],api)];}};
+  if(custom)Object.assign(step,custom);
+  const idx=STEPS.findIndex(s=>s.ph.startsWith(after));if(idx<0)throw Error("Missing insertion point: "+after);
+  STEPS.splice(idx+1,0,step);
+}
+insertPaper("Intro","background");
+insertPaper("P03 ·","information");
+insertPaper("P01 ·","protocol");
+insertPaper("P10 \u00b7 La famiglia","statistics",{build(api){
+  const l=PAPER_COPY.labels;
+  const rows=["C1","C2","C3"].map(id=>{const c=contrast(id,"local_unseen");return [id,c.name,"["+f3(+c.t95Lower)+", "+f3(+c.t95Upper)+"]","["+f3(+c.bootstrap95Lower)+", "+f3(+c.bootstrap95Upper)+"]"];});
+  return [badge("meas",PAPER_COPY.statistics[3]),...paperTopics(PAPER_COPY.statistics[4],api),paperTable([l.contrast,"X − Y",l.interval,l.bootstrap],rows)];
+}});
+insertPaper("P10-F001 ·","errors",{task:PAPER_COPY.labels.classTask,build(api){
+  const l=PAPER_COPY.labels;let endpoint="local_seen";const view=h("div",{});
+  const eps=[["local_seen",l.owner],["local_unseen",l.unseen]];
+  const buttons=eps.map(([ep,label])=>h("button",{type:"button",class:"btn sm","aria-pressed":ep===endpoint,onclick:()=>{endpoint=ep;show();}},label));
+  function show(){buttons.forEach((b,i)=>b.setAttribute("aria-pressed",eps[i][0]===endpoint));view.replaceChildren(paperTable([l.class,...COND],CLASSES.map(c=>[c,...COND.map(s=>D.classRates[endpoint][c][s].join("/"))])));api.done();}
+  show();return [badge("meas",PAPER_COPY.errors[3]),...paperTopics(PAPER_COPY.errorCards,api),h("div",{class:"row"},buttons),view];
+}});
+insertPaper("P10 \u00b7 Esiti","policy",{task:PAPER_COPY.labels.policyTask,build(api){
+  const l=PAPER_COPY.labels;let endpoint="local_unseen";const view=h("div",{});
+  const eps=["local_unseen","local_seen","normal"];
+  const buttons=eps.map(ep=>h("button",{type:"button",class:"btn sm","aria-pressed":ep===endpoint,onclick:()=>{endpoint=ep;show();}},ep.replaceAll("_","-")));
+  function show(){buttons.forEach((b,i)=>b.setAttribute("aria-pressed",eps[i]===endpoint));view.replaceChildren(paperTable([l.contrast,l.estimate,l.interval,l.role],D.contrasts.filter(c=>c.endpoint===endpoint).map(c=>[c.id+" · "+c.name,f3(+c.estimate),"["+f3(+c.t95Lower)+", "+f3(+c.t95Upper)+"]",endpoint==="local_unseen"&&["C1","C2","C3"].includes(c.id)?l.confirm:l.est])));api.done();}
+  show();return [badge("meas",PAPER_COPY.policy[3]),h("div",{class:"row"},buttons),view,h("p",{class:"note"},PAPER_COPY.policyNote)];
+}});
+insertPaper("P10.1–P10.2 ·","secondary");
+insertPaper("P10 \u00b7 Cost","costs");
+insertPaper("P21 ·","limits");
+// Existing steps combine paper exposition with technical or historical supplements.
+STEPS.forEach(s=>{if(s.category!==undefined)return;
+  s.category=s.ph.startsWith("Studio 2")||s.ph.startsWith("Epilog")?2:s.ph.startsWith("P10.3")?1:0;
+});
+
+// ------------------------------------------------------------ engine
+const app=$("#app"),bar=$("#bar"),progbar=$("#progbar"),stepno=$("#stepno"),phSel=$("#phase");
+let cur=0,busy=false;
+STEPS.forEach((s,i)=>phSel.append(h("option",{value:i},(i+1)+" · "+s.ph)));
+phSel.addEventListener("change",()=>go(+phSel.value));
+function render(i){
+  cur=i;const s=STEPS[i];
+  phSel.value=i;stepno.textContent=(i+1)+" / "+STEPS.length;
+  const p=Math.round((i)/(STEPS.length-1)*100);bar.style.width=p+"%";progbar.setAttribute("aria-valuenow",p);
+  let done=false;
+  const nextBtn=h("button",{type:"button",class:"btn pri",disabled:i===STEPS.length-1,onclick:()=>go(i+1)},"Avanti →");
+  const backBtn=h("button",{type:"button",class:"btn",disabled:i===0,onclick:()=>go(i-1)},"← Indietro");
+  const status=h("span",{class:"small","aria-live":"polite"},"Interazione facoltativa: Avanti è sempre disponibile.");
+  const api={done(){if(!done){done=true;status.textContent="Passaggio esplorato.";}},async run(fn){if(busy)return;busy=true;try{await fn();}finally{busy=false;}}};
+  const stageKids=s.build(api);
+  const step=h("section",{class:"step","aria-labelledby":"h"+i},
+    h("span",{class:"eyebrow"},s.ph),
+    h("span",{class:"badge source-category"},PAPER_COPY.categories[s.category]),
+    h("h2",{id:"h"+i,tabindex:"-1"},s.title),
+    h("p",{class:"task"},h("b",{},"Prova tu: "),s.task),
+    h("div",{class:"stage"},...stageKids),
+    h("p",{class:"why"},h("span",{},"Perché questo passaggio conta"),s.why),
+    h("div",{class:"nav"},backBtn,nextBtn,status,h("span",{class:"sp"}),
+      h("button",{type:"button",class:"link",onclick:()=>render(i)},"Ripeti / ripristina il passaggio"),
+      h("button",{type:"button",class:"link",onclick:()=>go(STEPS.length-1)},"Vai alla fine"),
+      s.doc?docLink(s.doc,"Approfondisci"):null));
+  app.replaceChildren(step);
+  step.querySelector("h2").focus({preventScroll:false});
+  try{history.replaceState(null,"","#step-"+(i+1));}catch(e){}
+}
+function go(i){if(i<0||i>=STEPS.length)return;render(i);window.scrollTo({top:0,behavior:RM?"auto":"smooth"});}
+document.addEventListener("keydown",e=>{const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="SELECT"||t.tagName==="TEXTAREA"))return;if(e.key==="ArrowRight"){e.preventDefault();go(cur+1);}else if(e.key==="ArrowLeft"){e.preventDefault();go(cur-1);}});
+if(!D){app.replaceChildren(h("section",{class:"step"},h("h2",{},"Dati di visualizzazione non caricati"),h("p",{class:"lead"},"Questa pagina legge i valori misurati da study2_assets/view_data.js nella cartella adiacente. Conserva il file accanto a questo HTML (è generato da orchestrator/claude/P11/build_p11_derivatives.py) e ricarica la pagina.")));}
+else{
+  const m=(location.hash||"").match(/#step-(\d+)/);const start=m?Math.min(STEPS.length,Math.max(1,+m[1]))-1:0;render(start);
+}
+</script>
+</body>
+</html>
