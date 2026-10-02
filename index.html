@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Esplora l’esperimento FoT-TEP-PHD</title>
-<meta name="description" content="Scopri il nuovo esperimento di test dello studio FoT-TEP-PHD passo dopo passo: client, finestre, rappresentazioni, regole di accesso, bracci, comparatore a prototipi, inferenza appaiata, risultati revisionati, confronto numerico post hoc N01–N04, costi e limiti.">
+<meta name="description" content="Scopri il nuovo esperimento di test dello studio FoT-TEP-PHD passo dopo passo: client, finestre, rappresentazioni, regole di accesso, bracci, comparatore a prototipi, inferenza appaiata, risultati revisionati, confronto numerico post hoc N01–N04, verifica F01 della fedeltà dei testi, costi e limiti.">
 
-<!-- Online derivative updated 2 October 2026 by Codex_1 from the M01 reviewed source
-     (fot-tep-phd 85871df, docs/esperienza_interattiva_studio2.html).
-     N0 aggregates are embedded separately from unchanged P10 view_data.js values.
+<!-- Online derivative reconciled 2 October 2026 from fot-tep-phd 009a7e2
+     (docs/esperienza_interattiva_studio2.html: reviewed M01 and F01 content).
+     N0 and F01 aggregates are embedded separately from unchanged P10 view_data.js values.
      Source references are labels because this two-file public mirror does not host
      the source repository documentation or phase artifacts. -->
 <style>
@@ -791,12 +791,66 @@ build(api){
   return [badge("est",L.badge),h("p",{class:"lead"},L.lead),h("p",{class:"small"},L.history),h("div",{class:"row"},choose),tbl,note,h("div",{class:"row"},toggle),group,detail,sources,h("p",{class:"small"},docLink("later-n0",L.doc))];
 }});
 
+// 17b — verifica successiva F01: fedeltà dei testi letti dall’LLM (1 ott 2026; nessuna chiamata al modello)
+// Static values from the public F01 aggregates, NOT from view_data.js:
+//   orchestrator/claude/F01/artifacts/RESULTS.json           sha256 dc2e3b6b38379d9c8e57ddb9f4c448037b277e06e748f3c1e042e7dd15d05cac
+//   orchestrator/claude/F01/artifacts/MUTATION_RESULTS.json  sha256 0cbd32855bd6bf1d2bdb1ee2298520f76ab0c62236a8d13e912eccf96e51ae31
+//   orchestrator/claude/F01/artifacts/SENSITIVITY.json       sha256 0eeb0e8d57cb6cf249c0e9bb55bb43cef29b1cc969227da14cbc6e106d9e1f7a
+//   orchestrator/claude/F01/review/steps/F01-S001.json        sha256 4ddaa66284794d7764f728950f1d92e8a0e65f96b762660bc02d47a23aef3420
+// Worked example: the real English text of C_F1 local example 1 (P05 LOCAL_EXAMPLES.json, development window EVD-0002,
+// 30-35 h); the recomputed values are F01's independent raw recomputation of that window (development data, not test data).
+const F01={text:"Observed interval 30.0–35.0 h in 1 window of 5.0 h. XMEAS-1 exceeds the level shift threshold in 1/1 window, always positive; the longest same-sign run spans 1 window, from the first activation at 30.0 h to the last at 30.0 h. XMEAS-1 exceeds the slope threshold in 1/1 window, always negative; the longest same-sign run spans 1 window, from the first activation at 30.0 h to the last at 30.0 h. XMEAS-7: residual variability after linear detrending exceeds its threshold in 1/1 window; 1/1 in the initial phase and 0/0 in the final windows. No XMEAS exceeds the sample-to-sample variation threshold. The greatest observed overall dispersion is for XMEAS-1 (standard-deviation ratio 24.24).",
+ verdicts:{t:["vera","ok"],na:["non applicabile",""],caught:"falsa · rilevata"},
+ claims:[
+  ["XMEAS-1 supera la soglia di spostamento di livello in 1/1 finestra","|spostamento| ricalcolato 92.61 σ; soglia 1.97 σ","XMEAS-1 supera la soglia in 0/1 finestre","t"],
+  ["… sempre in positivo","spostamento +92.61 σ","… sempre in negativo","t"],
+  ["XMEAS-1 supera la soglia di pendenza, sempre in negativo","pendenza −16.45 σ/h; soglia 0.75 σ/h","… sempre in positivo","t"],
+  ["XMEAS-7: variabilità residua sopra soglia in 1/1 finestra","rapporto 9.02; soglia 1.37","Nessuna XMEAS supera la soglia di variabilità residua (negazione inserita)","t"],
+  ["Nessuna XMEAS supera la soglia delle variazioni campione-campione","massimo: XMEAS-29 a 1.28; soglia 1.41","XMEAS-29 supera la soglia delle variazioni campione-campione (negazione tolta)","t"],
+  ["Massima dispersione su XMEAS-1 (rapporto 24.24)","XMEAS-1 24.2414; seconda XMEAS-7 13.42","Massima dispersione su XMEAS-1 (rapporto 24.25)","t"],
+  ["… 0/0 nelle finestre finali","una sola finestra: nessuna finestra finale, la clausola non dice nulla","… 1/0 nelle finestre finali","na"]],
+ corp:[["Descrizioni dei casi di test",96,1446,1351,95],["Esempi locali",24,380,358,22],["Insight in frasi",8,222,222,0],["Insight nei campi di un record",8,222,222,0],["Totale",136,2270,2153,117]],
+ checks:["False: 0. Non verificabili (banda o fonte mancante): 0. Tutte le 365 negazioni o affermazioni a zero sono vere.",
+  "Il ricalcolo di 736 finestre da 176 simulazioni con hash verificato coincide con il produttore entro 1.6 × 10⁻¹¹; 884 frasi o campi, nessuno non classificato.",
+  "Controllo manuale prima del programma: 855/855 concordi. Falsificazioni deliberate: 2,499 su 2,501 rilevate (le altre 2 sono a loro volta vere).",
+  "Revisione indipendente F01-S001 (Codex_1): chiusa con limitazioni, senza rilievi; 58 affermazioni ricalcolate dai dati grezzi, 0 disaccordi."],
+ limits:["Fedeltà non è completezza: le frasi dei casi nominano solo la variabile principale (sempre quella giusta, 209/209) e omettono le altre attive.",
+  "Vere secondo le convenzioni adottate: con una finestra di 301 campioni o deviazioni standard di popolazione, 73 o 61 affermazioni cambierebbero, quasi tutte rapporti a due decimali.",
+  "Le soglie congelate e il riferimento N1–N5 sono ipotesi condivise che F01 non può verificare.",
+  "Nulla su come l’LLM usa il testo o diagnostica; non è un risultato della famiglia Holm; nessuna chiamata al modello."],
+ l:{badge:"verifica successiva · F01 · nessuna chiamata al modello · non in view_data.js",
+  lead:"F01 ha ricostruito i testi esatti delle 3,840 richieste sigillate, li ha scomposti in 2,270 affermazioni elementari e le ha confrontate con un ricalcolo indipendente dalle simulazioni grezze. Provalo su un esempio locale reale.",
+  textNote:"[testo reale in inglese dell’esempio locale 1 di C_F1, finestra di sviluppo 30–35 h]",
+  caption:"Esempio locale 1 di C_F1: affermazioni elementari e valori ricalcolati da F01",
+  head:["Affermazione","Ricalcolo dai dati grezzi","Verdetto",""],corrupt:"Falsifica",restore:"Ripristina",
+  omission:"In questa finestra 21 variabili superano la soglia di spostamento e 29 quella di pendenza: le frasi nominano soltanto la principale. È una questione di completezza, non di verità.",
+  reveal:"Mostra il risultato su tutti i testi",corpHead:["Corpus","Testi unici","Affermazioni","Vere","Non applicabili (0/0)"],
+  limitsTitle:"Che cosa F01 non dimostra",doc:"Sezione F01 nella documentazione"}};
+S({ph:"F01 · Fedeltà dei testi (post hoc)",title:"Le frasi lette dall’LLM dicono il vero? Un controllo dai dati grezzi",task:"falsifica un’affermazione e guarda il verificatore accorgersene; poi rivela il risultato su tutti i testi.",
+why:"L’LLM decide leggendo queste frasi, mai i segnali grezzi. Il paper chiama «fatti verificati» gli insight dei pari, ma in P05 la parola indica la regola di supporto (un fatto vale in almeno metà delle sue finestre), non che ogni frase resa sia vera. F01 è un controllo successivo, eseguito dopo che gli esiti di P10 erano noti, senza chiamate al modello: non usa esiti né predizioni, sta fuori dalla famiglia Holm e non cambia alcun risultato. Mostra che i testi sono fedeli ai dati secondo le definizioni adottate, non che siano completi né che il metodo funzioni.",
+doc:"f01-fidelity",category:1,
+build(api){
+  const V=F01.verdicts;
+  const tb=h("tbody",{});
+  F01.claims.forEach(c=>{
+    const txt=h("td",{class:"l"},c[0]);const ver=h("td",{class:"l"});
+    const show=m=>ver.replaceChildren(h("span",{class:"status "+(m?"bad":V[c[3]][1])},m?V.caught:V[c[3]][0]));show(false);
+    let m=false;const b=h("button",{type:"button",class:"btn sm","aria-pressed":"false",onclick:()=>{m=!m;b.setAttribute("aria-pressed",m);txt.textContent=m?c[2]:c[0];b.textContent=m?F01.l.restore:F01.l.corrupt;show(m);api.done();}},F01.l.corrupt);
+    tb.append(h("tr",{},txt,h("td",{class:"l"},h("small",{},c[1])),ver,h("td",{},b)));
+  });
+  const tbl=h("table",{},h("caption",{},F01.l.caption),h("thead",{},h("tr",{},...F01.l.head.map(x=>h("th",{},x)))),tb);
+  const corp=h("table",{},h("thead",{},h("tr",{},...F01.l.corpHead.map(x=>h("th",{},x)))),h("tbody",{},...F01.corp.map(r=>h("tr",{},h("td",{class:"l"},r[0]),...r.slice(1).map(x=>h("td",{},x.toLocaleString("en-US")))))));
+  const res=h("div",{hidden:true},corp,h("ul",{class:"small"},...F01.checks.map(x=>h("li",{},x))),h("p",{class:"note"},F01.l.limitsTitle),h("ul",{class:"small"},...F01.limits.map(x=>h("li",{},x))));
+  const rb=h("button",{type:"button",class:"btn pri",onclick:()=>{res.hidden=false;rb.disabled=true;api.done();}},F01.l.reveal);
+  return [badge("dev",F01.l.badge),h("p",{class:"lead"},F01.l.lead),h("pre",{},F01.text+"\n"+F01.l.textNote),tbl,h("p",{class:"small"},F01.l.omission),h("div",{class:"row"},rb),res,h("p",{class:"small"},docLink("f01-fidelity",F01.l.doc))];
+}});
+
 // 18 — epilogo
 S({ph:"Epilogo · Che cosa resta da fare",title:"A che punto è lo studio",task:"sei arrivato alla fine; puoi ripetere qualsiasi passaggio dal selettore.",
-why:"P11 ha prodotto i sorgenti del paper, la guida per l’autore, la documentazione e questa pagina dai risultati revisionati; non ha generato PDF. Questa tabella è una fotografia datata (29 settembre 2026, 10:00 UTC), non un cruscotto in tempo reale. Alla fotografia del 29 settembre P13 era sospesa e P22 parziale; aggiornamento del 30 settembre: P11.2 è nel sorgente del paper, P22/P13/P14 sono in sospeso per decisione dell’autore e la replica Windows pubblica P10.3 è stata revisionata con limiti. Una pagina che descrive una fase non dimostra che sia stata eseguita; lo stato corrente è nella pagina di avanzamento.",
+why:"P11 ha prodotto i sorgenti del paper, la guida per l’autore, la documentazione e questa pagina dai risultati revisionati; non ha generato PDF. Questa tabella è una fotografia datata (29 settembre 2026, 10:00 UTC), non un cruscotto in tempo reale. Alla fotografia del 29 settembre P13 era sospesa e P22 parziale; aggiornamento del 30 settembre: P11.2 è nel sorgente del paper, P22/P13/P14 sono in sospeso per decisione dell’autore e la replica Windows pubblica P10.3 è stata revisionata con limiti. Aggiornamento del 1° ottobre: la verifica F01 della fedeltà dei testi è stata eseguita e revisionata in modo indipendente (chiusa con limitazioni, senza rilievi). Una pagina che descrive una fase non dimostra che sia stata eseguita; lo stato corrente è nella pagina di avanzamento.",
 doc:"pending",
 build(api){api.done();
-  return [h("table",{},h("thead",{},h("tr",{},h("th",{},"Fase"),h("th",{},"Stato alla fotografia del 29 settembre 2026, 10:00 UTC (stato corrente nella pagina di avanzamento)"))),h("tbody",{},h("tr",{},h("td",{class:"l"},"P01–P10"),h("td",{class:"l"},"eseguite e revisionate (chiuse con limitazioni)")),h("tr",{},h("td",{class:"l"},"P11 / P12"),h("td",{class:"l"},"eseguite; revisioni P11-S003 e P12-S005 chiuse con limitazioni; le modifiche successive al manoscritto sono registrate in orchestrator/claude/P11/POST_CLOSURE_EDITS.md")),h("tr",{},h("td",{class:"l"},"P15 / P16"),h("td",{class:"l"},"confronto documentale e valutazione consultiva; revisioni chiuse (P15-S005, P16-S010); nessun risultato cambiato")),h("tr",{},h("td",{class:"l"},"P19 / P20"),h("td",{class:"l"},"risultati complementari descrittivi aggiunti al manoscritto; P19-S001 chiusa con limitazioni; P20-S001 chiusa con limitazioni, correzione della formulazione P20-F001 (P20-S002) in attesa di riverifica")),h("tr",{},h("td",{class:"l"},"P21"),h("td",{class:"l"},"braccio placebo post hoc successivo eseguito e analizzato (passaggio precedente); revisioni di fase chiuse con limitazioni, due rilievi non bloccanti su D aperti")),h("tr",{},h("td",{class:"l"},"Aggiornamento 30 settembre"),h("td",{class:"l"},"P11.2 nel sorgente TeX: revisione chiusa con limitazioni; scostamento stimato accettato dall’autore. P22/P13/P14 in sospeso in attesa della revisione personale del paper. Replica Windows P10.3 v3 pubblica: 55 test superati, 32 saltati, 17/17 hash verificati; etichette sovrapposte nei pannelli alti. Nessun PDF compilato.")),h("tr",{},h("td",{class:"l"},"P22"),h("td",{class:"l"},"passaggio di prontezza sui soli sorgenti: parziale, in attesa delle decisioni dell’autore su metadati e disponibilità (P22-S001 chiusa)")),h("tr",{},h("td",{class:"l"},"P13 / P14"),h("td",{class:"l"},"P13 sospesa su indicazione dell’autore (nessun PDF generato); P14 a carico dell’autore, non avviata")))),
+  return [h("table",{},h("thead",{},h("tr",{},h("th",{},"Fase"),h("th",{},"Stato alla fotografia del 29 settembre 2026, 10:00 UTC (stato corrente nella pagina di avanzamento)"))),h("tbody",{},h("tr",{},h("td",{class:"l"},"P01–P10"),h("td",{class:"l"},"eseguite e revisionate (chiuse con limitazioni)")),h("tr",{},h("td",{class:"l"},"P11 / P12"),h("td",{class:"l"},"eseguite; revisioni P11-S003 e P12-S005 chiuse con limitazioni; le modifiche successive al manoscritto sono registrate in orchestrator/claude/P11/POST_CLOSURE_EDITS.md")),h("tr",{},h("td",{class:"l"},"P15 / P16"),h("td",{class:"l"},"confronto documentale e valutazione consultiva; revisioni chiuse (P15-S005, P16-S010); nessun risultato cambiato")),h("tr",{},h("td",{class:"l"},"P19 / P20"),h("td",{class:"l"},"risultati complementari descrittivi aggiunti al manoscritto; P19-S001 chiusa con limitazioni; P20-S001 chiusa con limitazioni, correzione della formulazione P20-F001 (P20-S002) in attesa di riverifica")),h("tr",{},h("td",{class:"l"},"P21"),h("td",{class:"l"},"braccio placebo post hoc successivo eseguito e analizzato (passaggio precedente); revisioni di fase chiuse con limitazioni, due rilievi non bloccanti su D aperti")),h("tr",{},h("td",{class:"l"},"F01 (1° ottobre)"),h("td",{class:"l"},"verifica successiva della fedeltà dei testi, senza chiamate al modello: 2,153 affermazioni applicabili su 2,153 vere, nessuna falsa; revisione F01-S001 chiusa con limitazioni, senza rilievi (passaggio F01)")),h("tr",{},h("td",{class:"l"},"Aggiornamento 30 settembre"),h("td",{class:"l"},"P11.2 nel sorgente TeX: revisione chiusa con limitazioni; scostamento stimato accettato dall’autore. P22/P13/P14 in sospeso in attesa della revisione personale del paper. Replica Windows P10.3 v3 pubblica: 55 test superati, 32 saltati, 17/17 hash verificati; etichette sovrapposte nei pannelli alti. Nessun PDF compilato.")),h("tr",{},h("td",{class:"l"},"P22"),h("td",{class:"l"},"passaggio di prontezza sui soli sorgenti: parziale, in attesa delle decisioni dell’autore su metadati e disponibilità (P22-S001 chiusa)")),h("tr",{},h("td",{class:"l"},"P13 / P14"),h("td",{class:"l"},"P13 sospesa su indicazione dell’autore (nessun PDF generato); P14 a carico dell’autore, non avviata")))),
     h("p",{class:"lead"},"Conclusione: aggiungere il blocco verificato dei pari migliora l’accuratezza del ricevente LLM (24/448 → 267/448 sui guasti mai osservati), ma senza un vantaggio rilevabile rispetto alle medie di classe dei pari usate dalla regola a prototipi sulle stesse finestre (266/448), e con un costo misurato sul guasto proprio del ricevente e sulla specificità Normal, con astensioni che il prototipo non ha prodotto su questi casi (la sua regola di parità le ammette; P20). Associazioni tra bracci configurati su un benchmark simulato; nessuna attribuzione causale al linguaggio."),
     h("p",{class:"small"},docLink("pending","Fasi ancora da svolgere nella documentazione"))];
 }});
