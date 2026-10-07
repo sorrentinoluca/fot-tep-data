@@ -6,9 +6,11 @@
   "createdUtc": "2026-10-07T11:43:46Z",
   "manuscript": {
     "path": "paper/versione_tre_paper_submission.tex",
-    "title": "An LLM with Rule-Based Peer Insights versus a Prototype Rule for Fault Diagnosis under Extreme Label Skew",
+    "title": "Rule-Based Own-Class and Peer Insights for LLM Fault Diagnosis under Extreme Label Skew",
     "versionDate": "2026-10-07",
-    "sha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f"
+    "sha256": "7a5cb41914fbff63649126428976f6ceb67a9478d1088175317d9decec9448c2",
+    "reviewedBaseSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
+    "pdfSha256": "783002763627a59fd694fa59d9766ac247863fa078bf072f0a221e9dcb064106"
   },
   "sourceRepository": {
     "url": "https://github.com/sorrentinoluca/fot-phd",
@@ -18,13 +20,12 @@
   "reviewStatus": {
     "qwenAnalysis": "closed_with_limits",
     "gptOssAndCrossModelAnalysis": "closed_with_limits",
-    "manuscript": "a separately reviewed source snapshot is closed_with_limits; the packaged author-designated manuscript has its own pinned SHA-256"
+    "manuscript": "closed_with_limits; packaged title-only revision built and visually checked"
   },
   "reproducibilityLimits": [
     "The public package includes exact Qwen request payloads and aggregate reviewed Qwen results, but not the per-request Qwen raw response archive or normalized per-request predictions. Qwen row-level scoring cannot be regenerated from this package alone.",
     "The exact gpt-oss request payloads and raw response bodies are included. The server-side gpt-oss ledger and private service metadata are not included; transport status and response digests are preserved per request.",
-    "Full simulator reruns and fresh model inference are outside this package. Temperature-zero requests did not guarantee byte-identical re-sends.",
-    "The manuscript is the exact version at the author-designated manuscript path when assembled. It differs from a separately reviewed shorter manuscript snapshot; this package does not imply the latter is the same source revision."
+    "Full simulator reruns and fresh model inference are outside this package. Temperature-zero requests did not guarantee byte-identical re-sends."
   ],
   "artifacts": [
     {
@@ -118,6 +119,12 @@
       "role": "Sealed numerical reference predictions"
     },
     {
+      "path": "paper/BUILD_RECORD.json",
+      "bytes": 1021,
+      "sha256": "b3181dd91b5219015ec1fba8b0c189beef288f7e036e94e8e7c38f96e58f6a7f",
+      "role": "Sanitized build provenance and source relationship"
+    },
+    {
       "path": "paper/generated/tab_t2_allfaults.tex",
       "bytes": 1388,
       "sha256": "e01750b3c4b6c7054831f9ea88b39726e368609c5c9818c28005f442b3566e43",
@@ -166,10 +173,16 @@
       "role": "Bibliography entries used by the manuscript; internal authoring comments removed"
     },
     {
+      "path": "paper/versione_tre_paper_submission.pdf",
+      "bytes": 293143,
+      "sha256": "783002763627a59fd694fa59d9766ac247863fa078bf072f0a221e9dcb064106",
+      "role": "Nine-page PDF built from the packaged title revision"
+    },
+    {
       "path": "paper/versione_tre_paper_submission.tex",
-      "bytes": 48044,
-      "sha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
-      "role": "Exact author-designated manuscript source, bibliography, or generated table fragment"
+      "bytes": 48024,
+      "sha256": "7a5cb41914fbff63649126428976f6ceb67a9478d1088175317d9decec9448c2",
+      "role": "Exact author-selected manuscript source; title-only update after reviewed manuscript snapshot"
     },
     {
       "path": "requests/gpt_oss_requests.jsonl.gz",
@@ -208,6 +221,9 @@
     "gptOssLedgerSha256": "32d2817b37e213670407ed5f97a9f90e95c07625755c8ee47fe4f6b08dceeb1a",
     "gptOssRequestsSha256": "f78c96b12f6fb52aade6f8d52de0c5a4a5a34a5f832be8dbd7b14b99aa6e18f6",
     "qwenAnalysisSha256": "df8ea84c4930e6439b5c8b40fc3615f4539370c279a16f7ddcea83dc4307673a",
-    "gptOssAnalysisSha256": "f3e92d23f5791482285a11935f40f229f77e5a4f9200aff7965875762b5e30ee"
+    "gptOssAnalysisSha256": "f3e92d23f5791482285a11935f40f229f77e5a4f9200aff7965875762b5e30ee",
+    "reviewedManuscriptBaseSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
+    "packagedManuscriptSha256": "7a5cb41914fbff63649126428976f6ceb67a9478d1088175317d9decec9448c2",
+    "packagedPdfSha256": "783002763627a59fd694fa59d9766ac247863fa078bf072f0a221e9dcb064106"
   }
 }

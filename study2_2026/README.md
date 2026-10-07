@@ -4,7 +4,7 @@ This package supports the 256-run follow-up reported in the manuscript snapshot 
 
 ## Contents
 
-- `paper/`: the exact manuscript source, bibliography, and generated T2 tables used at the author-designated manuscript path.
+- `paper/`: the latest title-only manuscript source snapshot, its nine-page built PDF, a sanitized build record, bibliography, and generated T2 tables.
 - `data/`: the 256-case evaluation manifest and sealed numerical reference predictions.
 - `requests/`: exact serialized request payloads for the Qwen and gpt-oss configured systems.
 - `responses/`: exact raw response bodies for gpt-oss, paired to request keys and carrying per-response SHA-256 digests.

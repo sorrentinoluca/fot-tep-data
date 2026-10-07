@@ -1,0 +1,16 @@
+{
+  "schema": "fot-tep-manuscript-build-record/1.0",
+  "sourcePath": "paper/versione_tre_paper_submission.tex",
+  "sourceSha256": "7a5cb41914fbff63649126428976f6ceb67a9478d1088175317d9decec9448c2",
+  "bibliographyPath": "paper/refs.bib",
+  "bibliographySha256": "8a56e59a1ce1b79077f3ea098fedf30796314d8b847d705a37a82a6f1928271f",
+  "bibliographyNote": "Bibliography entries are unchanged; internal authoring comments were removed for the public copy.",
+  "pdfPath": "paper/versione_tre_paper_submission.pdf",
+  "pdfSha256": "783002763627a59fd694fa59d9766ac247863fa078bf072f0a221e9dcb064106",
+  "pageCount": 9,
+  "referencesIncluded": true,
+  "undefinedCitationsOrReferences": false,
+  "overfullBoxes": false,
+  "visualInspection": "All nine pages were rendered and inspected; no layout defects were recorded.",
+  "changeFromReviewedSource": "Title-only author revision. The source content outside the title is byte-identical to reviewed source SHA-256 739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f."
+}
