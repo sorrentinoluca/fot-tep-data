@@ -27,6 +27,9 @@ The output directory must be empty. The script does not delete or overwrite file
 - Rebuilding the combined normalized model rows and both analysis outputs.
 - Independent parsing of all 28,672 raw model responses and independent recomputation of primary statistics.
 - Duplicate-request outcome agreement, prompt facts, and additional quantitative manuscript claims.
+- 62 numeric prose fragments in the packaged manuscript, with values recomputed from archived records or the regenerated analysis JSON.
 - Numeric cells in the eight LaTeX tables against recomputed results.
+
+The text-fragment checker is tailored to the packaged manuscript SHA-256 in `analysis/paper_snapshot_reproduction.json`. A changed sentence may be reported as `NOT FOUND` even if its number remains correct; inspect the fragment and update the checker when the manuscript changes. The check does not cover the earlier 96-run cohort or literature-derived claims. It is part of this package, so it is an executable consistency check rather than an external independent review.
 
 The audit can recompute statistical summaries for PROTO and FedAvg from their published predictions. It cannot regenerate those predictions because the feature signatures, class means, fitted weights and producer code are not included. It also cannot regenerate the physical runs or fresh model responses.

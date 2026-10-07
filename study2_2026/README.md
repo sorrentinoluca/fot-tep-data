@@ -8,7 +8,7 @@ This package contains the 256-run follow-up, its recorded model requests and res
 - `data/`: the 256-case evaluation manifest and published numerical reference predictions.
 - `requests/`: exact serialized request payloads for the two configured model systems.
 - `responses/`: request-linked raw response bodies, normalized Qwen rows, and combined normalized scoring rows. Raw response bytes are base64 encoded and carry SHA-256 digests.
-- `analysis/`: pinned outputs, analysis code, exact offline recomputation receipts, and an independent audit for the numerical claims and LaTeX tables.
+- `analysis/`: pinned outputs, analysis code, exact offline recomputation receipts, and an independent audit for numerical claims, manuscript text claims, and LaTeX tables.
 - `MANIFEST.json`: artifact sizes, hashes, manuscript identity, and reproduction limits.
 
 ## Verify the archive
@@ -36,7 +36,7 @@ The packaged PDF is a verified ten-page build of the source hash in the manifest
 
 Instructions for rebuilding normalized responses and model analyses are in [`analysis/README.md`](analysis/README.md). The independent audit, including the added text-only claims and numeric-cell comparisons for all eight LaTeX tables, is in [`analysis/audit/README.md`](analysis/audit/README.md).
 
-The audit recomputes model outcomes from archived raw responses. PROTO and FedAvg statistics can be recalculated from the published predictions, but those predictions cannot be regenerated because feature signatures, class means, fitted weights, and producer code are not included. The audit also confirms that the archived AGG system instruction differs from the other conditions in its `used_insight_ids` wording; the manuscript currently describes the system prompt as shared.
+The audit recomputes model outcomes from archived raw responses and checks 62 numerical prose fragments against the packaged manuscript. The text checker is specific to the manuscript snapshot SHA-256 in the receipt; if its wording changes, review and update the checker. It does not cover the earlier 96-run cohort or literature-derived claims. PROTO and FedAvg statistics can be recalculated from the published predictions, but those predictions cannot be regenerated because feature signatures, class means, fitted weights, and producer code are not included. The audit also confirms that the archived AGG system instruction differs from the other conditions in its `used_insight_ids` wording; the manuscript currently describes the system prompt as shared.
 
 ## Scope and limits
 

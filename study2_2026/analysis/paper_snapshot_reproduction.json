@@ -1,7 +1,8 @@
 {
   "schema": "fot-tep-study2-manuscript-snapshot-audit/1.0",
   "snapshotUtc": "2026-10-07T14:54:40Z",
-  "sourceRepositoryCommitAudited": "064f05f35bd5f439f4cb27bd6e1617cb1bebdfba",
+  "packageBaseCommit": "064f05f35bd5f439f4cb27bd6e1617cb1bebdfba",
+  "packageBaseCommitNote": "Repository commit before this manuscript snapshot and reproducibility-package update; the containing commit is identified by the repository history.",
   "manuscriptPath": "paper/manuscript/versione_tre_paper_submission.tex",
   "manuscriptSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
   "buildWrapperPath": "paper/main.tex",
@@ -44,7 +45,7 @@
     }
   ],
   "paperBuild": {
-    "command": "latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=<separate-build-directory> main.tex",
+    "command": "latexmk -pdf -cd -interaction=nonstopmode -halt-on-error -outdir=<separate-build-directory> study2_2026/paper/main.tex (from repository root)",
     "engine": "pdfTeX 3.141592653-2.6-1.40.27; TeX Live 2025; latexmk 4.86a",
     "pages": 10,
     "pdfSha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
@@ -59,7 +60,7 @@
     "independentRawResponsesChecked": 28672,
     "tableNumericCellsChecked": 332,
     "tableNumericMismatches": 0,
-    "additionalTextClaims": "Computed by audit scripts; direct comparison between printed claim values and prose was manually checked.",
+    "additionalTextClaims": "Audit script 08 recomputes values for 62 numerical prose fragments and checks each fragment against the packaged manuscript; it does not cover the earlier 96-run cohort or literature-derived claims.",
     "qwenRepeatAgreement": {
       "identicalRequestPairs": 224,
       "sameOutcomeAndLabel": 217,
@@ -123,8 +124,8 @@
       "unparseable": 1
     },
     "unverifiedByPackage": "The 27,234-byte serialized class-mean representation; feature signatures, class means, fitted weights and producer code for PROTO/FedAvg.",
-    "recheckUtc": "2026-10-07T15:02:26Z",
-    "packageVerifier": "pass; 50 manifest artifacts, 256 cases, 14,336 request/response keys per model",
+    "recheckUtc": "2026-10-07T15:24:17Z",
+    "packageVerifier": "pass; 51 manifest artifacts, 256 cases, 14,336 request/response keys per model",
     "combinedNormalizedSha256": "d269cdfc82a67566ae5b55c5a1d05c76fe0d96dc9360e976cb2252b1f2b94d5e",
     "jointModelAnalysis": "byte-identical to pinned output",
     "qwenAnalysis": {
@@ -141,8 +142,16 @@
       "mismatches": 0,
       "manuscriptSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd"
     },
-    "execution": "Full independent audit runner completed successfully on the packaged paper snapshot and all eight packaged LaTeX tables.",
-    "runnerSafety": "Confirmed a relative output path resolving inside the package is rejected before directory creation."
+    "execution": "Full package audit passed, including recomputation of 62 numerical prose fragments and comparison of all eight packaged LaTeX tables.",
+    "runnerSafety": "Confirmed a relative output path resolving inside the package is rejected before directory creation.",
+    "textClaimsCheck": {
+      "script": "analysis/audit/08_check_text_claims.py",
+      "manuscriptSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+      "fragmentsChecked": 62,
+      "fragmentsFound": 62,
+      "fragmentsNotFound": 0,
+      "scopeNote": "Does not cover the earlier 96-run cohort or literature-derived claims."
+    }
   },
   "knownManuscriptNotes": [
     "The manuscript text says the system prompt is shared; the archived AGG system instruction differs in the used_insight_ids wording.",

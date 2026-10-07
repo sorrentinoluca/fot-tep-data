@@ -3,7 +3,7 @@
   "packageStatus": "offline_analysis_reproducible",
   "study": "FoT-TEP Study 2",
   "cohort": "confirmatory follow-up (256 runs)",
-  "createdUtc": "2026-10-07T15:03:03Z",
+  "createdUtc": "2026-10-07T15:24:53Z",
   "manuscript": {
     "path": "paper/manuscript/versione_tre_paper_submission.tex",
     "title": "Rule-Based Own-Class and Peer Insights for LLM Fault Diagnosis under Extreme Label Skew",
@@ -34,8 +34,8 @@
   "artifacts": [
     {
       "path": "analysis/README.md",
-      "bytes": 2601,
-      "sha256": "7bb3d178ad64168e313f0e9cba122be0657118ba83e1d9c6caa791949dc94329",
+      "bytes": 2958,
+      "sha256": "b0040da51485e7ba4e985445d1fe132b783c3ff47665e27caf136154ecbb736d",
       "role": "Analysis, response provenance, reproduction receipt, or source code"
     },
     {
@@ -87,9 +87,15 @@
       "role": "Independent offline audit source code or instructions"
     },
     {
+      "path": "analysis/audit/08_check_text_claims.py",
+      "bytes": 21892,
+      "sha256": "9418c2ec0a7e9853fa14ec07292f5cc2a6d95f51bdaaca024e5bdf9be0f29622",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
       "path": "analysis/audit/README.md",
-      "bytes": 1941,
-      "sha256": "5813d33a79e8b3176cf493aa8b0ea5103f29e61d8a2e78dc2df037a4f49850ed",
+      "bytes": 2552,
+      "sha256": "64ac9c0bec11ec27e9d2831fe13b1dcea9408a9bf469bf80eb8874dbeedb6a0b",
       "role": "Independent audit instructions and scope"
     },
     {
@@ -100,8 +106,8 @@
     },
     {
       "path": "analysis/audit/run_package_audit.sh",
-      "bytes": 3787,
-      "sha256": "4763a5bcb01cb3223d1143fc280635c430bb23bea956e5edff1517be72af86d9",
+      "bytes": 4131,
+      "sha256": "36c5eed60ae3190d00b462bae8e1db1c27f3ad22e54f57f75c7b5256174d9f49",
       "role": "Safe runner for offline package audit"
     },
     {
@@ -172,8 +178,8 @@
     },
     {
       "path": "analysis/paper_snapshot_reproduction.json",
-      "bytes": 6135,
-      "sha256": "a0c651cda0a81000465a59a44171a38342d522ea53f2b4d363bd2e042a6da1a2",
+      "bytes": 6817,
+      "sha256": "e4c9286860f9d388d656296e459196b8056a57d48720bb038065b28fc2024642",
       "role": "Machine-readable manuscript snapshot, audit findings, and reproduction receipt"
     },
     {
