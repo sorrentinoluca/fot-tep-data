@@ -3,28 +3,28 @@
   "packageStatus": "offline_analysis_reproducible",
   "study": "FoT-TEP Study 2",
   "cohort": "confirmatory follow-up (256 runs)",
-  "createdUtc": "2026-10-07T20:18:04Z",
+  "createdUtc": "2026-10-07T21:52:30Z",
   "manuscript": {
     "path": "paper/manuscript/versione_tre_paper_submission.tex",
     "title": "Rule-Based Own-Class and Peer Insights for LLM Fault Diagnosis under Extreme Label Skew",
     "versionDate": "2026-10-07",
-    "sha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
+    "sha256": "ed992921593c9c5be6a6eab0a26eb094b26bd6b4a21a8e2a947c82e0a5813109",
     "previouslyReviewedSourceSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
     "pdfPath": "paper/versione_tre_paper_submission.pdf",
     "pdfSha256": "54d9f6b7802ce91b3bc998b57ba7c1f02ce3677ee55a7efd8dc700e16c18331f",
     "pageCount": 10,
-    "snapshotNote": "Aligned to the author-provided Overleaf source snapshot whose SHA-256 is recorded here; compiled independently for the package.",
+    "snapshotNote": "Current source includes the immutable release citation. The bundled PDF remains the prior build from source SHA-256 a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4; no PDF rebuild or page-count check was performed for this source update.",
     "bibliographySha256": "b2572a3ffb721b29a8fe1b9ab8f31cc4c64867426409cb2b8bcab89be8d43405"
   },
   "sourceRepository": {
     "url": "https://github.com/sorrentinoluca/fot-tep-data",
-    "revision": null,
-    "revisionNote": "Cite the containing Git commit for an immutable package revision; every payload artifact is pinned by SHA-256 below."
+    "revision": "study2-2026-reproducibility-v1",
+    "revisionNote": "This immutable tag identifies the package commit containing this manifest and the matching manuscript source."
   },
   "reviewStatus": {
     "qwenAnalysis": "closed_with_limits",
     "gptOssAndCrossModelAnalysis": "closed_with_limits",
-    "manuscript": "Earlier independent review closed with limitations on a prior source; this later author snapshot was compiled and visually checked, with no new peer-review verdict inferred."
+    "manuscript": "Current source SHA-256 ed992921593c9c5be6a6eab0a26eb094b26bd6b4a21a8e2a947c82e0a5813109 has no new independent review or PDF build in this package update. The included PDF is tied to the prior source SHA recorded in paper/BUILD_RECORD.json."
   },
   "reproducibilityLimits": [
     "The package supports offline scoring and analysis from archived model requests and raw responses; it does not reproduce fresh model inference or regenerate the 256 physical simulator runs.",
@@ -32,6 +32,12 @@
     "The configuration folder documents development thresholds, verbalization rules, stream identities and a five-seed FedAvg development recipe. It does not contain raw trajectories, test signatures, fitted class means, fitted weights or the producer code needed to regenerate test predictions."
   ],
   "artifacts": [
+    {
+      "path": "analysis/README.md",
+      "bytes": 3111,
+      "sha256": "51fc5540cbc4d6d25ad5162d70a253a08604040cc992e4f4f6e371ac92f2487f",
+      "role": "Documentation or audit instructions"
+    },
     {
       "path": "analysis/REPRODUCTION_CHECKS.json",
       "bytes": 1735,
@@ -87,6 +93,30 @@
       "role": "Independent offline audit source code or instructions"
     },
     {
+      "path": "analysis/audit/08b_check_text_claims_extended.py",
+      "bytes": 43241,
+      "sha256": "e7ca3fc7b7958e8c114959cd36aad476d89fe807948cb56ae1d71306f654798c",
+      "role": "Independent audit source code"
+    },
+    {
+      "path": "analysis/audit/10_agg_library_comparison.py",
+      "bytes": 6665,
+      "sha256": "10b2b6cc095e2954ba2f4096bbb003cd83800dc91e00a12f9a65b9d0a7c77a7a",
+      "role": "Independent audit source code"
+    },
+    {
+      "path": "analysis/audit/11_classify_uncovered_numbers.py",
+      "bytes": 11566,
+      "sha256": "d9549c35d56051624638a7686beec1ab29a5895893bbe56be95f2cb2de01d2f8",
+      "role": "Independent audit source code"
+    },
+    {
+      "path": "analysis/audit/README.md",
+      "bytes": 3554,
+      "sha256": "60d0615145a5d7d3124b145920a55754a26bd72a57bc5f11326453c6fb15f342",
+      "role": "Documentation or audit instructions"
+    },
+    {
       "path": "analysis/audit/compare_json.py",
       "bytes": 1145,
       "sha256": "cef239d87ed4126a43316c79126bac31602f512780cddc2b884329e420073e1b",
@@ -94,9 +124,15 @@
     },
     {
       "path": "analysis/audit/run_package_audit.sh",
-      "bytes": 4131,
-      "sha256": "36c5eed60ae3190d00b462bae8e1db1c27f3ad22e54f57f75c7b5256174d9f49",
+      "bytes": 4633,
+      "sha256": "34b00bed9a79d5a5286a15dcc3bc644b3a3d6438eaed8253726d8599c35a7021",
       "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/uncovered_numeric_statements.md",
+      "bytes": 7053,
+      "sha256": "aa9971db4681e636c6b990fec4f17e53edc1a923c401f50163f3ee7997815182",
+      "role": "Documentation or audit instructions"
     },
     {
       "path": "analysis/code/account_gpt_oss_usage.py",
@@ -202,32 +238,38 @@
     },
     {
       "path": "configuration/PROVENANCE.json",
-      "bytes": 852,
-      "sha256": "90cbfc5a13ff17305f5868951b7381e34f7c8006aad0fef1dfe3cda52a5b0692",
+      "bytes": 1531,
+      "sha256": "649807e5eab5f83462e3b6c5023d80c7533c855cebc63c6572709baa31d004cb",
       "role": "Configuration, development stream provenance, or insight specification"
     },
     {
+      "path": "configuration/README.md",
+      "bytes": 2257,
+      "sha256": "401739ab465d40877c350c793f7e04e9144873c42d15f1f25ab532ac2a5d6819",
+      "role": "Documentation or audit instructions"
+    },
+    {
       "path": "configuration/development_streams.json",
-      "bytes": 22473,
-      "sha256": "08ffe2b487f9e5bdbd6a4cf5c546b45b4c69ba2122ddd6724f40e93b6711c2e4",
+      "bytes": 23631,
+      "sha256": "002df546a607606ebddb508941d799d2a896b3f0693971472835fdf010ab02b0",
       "role": "Configuration, development stream provenance, or insight specification"
     },
     {
       "path": "configuration/fedavg_development_recipe.json",
-      "bytes": 2222,
-      "sha256": "c4672a272649d734a16e870ef2b825d377cf119ee8fc8488e5d67687236b6aee",
+      "bytes": 3183,
+      "sha256": "d461d0ffd85803c6ffdedd529a0759e1c13b2640a22d61019d7dc123dd3fac92",
       "role": "Configuration, development stream provenance, or insight specification"
     },
     {
       "path": "configuration/insights/AGG_LIBRARY.json",
-      "bytes": 33972,
-      "sha256": "03ab52abbe697c5023d5a565a1a368eaec4486de0dde64e17b77e414852020ca",
+      "bytes": 34380,
+      "sha256": "a8f443355010b1c7ab894356bd5a1bf0b0c714c78f372acd72d2ff6911a74003",
       "role": "Configuration, development stream provenance, or insight specification"
     },
     {
       "path": "configuration/insights/AGG_LIBRARY_BLOCK.txt",
-      "bytes": 7615,
-      "sha256": "e4879fa0da9cdaaf6f089ca41ca28d4812f38ebd53d3a2f98107e79b1c782969",
+      "bytes": 8453,
+      "sha256": "f6c5a4b5b3ac7c667654094568f183a8c7708904c94134d1309a1c565f531476",
       "role": "Configuration, development stream provenance, or insight specification"
     },
     {
@@ -327,9 +369,15 @@
       "role": "Configuration, development stream provenance, or insight specification"
     },
     {
+      "path": "configuration/normalization_reference.json",
+      "bytes": 492,
+      "sha256": "5c9995a3a479a78e8c2457330e8833c4e004a66da7abac4ffaf15ae762242e34",
+      "role": "Reproducibility artifact"
+    },
+    {
       "path": "configuration/verbalization_rules.json",
-      "bytes": 3947,
-      "sha256": "8a7c5d6644cdd78b0e00b7da2fa1eb31f7ddf1e62b73547f620c656ec158762e",
+      "bytes": 5526,
+      "sha256": "41400b847940f30fc11e1531bb97867287cf20353d99556c5b9de9fe1efd9d86",
       "role": "Configuration, development stream provenance, or insight specification"
     },
     {
@@ -346,8 +394,8 @@
     },
     {
       "path": "paper/BUILD_RECORD.json",
-      "bytes": 3091,
-      "sha256": "76aa2ab8eceef400a770681cb2e5d47cab1bbf752a413e634ce42a2656f7116b",
+      "bytes": 3507,
+      "sha256": "6cd90b79d79473ab57c1d262df5f67f134a11ae6432f75a0c701e6a9d8712d28",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
@@ -412,8 +460,8 @@
     },
     {
       "path": "paper/manuscript/versione_tre_paper_submission.tex",
-      "bytes": 57062,
-      "sha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
+      "bytes": 57239,
+      "sha256": "ed992921593c9c5be6a6eab0a26eb094b26bd6b4a21a8e2a947c82e0a5813109",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
@@ -459,7 +507,7 @@
       "role": "Exact request, response, or normalized response archive"
     }
   ],
-  "integrityNote": "MANIFEST.json lists every package payload artifact except itself, README.md, and verify_package.py.",
+  "integrityNote": "Lists every package payload file except this manifest, the root README.md, and verify_package.py.",
   "compressedInputs": {
     "requests/qwen_requests.jsonl.gz": {
       "uncompressedBytes": 134747472,
@@ -494,14 +542,13 @@
     "qwenAnalysisSha256": "df8ea84c4930e6439b5c8b40fc3615f4539370c279a16f7ddcea83dc4307673a",
     "gptOssAnalysisSha256": "f3e92d23f5791482285a11935f40f229f77e5a4f9200aff7965875762b5e30ee",
     "reviewedManuscriptBaseSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
-    "packagedManuscriptSha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
+    "packagedManuscriptSha256": "ed992921593c9c5be6a6eab0a26eb094b26bd6b4a21a8e2a947c82e0a5813109",
     "packagedPdfSha256": "54d9f6b7802ce91b3bc998b57ba7c1f02ce3677ee55a7efd8dc700e16c18331f",
     "qwenResponseLedgerSha256": "d6dbbc6224fd5d6a4cdd980d859706ed789f7b76bf67fbd4dea418d9b8336455",
     "qwenNormalizedRowsSha256": "bbfae74804a7ee6cddbfd4c0d3cd167b2ba18d68b1d14703af353a3d6664ed17",
     "qwenResponseKeyCount": 14336,
     "qwenTerminalHttp200Count": 14336,
     "combinedNormalizedOutputSha256": "d269cdfc82a67566ae5b55c5a1d05c76fe0d96dc9360e976cb2252b1f2b94d5e",
-    "currentManuscriptAuditSha256": "684bfba24374a441ee6b6c37d1aa0a79e7b27fde6fc484901b7ebc33d6bbdbd3",
     "qwenRepeatOutcomeAgreement": {
       "sameOutcomeAndLabel": 217,
       "pairs": 224,
@@ -512,7 +559,10 @@
     "packagedBibliographySha256": "b2572a3ffb721b29a8fe1b9ab8f31cc4c64867426409cb2b8bcab89be8d43405",
     "configurationScope": "Development configuration only; no test feature signatures, fitted means, or fitted weights.",
     "sourceBibliographySha256": "f59a2396071b2b2100aa373246bbb4c48a052acf726b5a56b386442b6cefeddc",
-    "bibliographySanitizedCommentLines": true
+    "bibliographySanitizedCommentLines": true,
+    "previouslyAuditedManuscriptSha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
+    "packagedPdfSourceSha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
+    "previousManuscriptAuditSha256": "684bfba24374a441ee6b6c37d1aa0a79e7b27fde6fc484901b7ebc33d6bbdbd3"
   },
   "fullExperimentRegeneration": "not_provided",
   "licenseStatus": "No explicit reuse license is currently assigned to this package."

@@ -1,0 +1,9 @@
+{
+  "schema": "study2-normalization-reference/1.0",
+  "name": "N1-N5",
+  "sourceFile": "mode1_normal_500",
+  "sha256": "79883dd0aabbd034c15337b0be1ffca37e59ea7b32443a15d560b7feda2b2e6a",
+  "r2GuardSha256": "7df0cef2d7854c689b79eb911fa01d1ede1625e22f0d3636c0ea5d678c9f33f8",
+  "role": "Shared Normal development baseline used for feature normalization; distinct from the per-client Normal development runs.",
+  "streamIds": "Not included in the source materials available for this package."
+}

@@ -56,7 +56,11 @@
       "strict_drift_label": "slope active in every window with one sign, window means evolving coherently in that direction, and active in the late regime",
       "strict_variability_label": "active in every window and active in the late regime"
     },
-    "transient": "dynamic feature active initially, lower later, and inactive in the late regime while a possible level displacement can remain"
+    "transient": "dynamic feature active initially, lower later, and inactive in the late regime while a possible level displacement can remain",
+    "singleWindowInputBehavior": {
+      "scope": "The temporal sequence rules above describe multi-window inputs; the study presents one window per test case.",
+      "rendering": "For a one-window input, fixed temporal counters remain in the text: 1/1 for the initial phase and 0/0 for intermediate and late phases. These fixed counters are not temporal evidence."
+    }
   },
   "featureSemantics": {
     "shift_sigma": "signed displacement of the window mean in baseline standard-deviation units",
@@ -91,7 +95,23 @@
         "oscillatory instability",
         "periodicity",
         "increase in variance"
-      ]
+      ],
+      "status": "Descriptive, non-exhaustive terminology guidance; not a binding whitelist.",
+      "sourceConfiguration": {
+        "file": "code/verbalizer_config_v2.json",
+        "version": "2.0",
+        "sha256": "552a0b8a9cf9e416de77daa7aca2d8dee152a2700bbfaab4ae5e039081712519"
+      },
+      "enforcementNote": "The historical renderer does not use the allowed-term list as a whitelist; terms such as “slope” and “sample-to-sample variation” also occur in the prompt text."
     }
+  },
+  "faultInjectionHoursScope": {
+    "status": "legacy_configuration_field",
+    "sourceFile": "code/verbalizer_config_v2.json",
+    "sourceVersion": "2.0",
+    "sourceSha256": "552a0b8a9cf9e416de77daa7aca2d8dee152a2700bbfaab4ae5e039081712519",
+    "interpretation": "This inherited value is not the fault activation time for the current study, which is stated as hour 25.",
+    "legacyRendererBehavior": "In the historical verbalizer function, this value is the default analysis start only when an explicit start_h argument is not supplied.",
+    "currentStudyApplication": "Whether the historical verbalizer used this default for any current-study text is not established by the materials in this package."
   }
 }

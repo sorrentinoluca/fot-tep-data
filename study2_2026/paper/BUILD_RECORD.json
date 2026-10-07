@@ -58,5 +58,11 @@
   "pdfBytes": 296172,
   "pdfBitIdentity": "PDF metadata contains the build timestamp, so repeated builds can differ in bytes; page content and rendering are checked.",
   "sourceBibliographySha256": "f59a2396071b2b2100aa373246bbb4c48a052acf726b5a56b386442b6cefeddc",
-  "bibliographySanitizedCommentLines": true
+  "bibliographySanitizedCommentLines": true,
+  "currentSourceSnapshot": {
+    "path": "paper/manuscript/versione_tre_paper_submission.tex",
+    "sha256": "ed992921593c9c5be6a6eab0a26eb094b26bd6b4a21a8e2a947c82e0a5813109",
+    "pdfBuiltFromThisSource": false,
+    "note": "The packaged PDF remains the earlier build from source SHA-256 a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4. No PDF build was run for the release-citation update."
+  }
 }

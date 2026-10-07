@@ -6,7 +6,15 @@
     "fedavgReferenceManifestSha256": "1be0e18d8e27d0dcfae8841c4026332770d42f580c46699090bdbf4ca5592c75",
     "proseLibrarySha256": "4e41a8f4547aefbb4b0593b5dd56aefb11949a9c389cf104e3e4d601fea9cc4d",
     "structuredLibrarySha256": "67c7c0c3254e20d5d23f3e30f9e84330a4a30bb1845b3c7d75d35d7733a2aea1",
-    "aggregatedLibrarySha256": "e4879fa0da9cdaaf6f089ca41ca28d4812f38ebd53d3a2f98107e79b1c782969"
+    "aggregatedLibrarySha256": "f6c5a4b5b3ac7c667654094568f183a8c7708904c94134d1309a1c565f531476"
   },
-  "scope": "Configuration and development-pool provenance only. No test signatures, fitted class means, fitted weights, or raw simulation trajectories are included."
+  "scope": "Configuration and development-pool provenance only. No test signatures, fitted class means, fitted weights, or raw simulation trajectories are included.",
+  "sourceFiles": {
+    "thresholdConfigurationSha256": "code/verbalizer_config_v2.json (historical configuration; not distributed)",
+    "developmentPoolManifestSha256": "DEVELOPMENT_POOL_MANIFEST.json (development source manifest; not distributed)",
+    "fedavgReferenceManifestSha256": "Development FedAvg reference manifest (not distributed; exact source filename not available)",
+    "proseLibrarySha256": "PROSE_LIBRARY.json (development source; not distributed)",
+    "structuredLibrarySha256": "STRUCTURED_LIBRARY.json (development source; not distributed)",
+    "aggregatedLibrarySha256": "configuration/insights/AGG_LIBRARY_BLOCK.txt (exact archived prompt block)"
+  }
 }
