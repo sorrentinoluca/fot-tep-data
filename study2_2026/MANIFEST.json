@@ -3,18 +3,18 @@
   "packageStatus": "offline_analysis_reproducible",
   "study": "FoT-TEP Study 2",
   "cohort": "confirmatory follow-up (256 runs)",
-  "createdUtc": "2026-10-07T15:24:53Z",
+  "createdUtc": "2026-10-07T20:18:04Z",
   "manuscript": {
     "path": "paper/manuscript/versione_tre_paper_submission.tex",
     "title": "Rule-Based Own-Class and Peer Insights for LLM Fault Diagnosis under Extreme Label Skew",
     "versionDate": "2026-10-07",
-    "sha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+    "sha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
     "previouslyReviewedSourceSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
     "pdfPath": "paper/versione_tre_paper_submission.pdf",
-    "pdfSha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
+    "pdfSha256": "54d9f6b7802ce91b3bc998b57ba7c1f02ce3677ee55a7efd8dc700e16c18331f",
     "pageCount": 10,
-    "snapshotNote": "Later author snapshot than the source covered by the earlier independent manuscript review; package build verified separately.",
-    "bibliographySha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5"
+    "snapshotNote": "Aligned to the author-provided Overleaf source snapshot whose SHA-256 is recorded here; compiled independently for the package.",
+    "bibliographySha256": "b2572a3ffb721b29a8fe1b9ab8f31cc4c64867426409cb2b8bcab89be8d43405"
   },
   "sourceRepository": {
     "url": "https://github.com/sorrentinoluca/fot-tep-data",
@@ -28,16 +28,10 @@
   },
   "reproducibilityLimits": [
     "The package supports offline scoring and analysis from archived model requests and raw responses; it does not reproduce fresh model inference or regenerate the 256 physical simulator runs.",
-    "PROTO and FedAvg accuracies can be recomputed from the published predictions, but the predictions cannot be regenerated because feature signatures, class means, fitted weights and producer code are not included.",
-    "The earlier 96-run exploratory cohort, raw simulation trajectories, and the pipeline that creates verbalized windows and insights are not fully included."
+    "The earlier 96-run exploratory cohort, raw simulation trajectories, and the pipeline that creates verbalized windows and insights are not fully included.",
+    "The configuration folder documents development thresholds, verbalization rules, stream identities and a five-seed FedAvg development recipe. It does not contain raw trajectories, test signatures, fitted class means, fitted weights or the producer code needed to regenerate test predictions."
   ],
   "artifacts": [
-    {
-      "path": "analysis/README.md",
-      "bytes": 2958,
-      "sha256": "b0040da51485e7ba4e985445d1fe132b783c3ff47665e27caf136154ecbb736d",
-      "role": "Analysis, response provenance, reproduction receipt, or source code"
-    },
     {
       "path": "analysis/REPRODUCTION_CHECKS.json",
       "bytes": 1735,
@@ -88,15 +82,9 @@
     },
     {
       "path": "analysis/audit/08_check_text_claims.py",
-      "bytes": 21892,
-      "sha256": "9418c2ec0a7e9853fa14ec07292f5cc2a6d95f51bdaaca024e5bdf9be0f29622",
+      "bytes": 19015,
+      "sha256": "58346c1fd0061a3fa7b70fb02840d6f4f25d9f5bc7df2ad92d20a37adb009b47",
       "role": "Independent offline audit source code or instructions"
-    },
-    {
-      "path": "analysis/audit/README.md",
-      "bytes": 2552,
-      "sha256": "64ac9c0bec11ec27e9d2831fe13b1dcea9408a9bf469bf80eb8874dbeedb6a0b",
-      "role": "Independent audit instructions and scope"
     },
     {
       "path": "analysis/audit/compare_json.py",
@@ -108,7 +96,7 @@
       "path": "analysis/audit/run_package_audit.sh",
       "bytes": 4131,
       "sha256": "36c5eed60ae3190d00b462bae8e1db1c27f3ad22e54f57f75c7b5256174d9f49",
-      "role": "Safe runner for offline package audit"
+      "role": "Independent offline audit source code or instructions"
     },
     {
       "path": "analysis/code/account_gpt_oss_usage.py",
@@ -178,9 +166,9 @@
     },
     {
       "path": "analysis/paper_snapshot_reproduction.json",
-      "bytes": 6817,
-      "sha256": "e4c9286860f9d388d656296e459196b8056a57d48720bb038065b28fc2024642",
-      "role": "Machine-readable manuscript snapshot, audit findings, and reproduction receipt"
+      "bytes": 7122,
+      "sha256": "ed89587723faf47ae648d5c85b0b437a9f0779969ecf66cc25953a500c40c355",
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/qwen_response_archive_receipt.json",
@@ -213,6 +201,138 @@
       "role": "Analysis output, reproduction receipt, or source code"
     },
     {
+      "path": "configuration/PROVENANCE.json",
+      "bytes": 852,
+      "sha256": "90cbfc5a13ff17305f5868951b7381e34f7c8006aad0fef1dfe3cda52a5b0692",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/development_streams.json",
+      "bytes": 22473,
+      "sha256": "08ffe2b487f9e5bdbd6a4cf5c546b45b4c69ba2122ddd6724f40e93b6711c2e4",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/fedavg_development_recipe.json",
+      "bytes": 2222,
+      "sha256": "c4672a272649d734a16e870ef2b825d377cf119ee8fc8488e5d67687236b6aee",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/AGG_LIBRARY.json",
+      "bytes": 33972,
+      "sha256": "03ab52abbe697c5023d5a565a1a368eaec4486de0dde64e17b77e414852020ca",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/AGG_LIBRARY_BLOCK.txt",
+      "bytes": 7615,
+      "sha256": "e4879fa0da9cdaaf6f089ca41ca28d4812f38ebd53d3a2f98107e79b1c782969",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/prose/F1.txt",
+      "bytes": 1306,
+      "sha256": "29c9149b9d2b5927a4fbd2418eba1daf37b9b2d59c536214da93a162a8a6e535",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/prose/F10.txt",
+      "bytes": 1321,
+      "sha256": "e571049aad2644e90eabeee06a5430eee67464b2ac9be217f1858722a2f9d461",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/prose/F13.txt",
+      "bytes": 1070,
+      "sha256": "dfdf0af6e62807501f2b6b10cc5a0897ebaea4f2e3658420db455df8f7f28005",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/prose/F14.txt",
+      "bytes": 1309,
+      "sha256": "1b98b947e9a3938aad8f6a2391bbd452be224f009bfcf3683103d022303b305c",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/prose/F15.txt",
+      "bytes": 362,
+      "sha256": "a9936c1e638778743736c9342ec97b596c64107382be151389164bd0362b51fb",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/prose/F2.txt",
+      "bytes": 1325,
+      "sha256": "b927e185480d9fd8093156ff1521824d62cb3b4af2f4f4e5b33160f3c056be16",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/prose/F3.txt",
+      "bytes": 358,
+      "sha256": "5a5b8faf7a229084d2e3dce200c563a2c87cf1cb944a6506f5bac3fa355b95fa",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/prose/F8.txt",
+      "bytes": 1057,
+      "sha256": "34a66345a48f10f1ba2bd94f4295f8685bd0514375b4a9a79dd34e75db8dd953",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/structured/F1.json",
+      "bytes": 1595,
+      "sha256": "9d7fb6e4ce445b42708bf61f22a3a9b3d8413aab127041dd749c9363857b49b5",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/structured/F10.json",
+      "bytes": 1605,
+      "sha256": "be551a24d08dd8409059b078186509f989bd444673da27c3e846676f705995ba",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/structured/F13.json",
+      "bytes": 1302,
+      "sha256": "32610dcbff892cad6a5bb3f85974dbf58bca083ca9c334f3a5403bcecf00317f",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/structured/F14.json",
+      "bytes": 1571,
+      "sha256": "83522910be372032f5a7663e79ef9f21b8fa8bbb5179fefe0db0a7986c070e70",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/structured/F15.json",
+      "bytes": 449,
+      "sha256": "7e1388629a32ca82bc3d2065f9162b6d68a3997f7208dd8493e38cc439c70afe",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/structured/F2.json",
+      "bytes": 1625,
+      "sha256": "32c9811ad00c110c8ca93e39e49bfdd064a25abd2e8bd9d5cd7abb8540660f12",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/structured/F3.json",
+      "bytes": 446,
+      "sha256": "430fc929d0c617d5041677de6a9f3b354428462ab2d3f9e361e89e9534c7b649",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/insights/structured/F8.json",
+      "bytes": 1304,
+      "sha256": "29b4ca79486740a9441e502b31fc61019bfe4667026c53fd795f5dbb896703ee",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
+      "path": "configuration/verbalization_rules.json",
+      "bytes": 3947,
+      "sha256": "8a7c5d6644cdd78b0e00b7da2fa1eb31f7ddf1e62b73547f620c656ec158762e",
+      "role": "Configuration, development stream provenance, or insight specification"
+    },
+    {
       "path": "data/case_manifest.jsonl",
       "bytes": 229135,
       "sha256": "d8b5f379815c3fb5c3ddc1a7ef4c84fcb19efc8ff15e462a1576e082622993a4",
@@ -226,8 +346,8 @@
     },
     {
       "path": "paper/BUILD_RECORD.json",
-      "bytes": 2979,
-      "sha256": "6e2eff6b07610b37af904764e06e01e5f9dd7c49850551f675e55056ac13d577",
+      "bytes": 3091,
+      "sha256": "76aa2ab8eceef400a770681cb2e5d47cab1bbf752a413e634ce42a2656f7116b",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
@@ -244,20 +364,20 @@
     },
     {
       "path": "paper/manuscript/generated/tab_t2_arms.tex",
-      "bytes": 665,
-      "sha256": "34edec4b5e209ec28bd3e9397e53ffbcb01a4fdb5b5edf5a837cb9575df53bb6",
+      "bytes": 671,
+      "sha256": "0b2e3a6e8d429c404358571a84a18ad58c79b0676b25d5397e8bf55e40493889",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
       "path": "paper/manuscript/generated/tab_t2_faults.tex",
-      "bytes": 357,
-      "sha256": "377ff71a8790b071ed2b2bea7ee21fe4a6780dae6bfce1fb988140c5b4abe015",
+      "bytes": 363,
+      "sha256": "7278306dceacca21ee615693b51fbabf8c29c5ec06703c651446eac10aae4612",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
       "path": "paper/manuscript/generated/tab_t2_main.tex",
       "bytes": 836,
-      "sha256": "63ac8f25a3ea5a11b108412dd858872eda92e163f6f4b7f85a7ad450c4c1b785",
+      "sha256": "e7313ae23d0b109223217a128054a851a96eb61e3538c8dc146b1e21e3977977",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
@@ -268,14 +388,14 @@
     },
     {
       "path": "paper/manuscript/generated/tab_t2_partitions.tex",
-      "bytes": 297,
-      "sha256": "e454257115026c4c2490ae430bd3d6fb9309d6f0c9fc0ece7e42d48ee72ab831",
+      "bytes": 303,
+      "sha256": "039d059375c655277217fcbc5546125a7d3d71f68c388c686b7ca79629d92b4b",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
       "path": "paper/manuscript/generated/tab_t2_supplement.tex",
-      "bytes": 412,
-      "sha256": "908da01b9a2e124de9d0a6b5452d73dd91e32fa2d5b6208ad028b2e3d4f718d2",
+      "bytes": 424,
+      "sha256": "df2aa7c181757e64a1ef66fdcef9f6a621b49b2bbf19df80c555dd27e163d61f",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
@@ -286,20 +406,20 @@
     },
     {
       "path": "paper/manuscript/refs.bib",
-      "bytes": 15820,
-      "sha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5",
+      "bytes": 16626,
+      "sha256": "b2572a3ffb721b29a8fe1b9ab8f31cc4c64867426409cb2b8bcab89be8d43405",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
       "path": "paper/manuscript/versione_tre_paper_submission.tex",
-      "bytes": 54332,
-      "sha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+      "bytes": 57062,
+      "sha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
       "path": "paper/versione_tre_paper_submission.pdf",
-      "bytes": 301996,
-      "sha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
+      "bytes": 296172,
+      "sha256": "54d9f6b7802ce91b3bc998b57ba7c1f02ce3677ee55a7efd8dc700e16c18331f",
       "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
@@ -374,14 +494,14 @@
     "qwenAnalysisSha256": "df8ea84c4930e6439b5c8b40fc3615f4539370c279a16f7ddcea83dc4307673a",
     "gptOssAnalysisSha256": "f3e92d23f5791482285a11935f40f229f77e5a4f9200aff7965875762b5e30ee",
     "reviewedManuscriptBaseSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
-    "packagedManuscriptSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
-    "packagedPdfSha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
+    "packagedManuscriptSha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
+    "packagedPdfSha256": "54d9f6b7802ce91b3bc998b57ba7c1f02ce3677ee55a7efd8dc700e16c18331f",
     "qwenResponseLedgerSha256": "d6dbbc6224fd5d6a4cdd980d859706ed789f7b76bf67fbd4dea418d9b8336455",
     "qwenNormalizedRowsSha256": "bbfae74804a7ee6cddbfd4c0d3cd167b2ba18d68b1d14703af353a3d6664ed17",
     "qwenResponseKeyCount": 14336,
     "qwenTerminalHttp200Count": 14336,
     "combinedNormalizedOutputSha256": "d269cdfc82a67566ae5b55c5a1d05c76fe0d96dc9360e976cb2252b1f2b94d5e",
-    "currentManuscriptAuditSha256": "fe22b4153f2bdf38ae0c084a433a51f8b57ee47e71a5beff86a4c4176d461008",
+    "currentManuscriptAuditSha256": "684bfba24374a441ee6b6c37d1aa0a79e7b27fde6fc484901b7ebc33d6bbdbd3",
     "qwenRepeatOutcomeAgreement": {
       "sameOutcomeAndLabel": 217,
       "pairs": 224,
@@ -389,7 +509,10 @@
       "bothValidPairs": 191,
       "identicalAnswerTextPairs": 125
     },
-    "packagedBibliographySha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5"
+    "packagedBibliographySha256": "b2572a3ffb721b29a8fe1b9ab8f31cc4c64867426409cb2b8bcab89be8d43405",
+    "configurationScope": "Development configuration only; no test feature signatures, fitted means, or fitted weights.",
+    "sourceBibliographySha256": "f59a2396071b2b2100aa373246bbb4c48a052acf726b5a56b386442b6cefeddc",
+    "bibliographySanitizedCommentLines": true
   },
   "fullExperimentRegeneration": "not_provided",
   "licenseStatus": "No explicit reuse license is currently assigned to this package."

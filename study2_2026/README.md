@@ -9,6 +9,7 @@ This package contains the 256-run follow-up, its recorded model requests and res
 - `requests/`: exact serialized request payloads for the two configured model systems.
 - `responses/`: request-linked raw response bodies, normalized Qwen rows, and combined normalized scoring rows. Raw response bytes are base64 encoded and carry SHA-256 digests.
 - `analysis/`: pinned outputs, analysis code, exact offline recomputation receipts, and an independent audit for numerical claims, manuscript text claims, and LaTeX tables.
+- `configuration/`: the recorded threshold calibration and verbalization rules, development stream identities, the five-seed FedAvg development recipe, and the eight insight libraries in prose and structured form, plus the aggregate library. These are configuration and provenance materials, not the simulation trajectories or test feature signatures.
 - `MANIFEST.json`: artifact sizes, hashes, manuscript identity, and reproduction limits.
 
 ## Verify the archive
@@ -30,13 +31,13 @@ latexmk -pdf -cd -interaction=nonstopmode -halt-on-error \
   -outdir=/tmp/fot-tep-study2-build study2_2026/paper/main.tex
 ```
 
-The packaged PDF is a verified ten-page build of the source hash in the manifest. LaTeX embeds build-time metadata, so a later PDF need not be byte-identical even when the source and rendered pages match. The current manuscript file itself does not yet cite or link this data package; add a repository reference to the manuscript before submission.
+The packaged PDF is a verified ten-page build of the source hash in the manifest. LaTeX embeds build-time metadata, so a later PDF need not be byte-identical even when the source and rendered pages match. The manuscript snapshot links to this repository and study folder. For an immutable citation, record the package commit or release tag used for the submission.
 
 ## Reproduce the analyses and audit paper claims
 
 Instructions for rebuilding normalized responses and model analyses are in [`analysis/README.md`](analysis/README.md). The independent audit, including the added text-only claims and numeric-cell comparisons for all eight LaTeX tables, is in [`analysis/audit/README.md`](analysis/audit/README.md).
 
-The audit recomputes model outcomes from archived raw responses and checks 62 numerical prose fragments against the packaged manuscript. The text checker is specific to the manuscript snapshot SHA-256 in the receipt; if its wording changes, review and update the checker. It does not cover the earlier 96-run cohort or literature-derived claims. PROTO and FedAvg statistics can be recalculated from the published predictions, but those predictions cannot be regenerated because feature signatures, class means, fitted weights, and producer code are not included. The audit also confirms that the archived AGG system instruction differs from the other conditions in its `used_insight_ids` wording; the manuscript currently describes the system prompt as shared.
+The audit recomputes model outcomes from archived raw responses and checks 36 selected numerical prose claims against the packaged manuscript. The text checker is pinned to the manuscript SHA-256 in the receipt; if the source changes, review and update the checker. It does not cover every manuscript value, the earlier 96-run cohort, or literature-derived claims. PROTO and FedAvg statistics can be recalculated from the published predictions, but those test predictions cannot be regenerated because test feature signatures, test class means, fitted weights, and the prediction producer code are not included. The configuration folder records the five-seed development reconstruction recipe; it does not include fitted arrays or resolve the test-prediction limitation. The manuscript describes a common system-prompt template. The aggregate condition has a small condition-specific wording difference in the `used_insight_ids` instruction, which is recorded in the audit materials.
 
 ## Scope and limits
 

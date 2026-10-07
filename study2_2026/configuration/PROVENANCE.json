@@ -1,0 +1,12 @@
+{
+  "schema": "study2-configuration-provenance/1.0",
+  "sourceDigests": {
+    "thresholdConfigurationSha256": "552a0b8a9cf9e416de77daa7aca2d8dee152a2700bbfaab4ae5e039081712519",
+    "developmentPoolManifestSha256": "7590052879559f5f38a34c838292bb46fdecf50ddd21da6f88c142346596c054",
+    "fedavgReferenceManifestSha256": "1be0e18d8e27d0dcfae8841c4026332770d42f580c46699090bdbf4ca5592c75",
+    "proseLibrarySha256": "4e41a8f4547aefbb4b0593b5dd56aefb11949a9c389cf104e3e4d601fea9cc4d",
+    "structuredLibrarySha256": "67c7c0c3254e20d5d23f3e30f9e84330a4a30bb1845b3c7d75d35d7733a2aea1",
+    "aggregatedLibrarySha256": "e4879fa0da9cdaaf6f089ca41ca28d4812f38ebd53d3a2f98107e79b1c782969"
+  },
+  "scope": "Configuration and development-pool provenance only. No test signatures, fitted class means, fitted weights, or raw simulation trajectories are included."
+}

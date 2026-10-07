@@ -2,10 +2,10 @@
   "schema": "fot-tep-manuscript-build-record/1.0",
   "entryPoint": "paper/main.tex",
   "sourcePath": "paper/manuscript/versione_tre_paper_submission.tex",
-  "sourceSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+  "sourceSha256": "a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4",
   "buildWrapperSha256": "eeb721a652d127a513a89f6c152b23d8cc0c70c356757b36dc178774345586d4",
   "bibliographyPath": "paper/manuscript/refs.bib",
-  "bibliographySha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5",
+  "bibliographySha256": "b2572a3ffb721b29a8fe1b9ab8f31cc4c64867426409cb2b8bcab89be8d43405",
   "generatedTables": [
     {
       "path": "paper/manuscript/generated/tab_t2_allfaults.tex",
@@ -41,20 +41,22 @@
     }
   ],
   "pdfPath": "paper/versione_tre_paper_submission.pdf",
-  "pdfSha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
+  "pdfSha256": "54d9f6b7802ce91b3bc998b57ba7c1f02ce3677ee55a7efd8dc700e16c18331f",
   "pageCount": 10,
   "buildEnvironment": {
     "latexmk": "4.86a",
     "pdfTeX": "3.141592653-2.6-1.40.27",
     "texLive": "2025"
   },
-  "buildCommand": "latexmk -pdf -cd -interaction=nonstopmode -halt-on-error -outdir=<separate-build-directory> study2_2026/paper/main.tex (from repository root)",
+  "buildCommand": "latexmk -pdf -cd -interaction=nonstopmode -halt-on-error -outdir=/tmp/fot-tep-study2-build study2_2026/paper/main.tex",
   "referencesIncluded": true,
   "undefinedCitationsOrReferences": false,
   "overfullBoxes": false,
-  "visualInspection": "All ten pages were rendered and inspected. No clipping or table overflow; some underfull boxes remain.",
+  "visualInspection": "Build completed successfully; no new visual-inspection claim is made for this updated snapshot.",
   "snapshotRelation": "Exact source snapshot copied from the author project and hashed in MANIFEST.json. The earlier review and build record apply to a prior source revision; no independent peer-review verdict is inferred for this later snapshot.",
   "publicCopySanitization": "Comment-only lines removed from the bibliography; citation entries and fields retained.",
-  "pdfBytes": 301996,
-  "pdfBitIdentity": "PDF metadata contains the build timestamp, so repeated builds can differ in bytes; page content and rendering are checked."
+  "pdfBytes": 296172,
+  "pdfBitIdentity": "PDF metadata contains the build timestamp, so repeated builds can differ in bytes; page content and rendering are checked.",
+  "sourceBibliographySha256": "f59a2396071b2b2100aa373246bbb4c48a052acf726b5a56b386442b6cefeddc",
+  "bibliographySanitizedCommentLines": true
 }

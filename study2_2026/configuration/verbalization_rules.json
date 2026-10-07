@@ -1,0 +1,97 @@
+{
+  "schema": "study2-verbalization-configuration/1.0",
+  "samplingMinutes": 1,
+  "faultInjectionHours": 10.0,
+  "windowHours": 5,
+  "thresholdCalibration": {
+    "reference": "Normal development streams N1-N5",
+    "windows": 50,
+    "familywiseAlpha": 0.05,
+    "method": "For each window, take the maximum standardized statistic across 41 measured variables; use nearest-rank rank 49 (conformal-style calibration).",
+    "thresholdComparison": "Strictly greater than the threshold."
+  },
+  "thresholds": [
+    {
+      "statistic": "absolute standardized level shift",
+      "allVariables": true,
+      "threshold": 1.9695333234149084,
+      "unit": "baseline standard deviations",
+      "variableSet": "XMEAS-1 through XMEAS-41"
+    },
+    {
+      "statistic": "absolute standardized local OLS slope",
+      "allVariables": true,
+      "threshold": 0.7468621213669596,
+      "unit": "baseline standard deviations per hour",
+      "variableSet": "XMEAS-1 through XMEAS-41"
+    },
+    {
+      "statistic": "residual standard-deviation ratio after linear detrending",
+      "allVariables": true,
+      "threshold": 1.3681613543196571,
+      "unit": "ratio",
+      "variableSet": "XMEAS-1 through XMEAS-41"
+    },
+    {
+      "statistic": "first-difference standard-deviation ratio",
+      "allVariables": true,
+      "threshold": 1.4051245046201666,
+      "unit": "ratio",
+      "variableSet": "XMEAS-1 through XMEAS-41"
+    }
+  ],
+  "temporalRules": {
+    "phase_partition": {
+      "initial_windows": 2,
+      "late_windows": 2,
+      "intermediate": "all windows between initial and late phases"
+    },
+    "sustained_episode": {
+      "minimum_consecutive_windows": 2,
+      "signed_features_require_same_sign": true
+    },
+    "global_persistence": {
+      "policy": "do not infer from a two-window episode alone; always report active fraction, sign consistency, and late-regime activity",
+      "strict_level_label": "active in every window, one sign throughout, and active in the late regime",
+      "strict_drift_label": "slope active in every window with one sign, window means evolving coherently in that direction, and active in the late regime",
+      "strict_variability_label": "active in every window and active in the late regime"
+    },
+    "transient": "dynamic feature active initially, lower later, and inactive in the late regime while a possible level displacement can remain"
+  },
+  "featureSemantics": {
+    "shift_sigma": "signed displacement of the window mean in baseline standard-deviation units",
+    "slope_sigma_h": "signed local OLS trend in baseline standard deviations per hour",
+    "residual_std_ratio": "ratio of residual standard deviations after linear detrending",
+    "diff_std_ratio": "ratio of standard deviations of first differences; sample-to-sample variation",
+    "raw_std_ratio": "descriptive ratio of raw standard deviations; overall dispersion only"
+  },
+  "verbalizationRules": {
+    "language": "English",
+    "reporting": "For each window, name the leading variable (largest above-threshold magnitude) for each statistic, or report none; include the leading rapid-variability variable when present and the largest overall dispersion ratio.",
+    "overallDispersion": "Descriptive standard-deviation ratio; not thresholded as a fault feature.",
+    "automaticVocabulary": {
+      "allowedEnglishTerms": [
+        "level shift",
+        "shift episode",
+        "persistent shift",
+        "level excursions",
+        "local trend",
+        "trend episode",
+        "persistent drift",
+        "overall dispersion",
+        "residual variability",
+        "slow variability",
+        "rapid sample-to-sample variation",
+        "persistent rapid variability",
+        "settling transient",
+        "irregular dynamics"
+      ],
+      "forbiddenAutomaticTerms": [
+        "oscillation",
+        "oscillatory instability",
+        "periodicity",
+        "increase in variance"
+      ]
+    }
+  }
+}

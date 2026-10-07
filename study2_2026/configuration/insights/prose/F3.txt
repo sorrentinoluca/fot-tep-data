@@ -1,0 +1,1 @@
+Insight P05-INS-F3 describes class F3 from 40 development windows (5 runs) of client C_F3. Between 25 and 65 h, no XMEAS exceeds the level-shift, slope, residual-variability or sample-to-sample variation threshold in 32 of 40 development windows of F3. In the contributing client's Normal development windows over the same interval, this occurs in 36 of 40.

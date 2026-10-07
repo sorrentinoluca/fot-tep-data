@@ -1,4 +1,4 @@
-"""Check the numbers written in the manuscript prose against values recomputed from the archive.
+"""Check current-snapshot quantitative statements against values recomputed from the archived response and prediction records.
 Usage: python3 08_check_text_claims.py <study2_2026 dir> <pickle from 01> <manuscript .tex> <qwen_analysis.json> <combined_analysis.json>
 
 Each claim is a sentence fragment copied from the manuscript in which every number has been
@@ -7,11 +7,14 @@ fragment, with the recomputed numbers, occurs in the manuscript. "NOT FOUND" the
 that either the number or the wording differs: look at the fragment that is printed.
 Taken from the two regenerated analysis JSON files instead of being recomputed: the seeded
 bootstrap intervals and the two duplicate-input drop sensitivities (+20.9 on 189 runs, +85.7)."""
-import sys, re, json, gzip, base64, pickle
+import sys, re, json, gzip, base64, pickle, hashlib
 from collections import Counter, defaultdict
 import numpy as np
 from scipy import stats
 R=sys.argv[1]; cases,num,D=pickle.load(open(sys.argv[2],'rb')); TEX=open(sys.argv[3],encoding='utf-8').read()
+EXPECTED_MANUSCRIPT_SHA256='a2818be4b66b684e73367acb0ec7e8ac98c7f6ca01aded3ef11824d3e181b0e4'
+if hashlib.sha256(TEX.encode('utf-8')).hexdigest() != EXPECTED_MANUSCRIPT_SHA256:
+    raise SystemExit('Manuscript SHA-256 differs from the audited snapshot; update the claim checker after reviewing the changed text.')
 QJ=json.load(open(sys.argv[4])); GJ=json.load(open(sys.argv[5]))
 ARMS=['A0','B0','FULL','SELF','AGG','S0','PL0']; FAULTS=['F1','F2','F3','F8','F10','F13','F14','F15']; RX=['C_'+f for f in FAULTS]
 P={'all':FAULTS,'no':[f for f in FAULTS if f not in('F1','F8')],'f1f8':['F1','F8']}
@@ -39,7 +42,7 @@ WORD={2:'two',3:'three',4:'four',5:'five',6:'six',7:'seven',8:'eight'}
 V={}
 # coverage
 st=Counter(v['state'] for v in Q.values()); gs=Counter(v['state'] for v in G.values())
-V.update(valid=th(st['valid']),abst=th(st['abstain']),rej=str(st['invalid']),trunc=str(st['truncated']),rejtrunc=str(st['invalid']+st['truncated']),gvalid=th(gs['valid']),gabst=th(gs['abstain']))
+V.update(valid=th(st['valid']),abst=th(st['abstain']),rej=str(st['invalid']),trunc=str(st['truncated']),rejtrunc=str(st['invalid']+st['truncated']),gvalid=th(gs['valid']),gabst=th(gs['abstain']),gtotal=th(sum(gs.values())))
 # family A
 d={c:rv('qwen',c,'own',{'FULL':1,'B0':-1}) for c in own}
 terms=[np.var([d[c] for c in own if truth(c)==f],ddof=1)/24 for f in FAULTS]; e=float(np.mean(list(d.values())))
@@ -62,7 +65,7 @@ V.update(B1=f1(b1),B1s=s1(b1),B8=f1(-b8),B8s=s1(b8),h1=sci(holm['F1']),h8=sci(ho
 # accuracies and contrasts
 for a in ARMS:
     V['own'+a]=f1(acc('qwen',FAULTS,'own',a)); V['lu'+a]=f1(acc('qwen',FAULTS,'lu',a)); V['nor'+a]=f1(acc('qwen',FAULTS,'normal',a)); V['gown'+a]=f1(acc('gptoss',FAULTS,'own',a))
-V.update(nown=str(sum(sc('qwen',c,'C_'+truth(c),'FULL') for c in own)),nownA=str(sum(sc('qwen',c,'C_'+truth(c),'A0') for c in own)))
+V.update(nown=str(sum(sc('qwen',c,'C_'+truth(c),'FULL') for c in own)),nownA=str(sum(sc('qwen',c,'C_'+truth(c),'A0') for c in own)),nownB=str(sum(sc('qwen',c,'C_'+truth(c),'B0') for c in own)))
 nor={a:acc('qwen',FAULTS,'normal',a) for a in ARMS+['PROTO','FedAvg']}
 V.update(norP=f1(nor['PROTO']),norF=f'{nor["FedAvg"]:.0f}',normin=f1(min(nor[a] for a in ARMS)),normax=f1(max(nor[a] for a in ARMS)),
          mPA=f1(nor['PROTO']-max(nor[a] for a in ARMS)),mFA=f1(nor['FedAvg']-min(nor[a] for a in ARMS)),mPB=f1(nor['PROTO']-nor['B0']),mFB=f1(nor['FedAvg']-nor['B0']),
@@ -167,68 +170,42 @@ for c in cases: tx[cases[c]['text_sha256']].append(c)
 dup=[v for v in tx.values() if len(v)>1]
 V.update(nsig=str(len(sig)),sigmax=str(max(sig.values())),ndup=WORD[len(dup)].capitalize(),ncross=WORD[sum(len({truth(c) for c in v})>1 for v in dup)])
 CLAIMS=[
- ('abstract',r'raised local-unseen accuracy from <luA0>\% to <luB0>\% but lowered own-fault accuracy by <drop16> percentage points'),
- ('abstract',r'recovered <A>~pp (95\% CI <lo>--<hi>; $p=<pA>$)'),
- ('abstract',r'increased from <olB> to <olF> of 512 decisions'),
- ('abstract',r'exceeded the prototype by <B1>~pp (Holm $p=<h1>$); on F8 it fell <B8>~pp below it (Holm $p=<h8>$)'),
- ('methods',r'<nobs> of 144 were retained'),
- ('methods',r'wrote <aggn> entries, <agg1> on single classes and <agg2> contrasting two classes'),
- ('coverage',r'but only <valid> met the operational answer contract; <abst> abstained, <rej> were rejected'),
- ('coverage',r'and <trunc> were truncated'),
- ('coverage',r'accepts labels from the <rej> otherwise conforming responses, only <extra> additional answers are correct'),
- ('coverage',r'becomes $<rFB>$~pp and \cond{FULL}$-$\cond{A0} $<rFA>$~pp'),
- ('coverage',r'All <rejA0> rejections in \cond{A0} are local-unseen'),
- ('coverage',r'with <gvalid> valid and <gabst> abstentions'),
- ('coverage',r'\cond{SELF} abstains on <abSELF> (<abpSELF>\%) and \cond{PL0} on <abPL0> (<abpPL0>\%)'),
- ('coverage',r'<corSELF> of <valSELF> for \cond{SELF} and <corPL0> of <valPL0> for \cond{PL0}, leaving <wrSELF> and <wrPL0> valid wrong answers. The remaining <restSELF> and <restPL0> outputs'),
- ('family A',r'The Family~A estimate is $<As>$~pp (95\% CI $[<los>,<his>]$, $p=<pA>$): <gain> own-fault runs gained, <loss> lost and <tie> tied'),
- ('family A',r'F1 ($<dF1>$~pp), F3 ($<dF3>$), F8 ($<dF8>$) and F15 ($<dF15>$)'),
- ('family A',r'F3/F15 contribute <net315> of the <nettot> net gains. Excluding these two faults gives $<six>$~pp (<cf>/144 vs.\ <cb>/144)'),
- ('family A',r'<dropK> of these 192 runs'),
- ('family A',r'changes the estimate to $<dropA>$~pp on <dropN> runs'),
- ('controls',r'\cond{PL0}$-$\cond{B0} reaches $<PLB>$~pp'),
- ('controls',r'Own-fault \cond{B0}$-$\cond{A0} is $<BA>$~pp'),
- ('controls',r'descriptively <FA>~pp on own-fault accuracy (<nown>/192 vs.\ <nownA>/192, or <ownFULL>\% vs.\ <ownA0>\%)'),
- ('controls',r'\cond{SELF}$-$\cond{A0} is $<SA>$~pp; the descriptive $2\times2$ interaction is $<inter>$~pp'),
- ('family B',r'exceeds \PROTO{} by $<B1s>$~pp (Holm $p=<h1>$); on F8 it falls below by $<B8s>$~pp (Holm $p=<h8>$)'),
- ('family B',r'(<dropBn> distinct inputs); dropping one member yields a point-only estimate of $<dropB>$~pp'),
- ('family B',r'is only $<BP>$~pp with a descriptive pointwise interval $[<iBP>]$; without F1/F8 it is $<BPno>$~pp $[<iBPno>]$'),
- ('references',r'(<luF>\% vs.\ at most <lumax>\%); \cond{B0}$-$FedAvg is $<BF>$~pp'),
- ('references',r'\PROTO{} scores <norP>\%, FedAvg <norF>\%, and the seven LLM conditions <normin>--<normax>\%'),
- ('references',r'is \PROTO{} over \cond{<best>} (+<mPA>~pp), and the largest is FedAvg over \cond{<worst>} (+<mFA>~pp)'),
- ('references',r'\PROTO{} leads by <mPB>~pp and FedAvg by <mFB>~pp'),
- ('gpt-oss',r'($<gFB>$~pp; pointwise interval $[<igFB>]$), while \cond{B0}$-$\PROTO{} is $<gBP>$~pp'),
- ('gpt-oss',r'\cond{FULL}$-$\cond{SELF} is $<gFS>$~pp. Its Normal \cond{B0} accuracy is <gnorB0>\%, unlike Qwen'+"'"+r's <norB0>\%'),
- ('gpt-oss',r'differs by only $<xm>$~pp'),
- ('gpt-oss',r'\cond{PL0} (<gownPL0>\%) and \cond{SELF} (<gownSELF>\%) exceed \cond{FULL} (<gownFULL>\%)'),
- ('partitions',r'($<FBno>$~pp; pointwise interval $[<iFBno>]$), and is $<FB18>$~pp $[<iFB18>]$ on F1/F8 alone'),
- ('partitions',r'contrasts are $<BPno>$~pp $[<iBPno>]$ and $<BP18>$~pp $[<iBP18>]$'),
- ('synthesis',r'\cond{AGG}$-$\cond{FULL} is $<AFo>$~pp on own-fault, <AFl> on local-unseen, and $<AFn>$~pp on Normal'),
- ('structured',r'\cond{S0}$-$\cond{B0} is <SBo> on own-fault overall, but $<SBno>$~pp without F1/F8 and $<SB18>$~pp on F1/F8; on local-unseen and Normal it is $<SBl>$ and $<SBn>$~pp'),
- ('errors',r'labels <f8f1B> of 168 local-unseen F8 pairs as F1; \cond{FULL} raises that count to <f8f1F> and reduces F8 correctness from <f8B>\% to <f8F>\%'),
- ('errors',r'\cond{FULL} makes <faF> false alarms vs.\ <faB> for \cond{B0}, including <olF> vs.\ <olB> assignments'),
- ('errors',r'\cond{SELF} makes only <faS> false alarms but abstains on <abS> Normal pairs'),
- ('errors',r'rises from <ol315B> to <ol315F> of 128 Normal decisions, accounting for all <olF> in \cond{FULL}'),
- ('errors',r'\cond{B0} makes <eBn> Normal predictions and <eBw> wrong-fault predictions; \cond{FULL} makes <eFn> and <eFw>. The prototype makes <ePn> and <ePw>, and FedAvg <eFen> and <eFew>'),
+ ('abstract',r'<luB0>\% accuracy on local-unseen faults vs.\ <luA0>\% with local examples alone; own-fault accuracy was <ownB0>\% vs.\ <ownA0>\%'),
+ ('abstract',r'was associated with <A> percentage points (pp) higher own-fault accuracy'),
+ ('abstract',r'were <olF> vs.\ <olB> of 512 decisions'),
+ ('abstract',r'<B1>~pp higher on fault 1 and <B8>~pp lower on fault 8'),
+ ('abstract',r'FedAvg reached <luF>\% pooled accuracy'),
+ ('results',r'<valid> valid labeled answers, <abst> abstentions, <rej> parser rejections and <trunc> truncations'),
+ ('results',r'Own-fault accuracy was lower, <nownB>/192 vs.\ <nownA>/192 ($<BA>$~pp'),
+ ('family A',r'The Family~A difference is $<As>$~pp (95\% $t$ CI $[<los>,<his>]$, $p=<pA>$): <gain> runs gained, <loss> lost and <tie> tied'),
+ ('family A',r'Normal false alarms numbered <faF> vs.\ <faB>'),
+ ('family A',r'numbered <olF> vs.\ <olB>'),
+ ('family A',r'F3/F15 contribute <net315> of the <nettot> net gains'),
+ ('family A',r'Excluding F3/F15 gives $<six>$~pp (<cf>/144 vs.\ <cb>/144)'),
+ ('family A',r'gives $<dropA>$~pp on <dropN> runs'),
+ ('family A',r'recovers <extra> correct answers'),
+ ('family B',r'exceeds \PROTO{} on F1 local-unseen pairs by $<B1s>$~pp (Holm $p=<h1>$), but falls below it on F8 by $<B8s>$~pp (Holm $p=<h8>$)'),
+ ('family B',r'dropping one member gives $<dropB>$~pp on <dropBn> runs'),
+ ('references',r'FedAvg exceeds every primary-LLM condition on pooled local-unseen accuracy (<luF>\% vs.\ at most <lumax>\%); \cond{B0}$-$FedAvg is $<BF>$~pp'),
+ ('references',r'\PROTO{} scores <norP>\%, FedAvg <norF>\%'),
+ ('controls',r'Own-fault \cond{SELF}$-$\cond{A0} is $<SA>$~pp'),
+ ('controls',r'The $2\times2$ interaction is $<inter>$~pp'),
+ ('controls',r'\cond{PL0}$-$\cond{B0} is $<PLB>$~pp'),
+ ('controls',r'\cond{AGG}$-$\cond{FULL} is $<AFo>$~pp own-fault'),
+ ('controls',r'Structured \cond{S0}$-$\cond{B0} is zero own-fault overall'),
+ ('errors',r'\cond{SELF} abstains on <abSELF> (<abpSELF>\%) and \cond{PL0} on <abPL0> (<abpPL0>\%)'),
+ ('errors',r'labels <f8f1B>/168 pairs as F1, compared with <f8f1F>/168 in \cond{FULL}'),
+ ('errors',r'makes <eBn> Normal and <eBw> wrong-fault predictions; \cond{FULL} makes <eFn> and <eFw>'),
  ('errors',r'finds <idf> of <idt> cited insight-ID occurrences'),
- ('cost',r'about <ratio> times the input tokens of \cond{A0}; \cond{AGG} averages <aggmore> more than \cond{FULL}'),
- ('cost',r'occupy <natb> UTF-8 bytes when joined by blank lines; structured records occupy <strb> bytes'),
- ('cost',r'records <tin> input and <tout> output tokens, including <rin> input and <rout> output tokens from the <rej> parser-rejected responses'),
- ('cost',r'records <gin> prompt and <gout> completion tokens'),
- ('cost',r'\cond{PL0} averaged <plin> input tokens per request vs.\ <b0in> for \cond{B0}, a roughly <shorter>\% shorter input'),
- ('discussion',r'(<ownA0>\% to <ownB0>\%, $<BA>$~pp)'),
- ('discussion',r'(<luB0>\% vs.\ <luA0>\%)'),
- ('discussion',r'adds <addN> false own-label assignments on Normal and <addL> on local-unseen faults. F3/F15 supply <share>\% of the net own-fault gain, while all <olF> \cond{FULL} own-label assignments'),
- ('discussion',r'into <nsig> distinct signatures, with one occurring <sigmax> times'),
- ('discussion',r'descriptive $<six>$~pp own-fault gain'),
- ('discussion',r'\cond{B0} reaches <f1B>\% local-unseen accuracy and FedAvg <f1Fed>\%'),
- ('discussion',r'assigns <f8f1B>/168 local-unseen F8 decisions to F1'),
- ('limitations',r'<ndup> exact duplicate model-facing input pairs qualify the independence interpretation; <ncross> pairs even cross true labels'),
- ('limitations',r'only <nsig> distinct signature vectors among 256 cases (maximum multiplicity <sigmax>)'),
- ('limitations',r'Among <npairs> pairs of byte-identical requests, the operational state and label agree in <same> (<samep>\%); among the <bv> pairs with two valid labels, <sl> agree (<slp>\%)'),
- ('limitations',r'Full JSON answer text is identical in <sametext> pairs'),
- ('limitations',r'Abstentions and <rejtrunc> LLM rejected or truncated responses'),
- ('conclusion',r'raised own-fault accuracy by <A>~pp while increasing false own-label assignments on Normal from <olB> to <olF> of 512 decisions'),
+ ('supplement',r'gpt-oss completed <gtotal> requests: <gvalid> valid answers and <gabst> abstentions'),
+ ('supplement',r'Its own-fault \cond{FULL}$-$\cond{B0} is $<gFB>$~pp'),
+ ('cost',r'occupy <natb> UTF-8 bytes joined by blank lines, or <strb> bytes as structured records'),
+ ('cost',r'records <tin> input and <tout> output tokens'),
+ ('limitations',r'<ndup> pairs of cases have identical model-facing inputs'),
+ ('limitations',r'four duplicate input pairs generated <npairs> byte-identical request pairs across eight receivers and seven conditions. Response state and label agreed in <same> (<samep>\%)'),
+ ('limitations',r'<sl> of <bv> pairs with two valid labels agreed (<slp>\%)'),
+ ('limitations',r'<nsig> distinct signatures among 256 cases (maximum multiplicity <sigmax>)'),
+ ('conclusion',r'False own-label assignments on Normal were <olF> vs.\ <olB> of 512 decisions'),
 ]
 norm=lambda s: re.sub(r'\s+',' ',s)
 T=norm(TEX); ok=0; bad=[]
@@ -238,4 +215,4 @@ for sec,tpl in CLAIMS:
     else: bad.append((sec,frag))
 print(f'identity of the two extra correct answers and of the A0 rejections as stated: {"ok" if extra_ok else "DIFFERENT"}')
 for sec,frag in bad: print(f'NOT FOUND [{sec}]: {frag}')
-print(f'text claims checked: {len(CLAIMS)}, found with recomputed numbers: {ok}, not found: {len(bad)}')
+print(f'current-snapshot claims checked: {len(CLAIMS)}, found with recomputed numbers: {ok}, not found: {len(bad)}')

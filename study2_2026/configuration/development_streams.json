@@ -1,0 +1,727 @@
+{
+  "schema": "study2-development-streams/1.0",
+  "sourceManifestSha256": "7590052879559f5f38a34c838292bb46fdecf50ddd21da6f88c142346596c054",
+  "scope": "Identifiers and source hashes only; raw trajectories and derived signature values are not included.",
+  "runs": [
+    {
+      "runId": "fault-dev-F1-b01",
+      "streamId": 30000,
+      "class": "F1",
+      "rawSourceSha256": "acb4c4ec62c267f089c7fab2799e18d26cf39f657b78dbef28246ff347f5c62c",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F1-b02",
+      "streamId": 30001,
+      "class": "F1",
+      "rawSourceSha256": "ac5a0442fdb01ea87144128f59de6775ffd34a325695cd4ab9b53e43f23a7031",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F1-b03",
+      "streamId": 30002,
+      "class": "F1",
+      "rawSourceSha256": "0c0e66c76dc50c3f113f99337f0c5277b71080d3dd5fb84133d2d7990a9f079b",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F1-b04",
+      "streamId": 30003,
+      "class": "F1",
+      "rawSourceSha256": "00fbe4f89f99de338cb8ca6b41461ce463e8ee9739b72de601b0f827b1679c12",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F1-b05",
+      "streamId": 30004,
+      "class": "F1",
+      "rawSourceSha256": "d8681747d19f9e4cf4c1d884fae2b5dca889c0a967d5d0bfc84268e16afba7bd",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F2-b01",
+      "streamId": 30005,
+      "class": "F2",
+      "rawSourceSha256": "f55bc18b152eb915427372f8c313743a66d9851c0c9f40bfa081019eaf512c71",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F2-b02",
+      "streamId": 30006,
+      "class": "F2",
+      "rawSourceSha256": "4eb749fbcb6efa399020a2b7a0cf4fb961d32e5852e9593396c0e38a2012d7e9",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F2-b03",
+      "streamId": 30007,
+      "class": "F2",
+      "rawSourceSha256": "da905225518be65b155789f45814694333cde85e797d831d783b651453e3a042",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F2-b04",
+      "streamId": 30008,
+      "class": "F2",
+      "rawSourceSha256": "77c6e2f82b7234bdda0b984275d13b93e7f6a8c38d711bc9f30037c87dd7d807",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F2-b05",
+      "streamId": 30009,
+      "class": "F2",
+      "rawSourceSha256": "d4d3d407988e8db3c1abd6daa6b36895491bbe9e63651073f6990d780d5f23b1",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F3-b01",
+      "streamId": 30010,
+      "class": "F3",
+      "rawSourceSha256": "e5986b949e6a46c1015bab2e47a1431d2b7665a8e1727ad54c23db769cc6db02",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F3-b02",
+      "streamId": 30011,
+      "class": "F3",
+      "rawSourceSha256": "75b998e5433d0844679672949f8524e498a43148cc4cc2b05b85def5b9e96833",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F3-b03",
+      "streamId": 30012,
+      "class": "F3",
+      "rawSourceSha256": "9a0722bfb97bd0519b2777ab8621e28153f234fb2c4bdb23ddcb5043a421d265",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F3-b04",
+      "streamId": 30013,
+      "class": "F3",
+      "rawSourceSha256": "13960fadfe41aa5629612f24da6d9f42276d422ae67a9b138864f536cddc9333",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F3-b05",
+      "streamId": 30014,
+      "class": "F3",
+      "rawSourceSha256": "a0ecd62885ba7b71e4583c098982374ce07c416e96d2780808047a4284e971b0",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F8-b01",
+      "streamId": 30015,
+      "class": "F8",
+      "rawSourceSha256": "64a6f69547cee3f8bd714f83d8b6843ddd7ec112ab99afce69bf4f8784fa232e",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F8-b02",
+      "streamId": 30016,
+      "class": "F8",
+      "rawSourceSha256": "a7e1a9c12a74c4a0cfbc1571f2f6e8704d336bf95dab06146190368736980d56",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F8-b03",
+      "streamId": 30017,
+      "class": "F8",
+      "rawSourceSha256": "9a87fc9d6d398682f03ad74e87576fcbf08e0689bb54fadde19b8cbfc51c9350",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F8-b04",
+      "streamId": 30018,
+      "class": "F8",
+      "rawSourceSha256": "54e2618288a087408714ad25efb0038cdf6e17fbf4ded6e57ec222567e121f56",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F8-b05",
+      "streamId": 30019,
+      "class": "F8",
+      "rawSourceSha256": "2db5bed3623c1575fbbc1bda47e06c8ae4f0e37a98698640d0c4dfffd40ce4e8",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F10-b01",
+      "streamId": 30020,
+      "class": "F10",
+      "rawSourceSha256": "8ef63167e0cc4bfda149c2cc556e34c03b3287dfaebe2865a3ad9dbffd7b5b84",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F10-b02",
+      "streamId": 30021,
+      "class": "F10",
+      "rawSourceSha256": "3752a5718608e97889d58688306c8fc23b404b2a83d830831ba1155a93a391d9",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F10-b03",
+      "streamId": 30022,
+      "class": "F10",
+      "rawSourceSha256": "a21fb460a6798c402953a1b0abb192249eec8653a5ad69496e90bf8c9f57603c",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F10-b04",
+      "streamId": 30023,
+      "class": "F10",
+      "rawSourceSha256": "ee2206d691d310058ac08319db1041d7c7a370a1cfd321f9a1e993f157d16c86",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F10-b05",
+      "streamId": 30024,
+      "class": "F10",
+      "rawSourceSha256": "d94cb25acaf44a91a88b3b01f7ac9324d73b591d3d07cc902f361c677b86a0b0",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F13-b01",
+      "streamId": 30025,
+      "class": "F13",
+      "rawSourceSha256": "e5a6b51b069b15337baf471214748113abcc837bd8b565c892cb535c802fc631",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F13-b02",
+      "streamId": 30026,
+      "class": "F13",
+      "rawSourceSha256": "3354764c401d3d80f1596ee6cc3f0a2d1a0c8f5e9b43b420a694b3d3f4ddc6e4",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F13-b03",
+      "streamId": 30027,
+      "class": "F13",
+      "rawSourceSha256": "19094de862cf2e01761b7e56aedbfb4d422c4c9939ab100902eaab76a2c3b03b",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F13-b04",
+      "streamId": 30028,
+      "class": "F13",
+      "rawSourceSha256": "ce3aed31fd643645716221dbc2b6fee0edc8264f7b6b933d3841cfe06273416a",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F13-b05",
+      "streamId": 30029,
+      "class": "F13",
+      "rawSourceSha256": "7066db0584350acd3a88e7ffa69e8d5be134e2fece9f36801cab9f8d3e454920",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F14-b01",
+      "streamId": 30030,
+      "class": "F14",
+      "rawSourceSha256": "03add9956ccd3609707d3216eb1c9f8c1289cac213a9a7f52651e1127e533442",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F14-b02",
+      "streamId": 30031,
+      "class": "F14",
+      "rawSourceSha256": "946f7986f8e1f3e6f90c016a0f5b1d2ab8147fbc1f6da415c7f4120c95271001",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F14-b03",
+      "streamId": 30032,
+      "class": "F14",
+      "rawSourceSha256": "91565d0056adb6856910c859cbb76d76612b0d53490109d235db5c899ef95a0f",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F14-b04",
+      "streamId": 30033,
+      "class": "F14",
+      "rawSourceSha256": "5fdb0430085f16fe1b770738f4d361926342c6553a755bbcc88779c6d7f6abf2",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F14-b05",
+      "streamId": 30034,
+      "class": "F14",
+      "rawSourceSha256": "0052aeaf1934ad76edc3918a13ef41e24da829f2e9daea91fb8f5351eb4b969d",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F15-b01",
+      "streamId": 30035,
+      "class": "F15",
+      "rawSourceSha256": "ae0dd28000559774ef0e504f27af49cf5d83c4e00db60779a130e382f9092c2d",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F15-b02",
+      "streamId": 30036,
+      "class": "F15",
+      "rawSourceSha256": "38900dcbf0278e5dcceeed749136fc5fda85eb0ca672e186dd1c9e935932e5fb",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F15-b03",
+      "streamId": 30037,
+      "class": "F15",
+      "rawSourceSha256": "a6f25844f9463b13864f885a471b76bed4e761a64482d49b3ac31047d88f1156",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F15-b04",
+      "streamId": 30038,
+      "class": "F15",
+      "rawSourceSha256": "f33c8f2182948a598e02a8aeccda5233521c0cebb85a82a21436d51da5823fb5",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "fault-dev-F15-b05",
+      "streamId": 30039,
+      "class": "F15",
+      "rawSourceSha256": "1c9cf1d5c59c26e1ca2312b8db9fac68166ea137fc5c8e14a8c5b0f1bc6a2e4b",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-1-r01",
+      "streamId": 60000,
+      "class": "Normal",
+      "rawSourceSha256": "dd211cb4c3de0c922b030dbccf733921f4b46b0ef83d6493df0df14f74bf9c6d",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-1-r02",
+      "streamId": 60001,
+      "class": "Normal",
+      "rawSourceSha256": "c563ecdbef75ab42e24bc3ac3f9dd0b59013c31e6d0ee9e8bb0178116a87420d",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-1-r03",
+      "streamId": 60002,
+      "class": "Normal",
+      "rawSourceSha256": "07979d846b1dc6e77249f7364ea755a45d7b1424efa2da3a5a526b8ae36c3edb",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-1-r04",
+      "streamId": 60003,
+      "class": "Normal",
+      "rawSourceSha256": "7b99cadf8b7f11d90b1dd7a31b4f27a7af28bd7728116db929c0092d7cae32d9",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-1-r05",
+      "streamId": 60004,
+      "class": "Normal",
+      "rawSourceSha256": "cba7d0b8a86664c1560c456b42df38238d75005b45861f6ceb8125337e87c9c4",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-2-r01",
+      "streamId": 60005,
+      "class": "Normal",
+      "rawSourceSha256": "f3c13c22bebcf187eb67fb0468507381139f48e976378a7837e68e7a19f9dc21",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-2-r02",
+      "streamId": 60006,
+      "class": "Normal",
+      "rawSourceSha256": "c3d78468bae244ed9fb0d9b2cf4fd821f82ab9f001f18c91af0af94301a9f77d",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-2-r03",
+      "streamId": 60007,
+      "class": "Normal",
+      "rawSourceSha256": "b0b2b33b093d7422f9fab2fe867d5bfbeca74a48c6105b43aeb5fe5940326b4b",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-2-r04",
+      "streamId": 60008,
+      "class": "Normal",
+      "rawSourceSha256": "f8ead60fbe1c387ce32199a560c29e6c0638e69506a6f5c96de5b9ab9fc273f1",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-2-r05",
+      "streamId": 60009,
+      "class": "Normal",
+      "rawSourceSha256": "d776d88e7b18f15630307b0c015da4d9cc16538862a1ad5bf1327c464944de92",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-3-r01",
+      "streamId": 60010,
+      "class": "Normal",
+      "rawSourceSha256": "9f9f4e6a4520a22c6956f6930175a11b658b3b03ec49730c8743f1bd9b55b348",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-3-r02",
+      "streamId": 60011,
+      "class": "Normal",
+      "rawSourceSha256": "a0fc2548a89d38ed73503546367932482571feb10009caccf5724e1a8c9364af",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-3-r03",
+      "streamId": 60012,
+      "class": "Normal",
+      "rawSourceSha256": "3b24771bc24aaf14f6c32a157e73c4a3bd96cf10750129a190218fc9e09dff53",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-3-r04",
+      "streamId": 60013,
+      "class": "Normal",
+      "rawSourceSha256": "35b83e0c7ca6cece1683c12aa1c03cfcf96733cb5bcf31f14823941225d8f89a",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-3-r05",
+      "streamId": 60014,
+      "class": "Normal",
+      "rawSourceSha256": "ffbc6997b30e7d9360ae108049b40ad8957bdd4716d153568afd6cbfda3f47da",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-4-r01",
+      "streamId": 60015,
+      "class": "Normal",
+      "rawSourceSha256": "b4c9a001186dc7ff93ce57d31eca4c4c048d57ec0c179cd86ca00f6e2f8d9675",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-4-r02",
+      "streamId": 60016,
+      "class": "Normal",
+      "rawSourceSha256": "5146be27fa0a6107e3835655db8dc5aa263621a23866dd7083c7530ecc479461",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-4-r03",
+      "streamId": 60017,
+      "class": "Normal",
+      "rawSourceSha256": "e96546d6fb4ebf0d24c0e8691ba2a8269f59c7b0bea5084599d92ab00746f66c",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-4-r04",
+      "streamId": 60018,
+      "class": "Normal",
+      "rawSourceSha256": "3abb4ef669d70dc534799d967c73e283613bebaafc2d6ef028fe43652a103e37",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-4-r05",
+      "streamId": 60019,
+      "class": "Normal",
+      "rawSourceSha256": "3ff0465eda9a4b60a33146de89cc4dbfb271e1dbf8032373a36e67718c5aedcc",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-5-r01",
+      "streamId": 60020,
+      "class": "Normal",
+      "rawSourceSha256": "3d958d30c3d7e70e65372e7ceca20791debc97dd536ac155e38f10488ee42e1b",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-5-r02",
+      "streamId": 60021,
+      "class": "Normal",
+      "rawSourceSha256": "4585ab3d192c3faad80c14d1e642965d7f051aa87a0f9ccdef675a988af86a67",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-5-r03",
+      "streamId": 60022,
+      "class": "Normal",
+      "rawSourceSha256": "b1ff2d837e160fe84e568bc0e51177dc91e85695f656575350dc6b3f66de3f58",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-5-r04",
+      "streamId": 60023,
+      "class": "Normal",
+      "rawSourceSha256": "35e76a13109670e0ee0e01abc5025c3464602b670259834c349035a715c7c4e6",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-5-r05",
+      "streamId": 60024,
+      "class": "Normal",
+      "rawSourceSha256": "07aa4486d4817f547e34a37fcfef61abf49d423d5e3e03d8bd231ecffd2b5982",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-6-r01",
+      "streamId": 60025,
+      "class": "Normal",
+      "rawSourceSha256": "156052ddce301f006b5bb21c56686586b7876fe72e79172529470b69e3509505",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-6-r02",
+      "streamId": 60026,
+      "class": "Normal",
+      "rawSourceSha256": "9d0ff51533294e8498b9488276242f11cb8d8e289363746e671f274028e33701",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-6-r03",
+      "streamId": 60027,
+      "class": "Normal",
+      "rawSourceSha256": "2269b2193ca25efef53a3fe4f94b4373d5e1ef53a6e22b6c044557e56edb25dc",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-6-r04",
+      "streamId": 60028,
+      "class": "Normal",
+      "rawSourceSha256": "201b970f88e835485b2007cdf1c3f8b31a49edbcda4fe6dce0169726a5142e46",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-6-r05",
+      "streamId": 60029,
+      "class": "Normal",
+      "rawSourceSha256": "70da740405720f53ba3fd2039cfed443218616d5ca62a4ed32d02beebbb8bda0",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-7-r01",
+      "streamId": 60030,
+      "class": "Normal",
+      "rawSourceSha256": "2c675990e584e29d12b1b8cd17b8e128853533b0bfc9e8d042eb78c9d4ee212f",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-7-r02",
+      "streamId": 60031,
+      "class": "Normal",
+      "rawSourceSha256": "d2f3e1cbffb0371766b37dfa42ce5f2d38f437c28e624fe5f3bc31abfa87ab7f",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-7-r03",
+      "streamId": 60032,
+      "class": "Normal",
+      "rawSourceSha256": "888896eaad987373df6fa9ef82d73ab79387a4994a28fc947e5fb3437bdf0e02",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-7-r04",
+      "streamId": 60033,
+      "class": "Normal",
+      "rawSourceSha256": "d45a3ac45558a82a6162f8f78d15f6ee0cdb8af545b8bc49fed304adf12ccc02",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-7-r05",
+      "streamId": 60034,
+      "class": "Normal",
+      "rawSourceSha256": "c20d5047dd8931ce7118dfe47d96b6d9dee9c52810d2707b595c4c76c2c79be3",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-8-r01",
+      "streamId": 60035,
+      "class": "Normal",
+      "rawSourceSha256": "9a79587c10b85d0e2158ce48fc2cde6e94df1e145a5cf0c65e5c2a4a099525aa",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-8-r02",
+      "streamId": 60036,
+      "class": "Normal",
+      "rawSourceSha256": "220e78fc9496dacd2fd4c112e2adb2b3d2c91475e0c0a8066a8958dd96337594",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-8-r03",
+      "streamId": 60037,
+      "class": "Normal",
+      "rawSourceSha256": "6cdb3d4e24ffe84f2830cc407b24b138a910eb6343fe279cece018e9a91bf77a",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-8-r04",
+      "streamId": 60038,
+      "class": "Normal",
+      "rawSourceSha256": "83437e7cb05251a9ae3c760372ce71f3ad9d3ee5b986b529e36a967bf13191b0",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    },
+    {
+      "runId": "normal-dev-agent-8-r05",
+      "streamId": 60039,
+      "class": "Normal",
+      "rawSourceSha256": "fb45661539962a74d49ca6564b8ef2433612c67fde18a65e7439853eb6f05540",
+      "windowCount": 8,
+      "windowStartHours": 25.0,
+      "windowEndHours": 65.0
+    }
+  ]
+}

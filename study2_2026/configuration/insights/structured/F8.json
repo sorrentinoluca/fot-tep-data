@@ -1,0 +1,53 @@
+{
+  "insight_id": "P05-INS-F8",
+  "class": "F8",
+  "source_client": "C_F8",
+  "development_windows": 40,
+  "development_runs": 5,
+  "facts": [
+    {
+      "observation": "largest above-threshold level shift",
+      "variable": "XMEAS-1",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 26,
+      "class_windows_total": 40,
+      "positive": 14,
+      "negative": 12,
+      "normal_windows": 0,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "largest above-threshold slope",
+      "variable": "XMEAS-1",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 22,
+      "class_windows_total": 40,
+      "positive": 14,
+      "negative": 8,
+      "normal_windows": 5,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "largest above-threshold sample-to-sample variation",
+      "variable": "XMEAS-10",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 29,
+      "class_windows_total": 40,
+      "normal_windows": 0,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "greatest overall dispersion (standard-deviation ratio)",
+      "variable": "XMEAS-1",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 22,
+      "class_windows_total": 40,
+      "normal_windows": 7,
+      "normal_windows_total": 40
+    }
+  ]
+}

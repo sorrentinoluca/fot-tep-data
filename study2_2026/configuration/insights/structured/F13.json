@@ -1,0 +1,51 @@
+{
+  "insight_id": "P05-INS-F13",
+  "class": "F13",
+  "source_client": "C_F13",
+  "development_windows": 40,
+  "development_runs": 5,
+  "facts": [
+    {
+      "observation": "largest above-threshold level shift",
+      "variable": "XMEAS-7",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 20,
+      "class_windows_total": 40,
+      "positive": 0,
+      "negative": 20,
+      "normal_windows": 0,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "largest above-threshold sample-to-sample variation",
+      "variable": "XMEAS-10",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 32,
+      "class_windows_total": 40,
+      "normal_windows": 0,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "greatest overall dispersion (standard-deviation ratio)",
+      "variable": "XMEAS-7",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 21,
+      "class_windows_total": 40,
+      "normal_windows": 2,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "largest above-threshold residual variability after linear detrending",
+      "variable": "XMEAS-7",
+      "from_h": 35,
+      "to_h": 65,
+      "class_windows": 15,
+      "class_windows_total": 30,
+      "normal_windows": 0,
+      "normal_windows_total": 30
+    }
+  ]
+}

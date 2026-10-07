@@ -1,0 +1,18 @@
+{
+  "insight_id": "P05-INS-F3",
+  "class": "F3",
+  "source_client": "C_F3",
+  "development_windows": 40,
+  "development_runs": 5,
+  "facts": [
+    {
+      "observation": "no XMEAS exceeds the level-shift, slope, residual-variability or sample-to-sample variation threshold",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 32,
+      "class_windows_total": 40,
+      "normal_windows": 36,
+      "normal_windows_total": 40
+    }
+  ]
+}

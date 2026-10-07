@@ -1,0 +1,50 @@
+{
+  "schema": "study2-fedavg-recipe/1.0",
+  "referenceName": "fixed logistic-regression FedAvg development reconstruction",
+  "sourceDescription": "Selected logistic-regression FedAvg configuration evaluated on the development pool.",
+  "status": "prospectively_frozen_pending_independent_review",
+  "scope": "Five-seed development reconstruction configuration. This file does not contain fitted arrays and does not establish that test predictions can be regenerated.",
+  "algorithm": {
+    "lam": 0.0,
+    "eta": 0.3,
+    "rounds": 50,
+    "e_local": 5,
+    "gridIndex": 12,
+    "model": "Multinomial logistic regression (697 inputs, nine class outputs; 6,282 float64 parameters).",
+    "objective": "Inverse-frequency-weighted softmax cross-entropy plus L2 on weights only; lambda is zero, so no regularization term contributes.",
+    "initialization": "Xavier/Glorot-uniform weights from NumPy default_rng(seed); zero biases.",
+    "localOptimization": "At each round, every client starts from the current global parameters and runs five full-batch gradient-descent steps on its local development rows at learning rate 0.3.",
+    "clientOrder": [
+      "C_F1",
+      "C_F2",
+      "C_F3",
+      "C_F8",
+      "C_F10",
+      "C_F13",
+      "C_F14",
+      "C_F15"
+    ],
+    "serverAggregation": "Weighted parameter mean using client row count n_k / sum(n_k); each client has 80 development windows, so each weight is 1/8.",
+    "seeds": [
+      20260928,
+      20260929,
+      20260930,
+      20261001,
+      20261002
+    ],
+    "ensemble": "Average the nine-class probabilities from the five seed-specific models before taking the maximum-probability class.",
+    "selectionContext": "The setting was chosen using development data after exploratory-cohort results were known; no test cases were used to build the development models."
+  },
+  "environment": {
+    "architecture": "x86_64",
+    "python": "3.10.21",
+    "numpy": "2.2.6",
+    "threadControls": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    }
+  },
+  "historicalIdentityClaim": false,
+  "note": "The selected arrays, signatures, and test predictions are intentionally not distributed in this package."
+}

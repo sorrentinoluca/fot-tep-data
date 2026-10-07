@@ -1,0 +1,65 @@
+{
+  "insight_id": "P05-INS-F2",
+  "class": "F2",
+  "source_client": "C_F2",
+  "development_windows": 40,
+  "development_runs": 5,
+  "facts": [
+    {
+      "observation": "largest above-threshold level shift",
+      "variable": "XMEAS-34",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 35,
+      "class_windows_total": 40,
+      "positive": 0,
+      "negative": 35,
+      "normal_windows": 0,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "largest above-threshold slope",
+      "variable": "XMEAS-34",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 21,
+      "class_windows_total": 40,
+      "positive": 0,
+      "negative": 21,
+      "normal_windows": 0,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "greatest overall dispersion (standard-deviation ratio)",
+      "variable": "XMEAS-34",
+      "from_h": 25,
+      "to_h": 65,
+      "class_windows": 21,
+      "class_windows_total": 40,
+      "normal_windows": 0,
+      "normal_windows_total": 40
+    },
+    {
+      "observation": "largest above-threshold level shift",
+      "variable": "XMEAS-10",
+      "from_h": 25,
+      "to_h": 35,
+      "class_windows": 5,
+      "class_windows_total": 10,
+      "positive": 5,
+      "negative": 0,
+      "normal_windows": 0,
+      "normal_windows_total": 10
+    },
+    {
+      "observation": "largest above-threshold residual variability after linear detrending",
+      "variable": "XMEAS-10",
+      "from_h": 25,
+      "to_h": 35,
+      "class_windows": 5,
+      "class_windows_total": 10,
+      "normal_windows": 0,
+      "normal_windows_total": 10
+    }
+  ]
+}
