@@ -1,15 +1,22 @@
-# Study 2 manuscript package
+# Study 2 reproducibility package
 
-This directory is reserved for the data package supporting the manuscript version dated
-2026-10-07. `MANIFEST.template.json` records the manuscript SHA-256 and the package fields to
-complete when the matching source revision and study artifacts are assembled.
+This package supports the 256-run follow-up reported in the manuscript snapshot identified in `MANIFEST.json`. It preserves the earlier 96-run cohort separately in the repository’s existing `study2_assets/` files.
 
-No release package is present here yet. The existing `study2_assets/view_data.js` supports the
-previously archived 96-run cohort and must not be used as a substitute for the manuscript's
-256-run follow-up. Keep those cohorts and their output files separate.
+## Contents
 
-The complete package should include the exact prompts or their byte-for-byte builders, per-call
-responses and status records, run-level inputs and truth mapping, deterministic scoring and
-analysis code, output tables, and a manifest of hashes and provenance. The release should allow
-the scoring and paper tables to be regenerated from archived responses without contacting an
-inference service.
+- `paper/`: the exact manuscript source, bibliography, and generated T2 tables used at the author-designated manuscript path.
+- `data/`: the 256-case evaluation manifest and sealed numerical reference predictions.
+- `requests/`: exact serialized request payloads for the Qwen and gpt-oss configured systems.
+- `responses/`: exact raw response bodies for gpt-oss, paired to request keys and carrying per-response SHA-256 digests.
+- `analysis/`: reviewed machine-readable analyses, derived tables, usage accounting, and source code for normalization and table generation.
+- `MANIFEST.json`: artifact sizes and SHA-256 digests, manuscript identity, and scope limits.
+
+## Verification
+
+From the repository root, run `python3 study2_2026/verify_package.py`. The verifier checks every artifact listed in `MANIFEST.json`, checks request/response row counts, and verifies embedded raw-response digests. It makes no network requests and runs no model inference.
+
+## Reproduction scope
+
+The gpt-oss request and raw-response archive is available for inspection. Exact Qwen request payloads and reviewed aggregate results are included, but the per-request Qwen response archive and normalized per-request outcomes are not part of this public package. A reader therefore cannot independently rebuild Qwen row-level scores from this release alone. The package records this limitation rather than treating aggregate analysis files as raw evidence.
+
+S09, R08, and the manuscript review cycles closed with limitations. See the manuscript and analysis files for scientific limits, adverse findings, and inferential scope.
