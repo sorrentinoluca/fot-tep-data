@@ -265,7 +265,7 @@ def run(backup: Path):
         'byteIdenticalRequestAgreement': {
             'distinctRepeatedWireDigests': len(repeated), 'keysInRepeatedGroups': repeated_keys,
             'comparableKeyPairs': comparable_pairs, 'pairsWithIdenticalStoredBytes': identical_bytes,
-            'note': 'Compares stored response SHA-256 only; no response content is published.'}}
+            'note': 'Compares stored response SHA-256 only; request-linked raw response bodies are published in responses/qwen_responses.jsonl.gz.'}}
 
 
 if __name__ == '__main__':

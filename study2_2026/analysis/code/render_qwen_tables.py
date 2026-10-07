@@ -375,7 +375,7 @@ def main():
     w('')
     w('Bins at or above 1200 characters are the region the deployed parser rejects outright.')
     w('')
-    args.out.write_text('\n'.join(L) + '\n', encoding='utf-8')
+    args.out.write_text('\n'.join(L).rstrip('\n') + '\n', encoding='utf-8')
     print(json.dumps({'tables': str(args.out), 'lines': len(L)}))
 
 

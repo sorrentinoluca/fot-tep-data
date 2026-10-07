@@ -3,248 +3,337 @@
   "packageStatus": "offline_analysis_reproducible",
   "study": "FoT-TEP Study 2",
   "cohort": "confirmatory follow-up (256 runs)",
-  "createdUtc": "2026-10-07T11:43:46Z",
+  "createdUtc": "2026-10-07T15:03:03Z",
   "manuscript": {
-    "path": "paper/versione_tre_paper_submission.tex",
+    "path": "paper/manuscript/versione_tre_paper_submission.tex",
     "title": "Rule-Based Own-Class and Peer Insights for LLM Fault Diagnosis under Extreme Label Skew",
     "versionDate": "2026-10-07",
-    "sha256": "7a5cb41914fbff63649126428976f6ceb67a9478d1088175317d9decec9448c2",
-    "reviewedBaseSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
-    "pdfSha256": "783002763627a59fd694fa59d9766ac247863fa078bf072f0a221e9dcb064106"
+    "sha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+    "previouslyReviewedSourceSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
+    "pdfPath": "paper/versione_tre_paper_submission.pdf",
+    "pdfSha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
+    "pageCount": 10,
+    "snapshotNote": "Later author snapshot than the source covered by the earlier independent manuscript review; package build verified separately.",
+    "bibliographySha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5"
   },
   "sourceRepository": {
-    "url": "https://github.com/sorrentinoluca/fot-phd",
+    "url": "https://github.com/sorrentinoluca/fot-tep-data",
     "revision": null,
-    "revisionNote": "Each included source and analysis artifact is pinned by SHA-256 below; a clean source commit matching this manuscript snapshot was not established."
+    "revisionNote": "Cite the containing Git commit for an immutable package revision; every payload artifact is pinned by SHA-256 below."
   },
   "reviewStatus": {
     "qwenAnalysis": "closed_with_limits",
     "gptOssAndCrossModelAnalysis": "closed_with_limits",
-    "manuscript": "closed_with_limits; packaged title-only revision built and visually checked"
+    "manuscript": "Earlier independent review closed with limitations on a prior source; this later author snapshot was compiled and visually checked, with no new peer-review verdict inferred."
   },
   "reproducibilityLimits": [
-    "The exact gpt-oss request payloads and raw response bodies are included. The server-side gpt-oss ledger and private service metadata are not included; transport status and response digests are preserved per request.",
-    "Full simulator reruns and fresh model inference are outside this package. Temperature-zero requests did not guarantee byte-identical re-sends."
+    "The package supports offline scoring and analysis from archived model requests and raw responses; it does not reproduce fresh model inference or regenerate the 256 physical simulator runs.",
+    "PROTO and FedAvg accuracies can be recomputed from the published predictions, but the predictions cannot be regenerated because feature signatures, class means, fitted weights and producer code are not included.",
+    "The earlier 96-run exploratory cohort, raw simulation trajectories, and the pipeline that creates verbalized windows and insights are not fully included."
   ],
   "artifacts": [
+    {
+      "path": "analysis/README.md",
+      "bytes": 2601,
+      "sha256": "7bb3d178ad64168e313f0e9cba122be0657118ba83e1d9c6caa791949dc94329",
+      "role": "Analysis, response provenance, reproduction receipt, or source code"
+    },
     {
       "path": "analysis/REPRODUCTION_CHECKS.json",
       "bytes": 1735,
       "sha256": "38c7bfb23390ee3fb2c4b58c0eab5c9261ac082b02360d83c9536e12fd66029b",
-      "role": "Machine-readable reviewed analysis, response provenance, or reproduction check"
+      "role": "Analysis output, reproduction receipt, or source code"
+    },
+    {
+      "path": "analysis/audit/01_parse_raw_responses.py",
+      "bytes": 4800,
+      "sha256": "090a0507eaf9cb2319a5de8f21e9a699f4c9b771c10349bee8bdd4c086af7d21",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/02_recompute_statistics.py",
+      "bytes": 8684,
+      "sha256": "e2c2a3508eb08fcec6e1f313292b5b5aabafa0bcdf71d501f5d4e2b1ee7822e2",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/03_design_and_request_checks.py",
+      "bytes": 4896,
+      "sha256": "a7ffcc9878d444e750e829e1f70ef0a842a87f844157ed77ac58729d258b5796",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/04_prompt_facts.py",
+      "bytes": 2060,
+      "sha256": "4604c1df07abd9175001ee36d5d926c92c7528acd5894adc8551521874e2b9f6",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/05_resend_agreement.py",
+      "bytes": 3365,
+      "sha256": "38c71936af1e2aae16cf14779a876457e9914ee058f6867207fb7537ebf6c308",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/06_reproduce_manuscript_claims.py",
+      "bytes": 5828,
+      "sha256": "1be3d0b446c9558a31331da11d0dd02a7c1227bbdcf8d060e2ae7b55eb6bfd64",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/07_check_latex_tables.py",
+      "bytes": 7524,
+      "sha256": "e223abfb7ad53a88a0abaa5ab6c4de61b8bf8fddc9f6379710632200b534da8b",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/README.md",
+      "bytes": 1941,
+      "sha256": "5813d33a79e8b3176cf493aa8b0ea5103f29e61d8a2e78dc2df037a4f49850ed",
+      "role": "Independent audit instructions and scope"
+    },
+    {
+      "path": "analysis/audit/compare_json.py",
+      "bytes": 1145,
+      "sha256": "cef239d87ed4126a43316c79126bac31602f512780cddc2b884329e420073e1b",
+      "role": "Independent offline audit source code or instructions"
+    },
+    {
+      "path": "analysis/audit/run_package_audit.sh",
+      "bytes": 3787,
+      "sha256": "4763a5bcb01cb3223d1143fc280635c430bb23bea956e5edff1517be72af86d9",
+      "role": "Safe runner for offline package audit"
     },
     {
       "path": "analysis/code/account_gpt_oss_usage.py",
       "bytes": 2511,
       "sha256": "baa1cbe5842f51b07a8577d68e0bbb545fc89f9ac228b562a7ada35f0795175e",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/code/account_qwen_usage.py",
-      "bytes": 14473,
-      "sha256": "2bbd01751a17e9ea4ef0ef2a0c09ce935890a8b1c95fb6256330c68dc2008894",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "bytes": 14526,
+      "sha256": "e902066abb920062861282fba81dfc197e9b15012c1a29bff1c7621a4287d096",
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/code/analyze_gpt_oss_and_cross_model.py",
       "bytes": 14569,
       "sha256": "c486677575075a99d04c63024ea27f6c89785803d2eb5a5182c8647e50b8fc87",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/code/analyze_qwen.py",
       "bytes": 24165,
       "sha256": "53bf18a2b90633b194d443c9018e4ae6e16ec3b2463116393d69d3eb610815bd",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/code/build_combined_response_scores.py",
       "bytes": 5496,
       "sha256": "46b919bda75d4a30e22884cf12df46a38bc7d8248532fd64f38a64d32018febf",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/code/build_normalized_outputs.py",
       "bytes": 5110,
       "sha256": "dba4bce0455cf78239580b71c8e3f6c3c163ba3cc6503ac03a9cd015ca8a7a9e",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/code/normalize_qwen.py",
       "bytes": 5130,
       "sha256": "04925e99598cf80996e93f7cfdfe50cb66beaff0a82a046da35e637e5b281139",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/code/render_gpt_oss_tables.py",
       "bytes": 4459,
       "sha256": "555b10af6d1247fb87799994ffe9c9f6b0e41f767d538f484ff1d6bf7defde59",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/code/render_qwen_tables.py",
-      "bytes": 21111,
-      "sha256": "b5eed43aedaa3c96f81381756ecc6fe4de6547e52ec7a3bbb60bf6fb15b2a298",
-      "role": "Analysis, normalization, response-archive, or table-generation source code"
+      "bytes": 21124,
+      "sha256": "209540a0d7749a27115cb2a41e3f83d74111045f742dfcd97b8580a87de636d3",
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/gpt_oss_and_cross_model_analysis.json",
       "bytes": 434909,
       "sha256": "f3e92d23f5791482285a11935f40f229f77e5a4f9200aff7965875762b5e30ee",
-      "role": "Machine-readable reviewed analysis, response provenance, or reproduction check"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/gpt_oss_tables.md",
       "bytes": 4864,
       "sha256": "dd694be2a92befe76c36ae67d004036e583551f0fcb8d480b5f5d1a0ae718161",
-      "role": "Human-readable derived analysis table"
+      "role": "Analysis output, reproduction receipt, or source code"
+    },
+    {
+      "path": "analysis/paper_snapshot_reproduction.json",
+      "bytes": 6135,
+      "sha256": "a0c651cda0a81000465a59a44171a38342d522ea53f2b4d363bd2e042a6da1a2",
+      "role": "Machine-readable manuscript snapshot, audit findings, and reproduction receipt"
     },
     {
       "path": "analysis/qwen_response_archive_receipt.json",
       "bytes": 813,
       "sha256": "e4a49bf3ae77a07e250a300b10e0f56f51590bea5b5ce2eb55ee7b9accec0e83",
-      "role": "Machine-readable reviewed analysis, response provenance, or reproduction check"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/qwen_supplemental_accounting.json",
-      "bytes": 11485,
-      "sha256": "3bcb7531554b1e5f1bf018cc114cb043977038496bf017f82b253d436cc0c902",
-      "role": "Machine-readable reviewed analysis, response provenance, or reproduction check"
+      "bytes": 11549,
+      "sha256": "4a80393aaa87240a16c295935cb232ef2a44023551145bc62c64d72e43d55619",
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/qwen_t2_analysis.json",
       "bytes": 351068,
       "sha256": "df8ea84c4930e6439b5c8b40fc3615f4539370c279a16f7ddcea83dc4307673a",
-      "role": "Machine-readable reviewed analysis, response provenance, or reproduction check"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/qwen_tables.md",
       "bytes": 65661,
       "sha256": "57b850ca21d9ac58584d2cf776d7a3d29508938405d66a04bd21253f9101bfc6",
-      "role": "Human-readable derived analysis table"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "analysis/requirements.txt",
       "bytes": 27,
       "sha256": "a328fd1cf5402fff8e0c87457272ce115b5d520c34a563236609c7b586729435",
-      "role": "Pinned Python analysis dependencies used for offline recomputation"
+      "role": "Analysis output, reproduction receipt, or source code"
     },
     {
       "path": "data/case_manifest.jsonl",
       "bytes": 229135,
       "sha256": "d8b5f379815c3fb5c3ddc1a7ef4c84fcb19efc8ff15e462a1576e082622993a4",
-      "role": "256-run evaluation case and truth manifest"
+      "role": "Study evaluation data or numerical prediction output"
     },
     {
       "path": "data/numerical_predictions.jsonl",
       "bytes": 129489,
       "sha256": "55c125a1b09091a45c7a149970129d8b363c839f5121d436ba738e37d970eea3",
-      "role": "Sealed numerical reference predictions"
+      "role": "Study evaluation data or numerical prediction output"
     },
     {
       "path": "paper/BUILD_RECORD.json",
-      "bytes": 1021,
-      "sha256": "b3181dd91b5219015ec1fba8b0c189beef288f7e036e94e8e7c38f96e58f6a7f",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "bytes": 2979,
+      "sha256": "6e2eff6b07610b37af904764e06e01e5f9dd7c49850551f675e55056ac13d577",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
-      "path": "paper/generated/tab_t2_allfaults.tex",
+      "path": "paper/main.tex",
+      "bytes": 106,
+      "sha256": "eeb721a652d127a513a89f6c152b23d8cc0c70c356757b36dc178774345586d4",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_allfaults.tex",
       "bytes": 1388,
       "sha256": "e01750b3c4b6c7054831f9ea88b39726e368609c5c9818c28005f442b3566e43",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
-      "path": "paper/generated/tab_t2_arms.tex",
-      "bytes": 659,
-      "sha256": "e00cf0b9dcb503d7aae605e7c6fec6e915d5001125ee140be41a31d56167851b",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "path": "paper/manuscript/generated/tab_t2_arms.tex",
+      "bytes": 665,
+      "sha256": "34edec4b5e209ec28bd3e9397e53ffbcb01a4fdb5b5edf5a837cb9575df53bb6",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
-      "path": "paper/generated/tab_t2_faults.tex",
-      "bytes": 503,
-      "sha256": "ef487e3763f1b85d33a996533af61870dd4102e68c0e614f11cf1592e25e2b31",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "path": "paper/manuscript/generated/tab_t2_faults.tex",
+      "bytes": 357,
+      "sha256": "377ff71a8790b071ed2b2bea7ee21fe4a6780dae6bfce1fb988140c5b4abe015",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
-      "path": "paper/generated/tab_t2_main.tex",
-      "bytes": 891,
-      "sha256": "06732b3bb6f4b89e8729dc1a1bbcc8a6830aebc874e6bc61c41f7a045475b744",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "path": "paper/manuscript/generated/tab_t2_main.tex",
+      "bytes": 836,
+      "sha256": "63ac8f25a3ea5a11b108412dd858872eda92e163f6f4b7f85a7ad450c4c1b785",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
-      "path": "paper/generated/tab_t2_partitions.tex",
+      "path": "paper/manuscript/generated/tab_t2_ownlabels.tex",
+      "bytes": 355,
+      "sha256": "68ebfc281fb6b9d84427d742abde7dfe01fda458b12097d4642a9c2fb0d70a20",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_partitions.tex",
       "bytes": 297,
       "sha256": "e454257115026c4c2490ae430bd3d6fb9309d6f0c9fc0ece7e42d48ee72ab831",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
-      "path": "paper/generated/tab_t2_supplement.tex",
-      "bytes": 406,
-      "sha256": "cbf2774e7ef9f39cec8abcacdce86ef105641551d2929ebb576152d42079a58e",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "path": "paper/manuscript/generated/tab_t2_supplement.tex",
+      "bytes": 412,
+      "sha256": "908da01b9a2e124de9d0a6b5452d73dd91e32fa2d5b6208ad028b2e3d4f718d2",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
-      "path": "paper/generated/tab_t2_usage.tex",
-      "bytes": 310,
-      "sha256": "0f26e0edf6a490ae957d32770b72aa1ebca0d5d99fda28c2571526df549924e9",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "path": "paper/manuscript/generated/tab_t2_usage.tex",
+      "bytes": 316,
+      "sha256": "948e9e2cac87d59e468c245c4326c89b8a199d29ebf0207fe62ff2bb523e5a4b",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
-      "path": "paper/refs.bib",
-      "bytes": 13569,
-      "sha256": "8a56e59a1ce1b79077f3ea098fedf30796314d8b847d705a37a82a6f1928271f",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "path": "paper/manuscript/refs.bib",
+      "bytes": 15820,
+      "sha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
+    },
+    {
+      "path": "paper/manuscript/versione_tre_paper_submission.tex",
+      "bytes": 54332,
+      "sha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
       "path": "paper/versione_tre_paper_submission.pdf",
-      "bytes": 293143,
-      "sha256": "783002763627a59fd694fa59d9766ac247863fa078bf072f0a221e9dcb064106",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
-    },
-    {
-      "path": "paper/versione_tre_paper_submission.tex",
-      "bytes": 48024,
-      "sha256": "7a5cb41914fbff63649126428976f6ceb67a9478d1088175317d9decec9448c2",
-      "role": "Manuscript source, bibliography, generated table, or paper build artifact"
+      "bytes": 301996,
+      "sha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
+      "role": "Current manuscript source, bibliography, generated table, or verified PDF build artifact"
     },
     {
       "path": "requests/gpt_oss_requests.jsonl.gz",
       "bytes": 4380347,
       "sha256": "3b7c27394b4197c9eec156b119d67b4dd62433ea3e73e2adec2f649d7ee3ca88",
-      "role": "Exact serialized model request payloads in a deterministic gzip container"
+      "role": "Exact request, response, or normalized response archive"
     },
     {
       "path": "requests/qwen_requests.jsonl.gz",
       "bytes": 4389054,
       "sha256": "d543ef5da63f8fcb174a4280f7f256be724e812ecba8de2ce0f61661d4d35906",
-      "role": "Exact serialized model request payloads in a deterministic gzip container"
+      "role": "Exact request, response, or normalized response archive"
     },
     {
       "path": "responses/gpt_oss_responses.jsonl.gz",
       "bytes": 5537000,
       "sha256": "a708c45a7ef2d2bd6bff88bf4433ad8091f88c6e8533a6241b7917884123bd31",
-      "role": "Request-linked raw model response bytes with terminal status and digest"
+      "role": "Exact request, response, or normalized response archive"
     },
     {
       "path": "responses/normalized_model_outputs.jsonl.gz",
       "bytes": 267640,
       "sha256": "164d04f4fca43b8aad2f2625254451b532490456c5b2a561e00216127a83d8fb",
-      "role": "Combined per-request normalized predictions for offline analysis"
+      "role": "Exact request, response, or normalized response archive"
     },
     {
       "path": "responses/qwen_normalized_responses.jsonl.gz",
       "bytes": 742662,
       "sha256": "e5e31e2192d50302f677cf156cd33dcdf9f518cdb9813f74b2887b1ddc69beea",
-      "role": "Exact normalized response export in a deterministic gzip container"
+      "role": "Exact request, response, or normalized response archive"
     },
     {
       "path": "responses/qwen_responses.jsonl.gz",
       "bytes": 16912362,
       "sha256": "08cea823707db38cedeff01d6367de25b108be048d1f0b6c3fd8581eb4f99562",
-      "role": "Request-linked raw model response bytes with terminal status and digest"
+      "role": "Exact request, response, or normalized response archive"
     }
   ],
-  "integrityNote": "MANIFEST.json lists every payload artifact except itself, this README, and the verifier.",
+  "integrityNote": "MANIFEST.json lists every package payload artifact except itself, README.md, and verify_package.py.",
   "compressedInputs": {
     "requests/qwen_requests.jsonl.gz": {
       "uncompressedBytes": 134747472,
@@ -273,19 +362,28 @@
     }
   },
   "sourceEvidence": {
-    "qwenRawResponses": "Not included in the public package; the final Qwen analysis and independent recomputation are represented by the pinned aggregate analysis artifacts.",
+    "qwenRawResponses": "Included at responses/qwen_responses.jsonl.gz as request-linked base64-encoded raw response bodies with per-response SHA-256 digests.",
     "gptOssLedgerSha256": "32d2817b37e213670407ed5f97a9f90e95c07625755c8ee47fe4f6b08dceeb1a",
     "gptOssRequestsSha256": "f78c96b12f6fb52aade6f8d52de0c5a4a5a34a5f832be8dbd7b14b99aa6e18f6",
     "qwenAnalysisSha256": "df8ea84c4930e6439b5c8b40fc3615f4539370c279a16f7ddcea83dc4307673a",
     "gptOssAnalysisSha256": "f3e92d23f5791482285a11935f40f229f77e5a4f9200aff7965875762b5e30ee",
     "reviewedManuscriptBaseSha256": "739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f",
-    "packagedManuscriptSha256": "7a5cb41914fbff63649126428976f6ceb67a9478d1088175317d9decec9448c2",
-    "packagedPdfSha256": "783002763627a59fd694fa59d9766ac247863fa078bf072f0a221e9dcb064106",
+    "packagedManuscriptSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+    "packagedPdfSha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
     "qwenResponseLedgerSha256": "d6dbbc6224fd5d6a4cdd980d859706ed789f7b76bf67fbd4dea418d9b8336455",
     "qwenNormalizedRowsSha256": "bbfae74804a7ee6cddbfd4c0d3cd167b2ba18d68b1d14703af353a3d6664ed17",
     "qwenResponseKeyCount": 14336,
     "qwenTerminalHttp200Count": 14336,
-    "combinedNormalizedOutputSha256": "d269cdfc82a67566ae5b55c5a1d05c76fe0d96dc9360e976cb2252b1f2b94d5e"
+    "combinedNormalizedOutputSha256": "d269cdfc82a67566ae5b55c5a1d05c76fe0d96dc9360e976cb2252b1f2b94d5e",
+    "currentManuscriptAuditSha256": "fe22b4153f2bdf38ae0c084a433a51f8b57ee47e71a5beff86a4c4176d461008",
+    "qwenRepeatOutcomeAgreement": {
+      "sameOutcomeAndLabel": 217,
+      "pairs": 224,
+      "sameLabelAmongBothValid": 188,
+      "bothValidPairs": 191,
+      "identicalAnswerTextPairs": 125
+    },
+    "packagedBibliographySha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5"
   },
   "fullExperimentRegeneration": "not_provided",
   "licenseStatus": "No explicit reuse license is currently assigned to this package."

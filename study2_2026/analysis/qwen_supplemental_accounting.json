@@ -7,7 +7,7 @@
     "comparableKeyPairs": 224,
     "distinctRepeatedWireDigests": 224,
     "keysInRepeatedGroups": 448,
-    "note": "Compares stored response SHA-256 only; no response content is published.",
+    "note": "Compares stored response SHA-256 only; request-linked raw response bodies are published separately in responses/qwen_responses.jsonl.gz.",
     "pairsWithIdenticalStoredBytes": 0
   },
   "contractRejectedResponses": {

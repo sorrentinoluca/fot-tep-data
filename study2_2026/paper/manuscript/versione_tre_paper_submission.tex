@@ -1,0 +1,350 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\setlength{\emergencystretch}{1em}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{cite}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\TEP}{TEP}
+\newcommand{\PROTO}{\textsc{proto}}
+\newcommand{\cond}[1]{\textsf{#1}}
+\newcommand{\lu}{local-unseen}
+\newcommand{\ls}{own-fault}
+
+\begin{document}
+
+\title{Rule-Based Own-Class and Peer Insights\\
+for LLM Fault Diagnosis under Extreme Label Skew}
+
+\author{%
+\IEEEauthorblockN{Luca Sorrentino\IEEEauthorrefmark{1},
+Gabriele Piantadosi\IEEEauthorrefmark{2},
+Antonio Galli\IEEEauthorrefmark{1},
+Girolamo Di Francia\IEEEauthorrefmark{2} and
+Carlo Sansone\IEEEauthorrefmark{1}}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}University of Naples Federico II,
+Electrical Engineering and Information Technology Department, Napoli, 80125, Italy}
+\IEEEauthorblockA{\IEEEauthorrefmark{2}ENEA CR-Portici,
+Energy Technologies and Renewable Sources Department, Portici, 80055, Italy}
+}
+
+\maketitle
+
+% ---------------------------------------------------------------------
+\begin{abstract}
+Federated fault diagnosis must handle clients that hold different fault classes. We study the extreme case in which each client holds Normal data and examples of only one fault. In an offline Tennessee Eastman Process benchmark, a large language model (LLM) reads local examples and rule-based insights, while a prototype rule and a FedAvg reference use the same development pool. The exchange is inspired by Federation over Text but has no iterative client updates. A prospectively specified test evaluates 256 new simulation runs, seven LLM conditions and two numerical references. Adding peer insights raised local-unseen accuracy from 5.1\% to 64.7\% but lowered own-fault accuracy by 16.1 percentage points (pp). Adding the receiver's own-class insight to that prompt recovered 20.8~pp (95\% CI 14.9--26.8; $p=4.65\times10^{-10}$), while false own-label assignments on Normal increased from 69 to 99 of 512 decisions. A content-free replacement for the peer block produced a similar own-fault gain; neither comparison isolates the own-insight content effect. On local-unseen F1, the peer-insight LLM exceeded the prototype by 86.3~pp (Holm $p=1.91\times10^{-6}$); on F8 it fell 45.8~pp below it (Holm $p=9.45\times10^{-4}$). FedAvg surpassed every LLM condition on pooled local-unseen faults, and both numerical references did so on Normal. A single server-side synthesis did not improve observed accuracy over the full insight set. A second configured LLM showed a similar own-fault gain with other comparisons adverse or mixed. The value of shared text therefore depends on receiver role, fault and comparator, with own-fault gains requiring joint assessment of false alarms.
+
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+federated learning, label distribution skew, large language models, in-context learning, fault diagnosis, Tennessee Eastman Process, multivariate time series
+\end{IEEEkeywords}
+
+% ---------------------------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+Industrial sites may each have examples of their own faults but none of faults seen elsewhere. Photovoltaic (PV) fleets, as an example, motivate this setting: one station may lack fault types observed at other stations, making cross-station collaboration relevant~\cite{liu2022pv}. We use the Tennessee Eastman Process (\TEP{})~\cite{downs1993tep,bathelt2015tep} as a controlled benchmark, without assuming that its results transfer to PV diagnosis. Can peer insights help a client diagnose those faults beyond its local examples, and how does that system compare with numerical references? Federated learning exchanges model updates without pooling raw client records~\cite{mcmahan2017fedavg}; severe label skew complicates that approach~\cite{li2022noniid}. Parameter updates do not directly expose the diagnostic observations behind them. Exchanging compact textual knowledge makes those observations inspectable, although inspectability alone provides neither privacy nor diagnostic reliability. Federation over Text (FoT) iteratively distills clients' language-model reasoning traces into a shared insight library~\cite{yao2026fot}. Here each client instead supplies one deterministic, rule-rendered insight summarizing recurring observations, and the model reads these insights once, in context. The setup is an offline test of that simpler exchange, not an implementation of FoT or an online federation protocol.
+
+We compare a large language model (LLM) with local examples, peer insights and optional own-class or synthesized insights against a nearest-class-mean rule on fixed numerical features and a fixed FedAvg reference. Development data are the separate data used to construct examples, insights and numerical rules before evaluation. Eight simulated \TEP{} clients each hold Normal and one distinct fault. For a receiving client, a fault from another client is \emph{local-unseen}; a case of its own fault and a Normal case are separate outcomes. Every 5-hour case is evaluated for all eight receivers, but the physical simulation run, rather than the eight paired decisions, is the unit of inference.
+
+An initial 96-run exploratory cohort motivated two primary questions. On 256 independent runs specified before generation, Family~A tests whether adding the own-class insight to the peer-insight prompt changes own-fault accuracy. Family~B revisits the opposing F1 and F8 local-unseen differences between the peer-insight LLM and the prototype. Both fault classes remain in every all-fault summary. The seven-condition evaluation also measures Normal decisions, abstentions and malformed responses. A second LLM on the same grid supplies exploratory, configured-system comparisons under different serving controls. The central finding is a positive own-fault contrast alongside a strong adverse F8 contrast and a Normal advantage for the numerical references; neither a general text-over-number advantage nor an isolated semantic mechanism follows.
+
+The cited work does not establish how adding a rule-based own-class insight to a peer-insight LLM prompt changes own-fault correctness together with false own-label assignments under this design. Our contribution is a run-paired, fixed-denominator comparison of text-sharing and numerical diagnostic configurations under class-disjoint fault ownership, with the negative and null results reported alongside gains. The study separates prespecified tests from descriptive analyses and records model abstentions and parsing failures. It measures simulated fault classification, not privacy, network performance or industrial deployment.
+
+
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Parametric and prototype-based federation}
+\mbox{FedAvg}~\cite{mcmahan2017fedavg} averages model parameters across clients. Li et al.~\cite{li2022noniid} find label skew the most challenging of the non-identically distributed (non-IID) settings they study; their quantity-based label imbalance restricts the number of labels per client. Our class-disjoint faults with shared Normal instantiate that form of label skew, with two labels per client rather than their hardest one-label setting. FedProto~\cite{tan2022fedproto} forms class prototypes as means of learned embeddings; a server combines them to guide subsequent local training, and Tan et al. also describe nearest-prototype inference. In mechanical fault diagnosis, Fan et al.~\cite{fan2025prototype} study clients with a common Normal class and disjoint fault classes, using learned global prototypes to recognize local-unseen classes. Li and Zhao~\cite{li2023fedzsl} share a semantic knowledge base derived from human fault descriptions among clients with disjoint faults, train data--attribute models and aggregate their diagnostic knowledge. They distinguish locally and globally unseen faults and report seen/unseen accuracy with and without aggregation; their evaluated label sets contain faults only, without Normal or abstention. Our prototype rule classifies by mean absolute (L1) distance to class means of fixed features, without representation learning or iterative optimization: a simple distributable rule, not a state-of-the-art federated baseline. We also evaluate FedAvg on the same clients and test cases: post hoc on the exploratory cohort and as one fixed reference in the present test (Section~\ref{sec:conditions}).
+
+\paragraph{Textual federation and in-context collaboration}
+FoT~\cite{yao2026fot} is the reference method: in each round, clients send reasoning traces to a server, which distills them into an insight library used by agents in context. Related approaches exchange natural-language compendia~\cite{wu2024fical}, iteratively refine answers~\cite{wang2025fedicl}, aggregate prompts optimized locally with textual gradients~\cite{chen2025fedtextgrad}, or study social learning between language models~\cite{mohtashami2023social}. Our peer insights are rendered once by a fixed rule-based procedure from recurring observations in each contributing client's development data. No LLM writes them, and in the peer-insight conditions there is no cross-client distillation, server-side merging or later revision. One condition, \cond{AGG}, adds a single server-side step in which the LLM synthesizes the eight insights into one library (Section~\ref{sec:conditions}). Server-side aggregation of client text is not new: FICAL concatenates client compendia~\cite{wu2024fical}, and FedTextGrad concatenates or summarizes client prompts over rounds~\cite{chen2025fedtextgrad}. \cond{AGG} is a single-cycle control inspired by FoT's server-side distillation, not FoT.
+
+\paragraph{Trade-offs of shared knowledge}
+In parametric federation, accuracy on a client's own data and on all clients' data are distinct objectives, and improving one can degrade the other~\cite{chen2022fedrod}. For LLMs, retrieved context can lower accuracy, even on questions answered correctly without it~\cite{mallen2023trust,yoran2024robust}. These precedents suggest that shared knowledge should not be judged on one outcome alone; we report the prespecified own-fault and Normal outcomes alongside local-unseen accuracy. Longer inputs can also affect LLM reasoning on otherwise identical tasks~\cite{levy2024same}, so we report prompt-token use (Section~\ref{sec:cost}) and treat length as a confound we cannot remove (Section~\ref{sec:limits}).
+
+\paragraph{Time series, language and \TEP{} diagnosis}
+Work linking time series and language includes structured program representations~\cite{kim2026t2sp} and signals-to-semantics zero-shot fault diagnosis (S2S-FDD)~\cite{li2025s2sfdd}. The \TEP{} simulator is a standard process-monitoring benchmark~\cite{downs1993tep,bathelt2015tep}. On \TEP{}, FaultExplainer~\cite{khan2025faultexplainer} gives an LLM principal component analysis (PCA)-based detection output and the top contributing variables; its unseen-fault scenario withholds a list of known root causes from the prompt, whereas \lu{} here means the receiving client has no local examples of the fault. S2S-FDD and FaultExplainer are centralized: no knowledge passes between clients. In simulated fault diagnosis, Lee et al.~\cite{lee2025agentic} report stronger LLM anomaly detection with summarized statistical inputs than with raw sensor readings, at best approaching a rule-based statistical baseline in $F_1$ score. Kim~\cite{kim2026complementarity} supplies a trained classifier's label to LLMs on \TEP{} cases and finds the combined output below the classifier alone. That centralized integration passes a specialist prediction rather than peer insights. Our rule-based procedure is deterministic and frozen; we make no claim about learned text representations.
+
+We test own-class and peer insights as separate prompt components and assess their joint gains and costs across own-fault, local-unseen and Normal cases. Numerical references expose whether improvements over local examples also yield competitive diagnosis; neither FoT nor FedProto is evaluated as a complete algorithm.
+
+% ---------------------------------------------------------------------
+\section{Simulated Setting and Compared Systems}
+\label{sec:method}
+
+Figure~\ref{fig:method-flow} shows the text and numerical paths, including both the prototype and FedAvg references. The following subsections define the offline construction and decision-time inputs.
+
+% Method overview (TikZ, one column, basic TikZ only). Both panels read top to bottom.
+% Arrows = derivation and use of stored artifacts, not communication; dashed = peer insights (some conditions only).
+
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[x=1mm,y=1mm,>=stealth,
+  box/.style={draw,rounded corners=1pt,align=center,font=\scriptsize,inner sep=1.5pt,text width=24mm,minimum height=8mm},
+  art/.style={box,fill=gray!14},
+  sys/.style={box,thick},
+  lab/.style={font=\scriptsize,inner sep=1pt,align=left}]
+% panel frames and side titles
+\draw[gray!60,rounded corners=2pt] (0,-24.8) rectangle (88.5,9.6);
+\draw[gray!60,rounded corners=2pt] (0,-61) rectangle (88.5,-29.8);
+\node[font=\scriptsize,rotate=90] at (2.3,-7.6) {(a) Offline development};
+\node[font=\scriptsize,rotate=90] at (2.3,-45.4) {(b) Test-case decision};
+% (a) data and pipeline
+\node[box] (cli) at (18,1.5) {Development data\\by client: own fault\\+ own Normal pool};
+\node[box] (pipe) at (46.5,1.5) {Frozen evidence\\pipeline};
+\node[box] (ref) at (75,1.5) {Shared Normal\\reference (normalization\\and thresholds)};
+\draw[->] (cli) -- (pipe);
+\draw[->] (ref) -- (pipe);
+% (a) stored artifacts
+\node[art] (ins) at (18,-17.6) {8 insights, one per\\fault class (text and\\structured record);\\\cond{AGG}: LLM synthesis};
+\node[art] (loc) at (46.5,-17.6) {Local examples\\(2 own-fault +\\1 Normal)};
+\node[art] (mean) at (75,-17.6) {9 class means and\\FedAvg model\\from signatures};
+\draw[->] (pipe.south west) -- (ins.north);
+\draw[->] (pipe.south) -- (loc.north);
+\draw[->] (pipe.south east) -- (mean.north);
+\node[lab,anchor=east,align=right] at (17.3,-7.6) {recurring\\observations};
+\node[lab,anchor=west] at (47.7,-8.2) {verbalized\\windows};
+\node[lab,anchor=west] at (76.6,-10.4) {signatures};
+% (b) test case and pipeline
+\node[box,text width=19.5mm] (win) at (48.25,-37.2) {Test case: one\\5-hour window\\per new run};
+\node[box,text width=18.6mm] (pipe2) at (73.5,-37.2) {Same pipeline\\and Normal\\reference};
+\draw[->] (win) -- (pipe2);
+% (b) the two systems
+\node[sys,text width=52.5mm] (llm) at (32.25,-53.2)
+  {\textbf{LLM receiver}\\one call per case and client\\$\rightarrow$ label or abstain};
+\node[sys] (proto) at (75,-53.2)
+  {Numerical references\\prototype / FedAvg\\$\rightarrow$ one prediction\\for all receivers};
+% stored artifacts used at decision time
+\draw[->,dashed] (8,0 |- ins.south) -- (8,0 |- llm.north);
+\draw[->] (34.6,0 |- loc.south) -- (34.6,0 |- llm.north);
+\draw[->] (86.6,0 |- mean.south) -- (86.6,0 |- proto.north);
+\node[lab,anchor=west] at (9.5,-37.2) {peers', own or\\\cond{AGG} insights\\(by condition)};
+
+
+% test case to the two systems
+\draw[->] (pipe2.south west) -- (57.5,0 |- llm.north);
+\node[lab,anchor=east] at (56.6,-45.4) {verbalized window};
+\draw[->] (pipe2.south) -- (pipe2.south |- proto.north);
+\node[lab,anchor=west] at (74.7,-44.6) {signature};
+\end{tikzpicture}
+\caption{Offline development and test-case decision paths. Arrows denote derivation and use of stored artifacts, not communication between clients.}
+\label{fig:method-flow}
+\end{figure}
+
+\subsection{Clients, labels and units of analysis}
+Eight simulated clients observe the same \TEP{} plant, each owning one fault class: three step changes (F1--F3), two random variations (F8, F10), one slow drift (F13) and two sticking valves (F14, F15)~\cite{downs1993tep}. The development pool is partitioned by client: each has labeled development data for its own fault and its own Normal pool of 40 windows from five runs. The shared Normal reference consists of separate development Normal data, distinct from the clients' Normal pools; it is not private client training data, but its use departs from strict federation (Section~\ref{sec:limits}). The label space is $\{F1,F2,F3,F8,F10,F13,F14,F15,\text{Normal}\}$; a system outputs one label or abstains.
+
+A \emph{case} is a 5-hour window from one run. Each case is paired with all eight clients, the receivers in the LLM conditions. A fault case yields one \emph{own-fault} pair with the client that owns its true fault class and seven \emph{\lu} pairs with the other clients; a Normal case yields eight \emph{Normal} pairs. This offline setup runs no federated communication protocol.
+
+\subsection{Shared evidence pipeline}
+The LLM and numerical references use one frozen evidence pipeline. Each 5-hour window has 300 one-minute samples for each of 41 measured variables (XMEAS). For each variable, the pipeline computes four statistics (mean shift (``level shift'' in the generated text), slope (linear trend), residual variability (standard deviation after linear detrending) and sample-to-sample variation (standard deviation of successive differences)), normalized using the shared Normal reference, and compares each with a fixed threshold calibrated on the same reference. Rapid variability is flagged only when both the residual and sample-to-sample statistics exceed their thresholds; an overall dispersion ratio is computed separately.
+
+For the LLM, the pipeline renders each sensor window from a simulated run as a \emph{verbalized window}, a rule-generated English textual description of the window. It names the leading variable (the largest above-threshold magnitude) for each statistic (or says none), adds the leading variable for rapid variability when present and reports the largest dispersion ratio (window standard deviation divided by reference standard deviation). From the same evidence, the pipeline builds a 697-component numerical signature (feature vector) for the prototype rule, with 17 fields per variable: four each for mean shift and slope (active fraction, sign balance, late-active fraction and longest same-sign run) and three each for residual variability, sample-to-sample variation and rapid variability (active fraction, late-active fraction and longest run). For a single window, these fields record which thresholds fired and their signs, not magnitudes. The signature spans all variables but excludes the dispersion ratio, so the two summaries of the case differ.
+
+The test case's verbalized window includes the absolute observed interval (hours) as fixed-onset context (faults begin at hour 25), but no fault label, run or stream ID, or file name. The interval does not identify the fault; local examples and any peer insights are labeled.
+
+\subsection{Peer insights from recurring observations}
+For each fault class, 40 development windows from five runs are scanned over three time spans (25--65, 25--35 and 35--65~h) for candidate observations. Candidates name the most frequent leading variable for mean shift, slope, residual variability, sample-to-sample variation or overall dispersion, or note no threshold exceedances. A candidate is retained as a recurring observation if it holds in at least half the windows of its span. A shorter-span candidate is nevertheless discarded when it repeats the variable, or the all-quiet observation, of a retained full-span candidate of the same kind; 30 of 144 were retained. Each retained observation also reports its frequency in the contributing client's Normal development windows for that span. F3 and F15 produced only an all-quiet observation, which also describes most Normal windows.
+
+A fixed rule-based procedure renders the retained observations as one insight per fault class in two forms: natural-language text and a structured record. Both keep a class-bearing ID and name the class. A parse-back check confirms that both renderings contain the same 30 observations and headers, but does not show that an LLM uses them in the same way.
+
+An excerpt from the actual \texttt{P05-INS-F1} insight, in natural language: ``Between 25 and 65 h, the largest above-threshold level shift is on XMEAS-1 in 40 of 40 development windows of F1 (positive in 40, negative in 0).'' The structured record includes \texttt{"observation": "largest above-threshold level shift"}, \texttt{"variable": "XMEAS-1"}, \texttt{"class\_windows": 40}, \texttt{"positive": 40} and \texttt{"negative": 0}. Both full renderings also note that this occurs in 0 of 40 Normal development windows of the contributing client; other F1 observations and fields are omitted.
+
+\subsection{Conditions and numerical references}
+\label{sec:conditions}
+All primary conditions use the same open-weight model (\texttt{qwen3.5-122b}, serving Qwen3.5-122B-A10B-FP8~\cite{qwen2026model}, hereafter the LLM) on a local inference service, with a shared system prompt, the receiver's local block, the test case's verbalized window and strict four-field JSON output (\texttt{predicted\_label}, \texttt{abstain}, \texttt{used\_insight\_ids}, \texttt{reasoning\_summary}). Each receiver's fixed local block holds three local examples (in-context demonstrations): two verbalized windows of its own fault and one from its own Normal pool, at window positions fixed before any content was inspected. Generation uses temperature 0 and seed 20260927, with a 1,024-token thinking budget and up to 2,048 completion tokens. The fixed pre-test parser also rejects \texttt{reasoning\_summary} strings longer than 1,200 characters; this limit was absent from the transmitted JSON schema. We retain that operational scoring rule and separately examine relaxing only this limit (Section~\ref{sec:results}). Conditions vary in the insight block that follows the local block (for peer insights, the seven in fixed fault-number order):
+\begin{itemize}[\IEEEsetlabelwidth{\cond{FULL}}]
+\item[\cond{A0}] no peer insights (local-only);
+\item[\cond{B0}] seven peers' natural-language insights;
+\item[\cond{S0}] structured records encoding the same seven peer insights as \cond{B0};
+\item[\cond{SELF}] \cond{A0} plus the receiver's own-class insight in natural language;
+\item[\cond{FULL}] \cond{B0} plus the same own-class insight, so that the receiver reads all eight insights;
+\item[\cond{AGG}] in place of the insights, one library that the LLM synthesized from the eight insights;
+\item[\cond{PL0}] \cond{B0} with its peer block replaced by generic process-monitoring text of the same byte length, but not the same token count (placebo).
+\end{itemize}
+\cond{S0} ran later and produces longer prompts than \cond{B0}, so their comparison does not isolate format. \cond{A0}, \cond{B0}, \cond{SELF} and \cond{FULL} cross peer-insight presence with own-insight presence ($2\times2$).
+
+The \cond{AGG} library was written once, before any test use, from the eight natural-language insights alone: in two requests the LLM listed relations between insights and wrote 13 entries, eight on single classes and five contrasting two classes. After one permitted correction cycle it was accepted on a source audit, not on diagnostic accuracy.
+
+The prototype rule, denoted \PROTO{}, is a non-LLM rule fixed on development data, using class means computed from development signatures: 40 windows for each of eight faults and 320 pooled Normal windows. For each case, \PROTO{} selects the class with minimum mean absolute distance over 697 components, abstaining if another class is within $10^{-12}$ of the minimum. It outputs one receiver-independent prediction per case, copied across receiver pairs for paired evaluation.
+
+The LLM and \PROTO{} receive different inputs, and the LLM receiver gets no separate Normal insight: it sees one local Normal example, whereas \PROTO{} uses the mean of 320 Normal windows. This asymmetry matters when interpreting false alarms. We compare complete systems with unequal decision-time information.
+
+The prospective evaluation includes one numerical reference fixed in advance: logistic regression on the 697-component signatures, trained with FedAvg on the eight clients' development data (50 rounds, five local epochs per round, learning rate 0.3, no regularization, five seeds, class probabilities averaged). Its settings were chosen by cross-validation on development data, but this recipe was named as the reference only after its exploratory-cohort results were known. Like \PROTO{}, it predicts once per case. The parameters used are not those behind the exploratory-cohort results: they were rebuilt from development data alone and frozen before any new test case was scored (Section~\ref{sec:limits}).
+
+The supplementary LLM, \texttt{gpt-oss-120b}~\cite{gptoss2025model}, receives the same system/user messages, output schema, temperature and seed on every matched case, receiver and condition. Its other generation and serving settings are: top-$p$ 1, unrestricted top-$k$, low reasoning effort, a 4,096-token output cap, a 16,384-token context and four concurrent requests. Both inference services report vLLM 0.27.1~\cite{kwon2023vllm}. Cross-model comparisons therefore describe configured systems rather than isolate model-weight effects (Section~\ref{sec:limits}).
+
+\subsection{Reused development components}
+\label{sec:provenance}
+Reused development components have pinned source hashes: the qualified Simulink model with independent random streams for fault injection; frozen features, thresholds and verbalization, with current English wording; labels and fault ownership; the 80-run development pool; and the shared Normal reference. \PROTO{} matches its source rule and development outputs. Earlier evaluation runs, predictions and results are not pooled into either evaluation cohort. The present evaluation reuses these components; from the exploratory cohort it takes only the choice of hypotheses, conditions and FedAvg reference (Section~\ref{sec:protocol}).
+
+% ---------------------------------------------------------------------
+\section{Evaluation Design}
+\label{sec:protocol}
+\subsection{Cohorts and window selection}
+The shared development pool contains 80 runs and a separate shared Normal reference; development components and the rule for selecting one post-onset 5-hour window per run were fixed before either evaluation cohort. The earlier exploratory cohort has 96 runs (eight per fault, 32 Normal). Its three prespecified local-unseen contrasts were analyzed before planning the prospective evaluation and are presented only as exploratory context. The prospective evaluation comprises 256 new runs, 24 per fault and 64 Normal, generated on disjoint random-number streams. Each run lasts 65 hours, with fault onset at hour 25. Eight half-open 5-hour windows cover $[25,65)$~h. For class position $k$ and class offset $o_c$, the selected ordinal is $j=1+((k-1+o_c)\bmod 8)$, giving interval $[25+5(j-1),30+5(j-1))$. Offsets are 0--7 in the listed fault order and 0 for Normal. Every fault covers each window three times; Normal covers each eight times. All 256 primary runs passed the technical checks, with no replacement. The cohorts are not pooled.
+
+This produces 192 own-fault, 1,344 local-unseen and 512 Normal receiver pairs per condition. The seven LLM conditions (\cond{A0}, \cond{B0}, \cond{FULL}, \cond{SELF}, \cond{AGG}, \cond{S0}, \cond{PL0}) received 14,336 requests in total. For each case--receiver pair, the first pass interleaved \cond{A0}, \cond{B0}, \cond{FULL}, \cond{SELF} and \cond{AGG} in that order; a later pass interleaved \cond{S0} and \cond{PL0}. The second LLM used the same case grid but different generation and serving controls.
+
+\subsection{Outcomes and run-level inference}
+The primary outcome is exact-label correctness at the fixed planned denominator, with no top-$k$ or alias credit. Wrong-fault labels, faults missed as Normal, and false alarms on Normal are distinct from non-answers. A false own-label assignment means predicting the receiving client's fault when the true class differs. One response is scored per planned case--receiver--condition combination, without voting or content-based retries. Abstained, parser-rejected, truncated and missing responses count as non-correct and are reported separately; an HTTP 200 response is not a correct diagnosis. Let $Y_{a,r,c}$ be one for a valid exact-label answer by condition $a$ on run $r$ and receiver $c$, and zero otherwise. For a contrast $a-b$ and receiver set $C_r$,
+\begin{equation}
+d_r=\frac{1}{|C_r|}\sum_{c\in C_r}(Y_{a,r,c}-Y_{b,r,c}),\qquad
+\widehat\Delta=\frac{1}{K}\sum_{f=1}^{K}\bar d_f.
+\end{equation}
+The set contains one owner for own-fault, seven non-owners for local-unseen, or eight receivers for Normal. Fault contrasts weight the $K$ included classes equally; each $\bar d_f$ averages physical runs within class. Normal instead averages its 64 run differences. For Family~A, $K=8$, $n_f=24$, and
+\begin{equation}
+\widehat{\mathrm{SE}}^2=\frac{1}{K^2}\sum_f v_f,\quad
+v_f=\frac{s_f^2}{n_f},\quad
+\nu=\frac{(\sum_f v_f)^2}{\sum_f v_f^2/(n_f-1)},
+\end{equation}
+where $s_f^2$ is the sample variance of the run differences. Receiver rows and development windows from one run are not independent replications. Family~A is \cond{FULL}$-$\cond{B0} on the 192 own-fault runs, tested with a class-stratified $t$ statistic and Welch--Satterthwaite degrees of freedom~\cite{welch1947,satterthwaite1946}. Family~B tests \cond{B0}$-$\PROTO{} on the seven local-unseen receivers of each F1 or F8 run, using all $2^{24}$ whole-run sign assignments, including ties in the two-sided tail, and Holm adjustment across those two tests~\cite{holm1979,winkler2014permutation}. Each family has its own two-sided $\alpha=0.05$; no joint 0.05 claim is made. The three prespecified descriptive partitions are all eight faults, the six excluding F1/F8, and F1/F8 alone. Other condition comparisons are descriptive too. Pointwise percentile intervals use 20,000 within-fault run resamples, carrying all conditions and receivers together; Normal resamples its whole runs. These are run-level, not receiver-level, resamples~\cite{field2007bootstrap}.
+
+The planned descriptive contrasts are \cond{B0}$-$\cond{A0}, \cond{SELF}$-$\cond{A0}, \cond{FULL}$-$\cond{SELF}, their $2\times2$ interaction, \cond{AGG}$-$\cond{FULL}, \cond{S0}$-$\cond{B0}, \cond{PL0}$-$\cond{B0}, and \cond{B0} against both numerical references. No equivalence margin was set. A dated local specification fixed the primary analyses before generating the new test runs or inspecting their outcomes; the exploratory cohort had already motivated the hypotheses. The gpt-oss analysis was fixed after LLM requests began and is therefore exploratory descriptive even though it uses the same new cases. No test case was replaced on the basis of diagnostic outcomes.
+
+
+\section{Results}
+\label{sec:results}
+\subsection{Coverage and primary contrasts}
+All 14,336 LLM requests received an HTTP 200 terminal response on one attempt, but only 11,912 met the operational answer contract; 2,343 abstained, 43 were rejected by an extra client-side 1,200-character \texttt{reasoning\_summary} cap despite satisfying the transmitted JSON schema, and 38 were truncated. These outcomes remain in the denominators. In a post-hoc sensitivity that accepts labels from the 43 otherwise conforming responses, only two additional answers are correct: one own-fault \cond{FULL} answer and one local-unseen \cond{S0} answer. Own-fault \cond{FULL}$-$\cond{B0} becomes $+21.4$~pp and \cond{FULL}$-$\cond{A0} $+5.2$~pp; \cond{B0}$-$\cond{A0} and \cond{SELF}$-$\cond{A0} are unchanged. All 21 rejections in \cond{A0} are local-unseen and none is correct under the relaxed rule. The primary tests retain the original scoring, and no new test is applied to this sensitivity.
+
+ The supplementary LLM likewise completed 14,336 requests, with 11,908 valid and 2,428 abstentions. Table~\ref{tab:t2main} shows the prespecified primary tests and principal descriptive comparisons; Table~\ref{tab:t2arms} reports every LLM condition and the numerical references.
+
+On 1,344 local-unseen decisions, \cond{SELF} abstains on 889 (66.1\%) and \cond{PL0} on 473 (35.2\%). Their valid labeled answers are also rarely correct: 2 of 452 for \cond{SELF} and 36 of 865 for \cond{PL0}, leaving 450 and 829 valid wrong answers. The remaining three and six outputs are rejected or truncated. Near-zero fixed-denominator accuracy therefore reflects both non-answers and diagnostic errors; the valid-answer counts do not replace the planned denominator.
+
+\begin{table*}[!t]
+\centering\footnotesize
+\caption{Prospectively specified 256-run test. Accuracy is in percent and contrasts in percentage points (pp) at the fixed denominator. Family A uses 192 own-fault physical runs; Family B uses 24 runs per fault, averaging seven local-unseen receivers within run. The gpt-oss rows are exploratory descriptive, not additional tests.}
+\label{tab:t2main}
+\setlength{\tabcolsep}{4pt}
+\input{generated/tab_t2_main}
+\end{table*}
+
+\begin{table*}[!t]
+\centering\footnotesize
+\caption{LLM operational accuracy by receiver role and terminal response state, all at planned denominators (2,048 pairs per LLM condition). Abstentions, parser rejections and truncations are retained as non-correct. Numerical rules issue one receiver-independent prediction per case and have no LLM response states.}
+\label{tab:t2arms}
+\setlength{\tabcolsep}{5pt}
+\input{generated/tab_t2_arms}
+\end{table*}
+
+Table~\ref{tab:faults} decomposes the own-fault contrast by fault and run gains/losses. The Family~A estimate is $+20.8$~pp (95\% CI $[+14.9,+26.8]$, $p=4.65\times10^{-10}$): 45 own-fault runs gained, five lost and 142 tied. F1 ($+62.5$~pp), F3 ($+45.8$), F8 ($+33.3$) and F15 ($+20.8$) carry most of the mean. F3/F15 contribute 16 of the 40 net gains. Excluding these two faults gives $+16.7$~pp (135/144 vs.\ 111/144), an additional post-hoc descriptive contrast without a new test. F2 and F10 are unchanged at ceiling, F13 has one gain and one loss, and four F15 runs are worse under \cond{FULL}. Three of these 192 runs duplicate another run's model-facing input; the prespecified point-only drop sensitivity changes the estimate to $+20.9$~pp on 189 runs, without recomputing a test.
+
+The own-class insight therefore improves this complete LLM prompt configuration on average, but there is no matched generic block in place of the own-class insight to identify its content contribution: \cond{PL0}$-$\cond{B0} reaches $+20.3$~pp on the same outcome despite using content-free byte-matched peer text, with a later serving window. Own-fault \cond{B0}$-$\cond{A0} is $-16.1$~pp. Relative to the local-only \cond{A0}, \cond{FULL} is descriptively +4.7~pp on own-fault accuracy (173/192 vs.\ 164/192, or 90.1\% vs.\ 85.4\%). This additional descriptive comparison is not a prespecified primary test and carries no new significance claim. Without peers, the complementary own-insight effect \cond{SELF}$-$\cond{A0} is $-3.1$~pp; the descriptive $2\times2$ interaction is $+24.0$~pp. PL0 replaces peer content, not own-class content; it is therefore not a direct placebo for the added own-class insight. These descriptive controls couple content, length, format and possibly serving time.
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{LLM own-fault contrast by fault: paired \cond{FULL}$-$\cond{B0} difference and counts of gained, lost and tied runs (24 per fault). Descriptive decomposition of Family A.}
+\label{tab:faults}
+\setlength{\tabcolsep}{2.5pt}
+\input{generated/tab_t2_faults}
+\end{table}
+
+\begin{table*}[!t]
+\centering\footnotesize
+\caption{Fixed-denominator accuracy by fault for every LLM condition and both numerical references. Each own-fault value has 24 physical runs; each local-unseen value has the same 24 runs evaluated for seven receivers. These are descriptive rates, not additional fault-level tests.}
+\label{tab:allfaults}
+\setlength{\tabcolsep}{6.5pt}
+\input{generated/tab_t2_allfaults}
+\end{table*}
+
+Family~B rejects in opposite directions. On F1 local-unseen decisions, the LLM in \cond{B0} exceeds \PROTO{} by $+86.3$~pp (Holm $p=1.91\times10^{-6}$); on F8 it falls below by $-45.8$~pp (Holm $p=9.45\times10^{-4}$). The latter is an adverse result for the LLM. F1's 24 physical runs contain one duplicate model-facing input pair (23 distinct inputs); dropping one member yields a point-only estimate of $+85.7$~pp, without a new test. Pooled across all eight faults, \cond{B0}$-$\PROTO{} is only $+3.7$~pp with a descriptive pointwise interval $[+0.1,+7.4]$; without F1/F8 it is $-1.8$~pp $[-4.4,+0.4]$. The all-fault pointwise interval is not a third rejection. F3 and F15 local-unseen scores remain near floor across systems (Table~\ref{tab:allfaults}). FedAvg also exceeds every LLM condition on pooled local-unseen accuracy (72.9\% vs.\ at most 64.7\%); \cond{B0}$-$FedAvg is $-8.3$~pp. Two numerical references exceed every LLM prompt on Normal: \PROTO{} scores 96.9\%, FedAvg 100\%, and the seven LLM conditions 64.6--78.1\%. Among these comparisons, the smallest margin is \PROTO{} over \cond{A0} (+18.8~pp), and the largest is FedAvg over \cond{AGG} (+35.4~pp). Against \cond{B0} specifically, \PROTO{} leads by 24.6~pp and FedAvg by 27.7~pp.
+
+Table~\ref{tab:supplement} gives all supplementary conditions. The gpt-oss track also has a positive within-system own-fault \cond{FULL}$-$\cond{B0} difference ($+22.9$~pp; pointwise interval $[+16.7,+29.2]$), while \cond{B0}$-$\PROTO{} is $-9.5$~pp on local-unseen decisions and its own-fault \cond{FULL}$-$\cond{SELF} is $-17.2$~pp. Its Normal \cond{B0} accuracy is 90.6\%, unlike Qwen's 72.3\%. The matched gpt-oss minus Qwen own-fault Family-A effect differs by only $+2.1$~pp, with a pointwise interval spanning zero, but weights, generation and serving settings change together. gpt-oss \cond{PL0} (74.5\%) and \cond{SELF} (79.2\%) exceed \cond{FULL} (62.0\%) on own-fault accuracy; own-fault \cond{B0}$-$\PROTO{} is negative in each of the three partitions and local-unseen \cond{FULL}$-$\cond{B0} is near zero in each. These comparisons characterize two configured systems, not a model-only replication.
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{Exploratory gpt-oss accuracy at the planned denominators: 192 own-fault, 1,344 local-unseen and 512 Normal pairs per condition. Abstentions out of 2,048 remain non-correct; no rejected, truncated or missing responses occurred.}
+\label{tab:supplement}
+\setlength{\tabcolsep}{3pt}
+\input{generated/tab_t2_supplement}
+\end{table}
+
+\subsection{Descriptive controls and error patterns}
+The own-fault \cond{FULL}$-$\cond{B0} contrast remains positive on the six faults excluding F1/F8 ($+11.8$~pp; pointwise interval $[+5.6,+18.1]$), and is $+47.9$~pp $[+33.3,+60.4]$ on F1/F8 alone. The corresponding local-unseen \cond{B0}$-$\PROTO{} contrasts are $-1.8$~pp $[-4.4,+0.4]$ and $+20.2$~pp $[+8.3,+33.0]$. Table~\ref{tab:partitions} also shows the FedAvg contrasts in each fixed partition. These partitions describe where the all-fault estimates arise; they neither replace the primary analyses nor add rejection claims.
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{LLM descriptive fault-partition contrasts (pp), weighting included faults equally: 192, 144 and 48 physical runs. No additional hypothesis tests.}
+\label{tab:partitions}
+\setlength{\tabcolsep}{3pt}
+\input{generated/tab_t2_partitions}
+\end{table}
+
+Single-cycle synthesis does not improve the observed LLM rates over all eight insights: \cond{AGG}$-$\cond{FULL} is $-2.6$~pp on own-fault, exactly zero on local-unseen, and $-5.9$~pp on Normal. Structured \cond{S0}$-$\cond{B0} is zero on own-fault overall, but $-8.3$~pp without F1/F8 and $+25.0$~pp on F1/F8; on local-unseen and Normal it is $-2.0$ and $-2.5$~pp. An aggregate null therefore need not mean uniform behavior or equivalence.
+
+Error destinations also matter. The LLM in \cond{B0} labels 67 of 168 local-unseen F8 pairs as F1; \cond{FULL} raises that count to 82 and reduces F8 correctness from 37.5\% to 26.2\%. On Normal, \cond{FULL} makes 116 false alarms vs.\ 108 for \cond{B0}, including 99 vs.\ 69 assignments of the receiver's own fault. \cond{SELF} makes only 37 false alarms but abstains on 103 Normal pairs; fewer alarms alone do not imply more correct Normal decisions. These are descriptive counts on paired runs.
+
+Table~\ref{tab:ownlabels} separates correct own-label predictions from false own-label assignments. The increase on Normal from \cond{B0} to \cond{FULL} is concentrated at the F3/F15 receivers: their count rises from 67 to 99 of 128 Normal decisions, accounting for all 99 in \cond{FULL}. Own-fault gains for these classes must therefore be read together with their tendency to label Normal as their own fault. On local-unseen cases, \cond{B0} makes 255 Normal predictions and 151 wrong-fault predictions; \cond{FULL} makes 258 and 178. The prototype makes 413 and 112, and FedAvg 336 and 28, respectively. Non-answers are separate from these diagnostic errors. A syntactic traceability check of parseable \cond{B0} answers, including those exceeding the summary-length cap, finds 2,187 of 2,210 cited insight-ID occurrences in the corresponding prompt text. Presence of an ID does not establish faithful use of its content.
+
+\begin{table}[!t]
+\centering\footnotesize
+\caption{LLM assignments of the receiver's own label. Own-fault entries are correct; local-unseen and Normal entries are false assignments. Denominators include all planned decisions.}
+\label{tab:ownlabels}
+\setlength{\tabcolsep}{5pt}
+\input{generated/tab_t2_ownlabels}
+\end{table}
+
+\subsection{Exploratory antecedent}
+In the earlier 96-run cohort, the peer-insight LLM and \PROTO{} had nearly equal pooled local-unseen correctness (267/448 and 266/448); the paired difference was $+0.2$~pp with an unadjusted 95\% CI $[-6.3,+6.7]$. Against local examples alone, peer insights raised local-unseen accuracy from 24/448 to 267/448, while own-fault accuracy and Normal false alarms worsened. Natural-language and structured renderings showed no detected pooled local-unseen difference. The opposing F1 (52/56 vs.\ 7/56) and F8 (4/56 vs.\ 42/56) local-unseen counts motivated Family~B. A post-hoc own-class probe found a $+26.6$~pp \cond{FULL}$-$\cond{B0} own-fault difference and motivated Family~A. A separate post-hoc numerical comparison placed some FedAvg configurations above both systems and others below; logistic regression, with 74.7\% five-seed mean local-unseen accuracy, motivated the single fixed reference. These exploratory comparisons establish neither equivalence nor a general mechanism.
+
+
+\section{Cost and Operational Accounting}
+\label{sec:cost}
+Table~\ref{tab:usage} reports per-condition token use across all saved responses, including parser-rejected output. \cond{B0} uses about 3.5 times the input tokens of \cond{A0}; \cond{AGG} averages 556 more than \cond{FULL}. The eight reusable insight texts occupy 8,114 UTF-8 bytes when joined by blank lines; structured records occupy 7,904 bytes when joined by single newlines. The prototype's nine class means, labels and counts occupy 27,234 bytes as compact JSON. These representation sizes exclude per-case inputs and repeated delivery, so they are not measured network traffic or evidence of a communication advantage.
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{LLM mean tokens per request, rounded to integers, including all 2,048 requests per condition and all terminal states. Reasoning-token detail was not reported.}
+\label{tab:usage}
+\setlength{\tabcolsep}{7pt}
+\input{generated/tab_t2_usage}
+\end{table}
+
+The LLM response archive records 34,304,840 input and 16,938,589 output tokens, including 74,704 input and 67,744 output tokens from the 43 parser-rejected responses omitted by the original scoring export. The gpt-oss response archive records 32,448,384 prompt and 2,603,856 completion tokens. Neither service supplied reasoning-token detail; those counts are unobserved, not zero. Server-side request latency and full monetary cost were not established. The prototype rule makes no LLM call, but its deployment, network and monetary costs were not measured. Byte-matched placebo prompts were not token-matched: \cond{PL0} averaged 2,036 input tokens per request vs.\ 2,816 for \cond{B0}, a roughly 28\% shorter input. For the LLM, \cond{AGG} has the highest total input-token use among its seven conditions; cost must be read with the abstention and correctness profiles, not transport success alone.
+
+
+\section{Discussion}
+\label{sec:discussion}
+The own-fault decline from \cond{A0} to \cond{B0} (85.4\% to 69.3\%, $-16.1$~pp) is a negative-transfer pattern: performance on the receiving client's fault worsens when peer insights are added. The term describes the observed change, without identifying whether content, length or format causes it. Peer insights also accompany much higher local-unseen accuracy (64.7\% vs.\ 5.1\%). Such gains over local examples do not establish competitiveness with numerical or federated references: Kim similarly argues for comparison with the strongest standalone alternative~\cite{kim2026complementarity}. Here FedAvg exceeds every LLM condition on pooled local-unseen accuracy, and both numerical references better recognize Normal.
+
+\cond{FULL} recovers own-fault accuracy relative to \cond{B0} and exceeds \cond{A0} descriptively, but adds 30 false own-label assignments on Normal and 20 on local-unseen faults. F3/F15 supply 40\% of the net own-fault gain, while all 99 \cond{FULL} own-label assignments on Normal come from their receivers. Their development insights contain only the all-quiet observation, which also describes most Normal windows. The numerical representation likewise collapses the 256 cases into 124 distinct signatures, with one occurring 97 times. These design facts constrain discrimination in the supplied evidence; high own-fault correctness alone cannot establish improved diagnostic specificity. The remaining six faults still show a descriptive $+16.7$~pp own-fault gain. No matched generic own-insight control isolates a semantic contribution, and replacing peer text with a placebo is not that control. Single-cycle synthesis also supplies no observed gain over \cond{FULL}.
+
+F1 favors the LLM over the nearest-mean prototype, not over numerical methods generally: \cond{B0} reaches 98.8\% local-unseen accuracy and FedAvg 100\% on the same 697-component signatures used by the prototype (Table~\ref{tab:allfaults}). The prototype's F1 weakness is therefore specific to that reference configuration; we found no matching precedent among the fault-level studies consulted. On F8 the prototype and FedAvg are both stronger than \cond{B0}. The few \cond{B0} gains over FedAvg are confined to F3 and F15, near the floor. Complementarity between the LLM and the prototype is a question for further testing, not evidence that the LLM complements every numerical reference. Our experiment neither gives the LLM a specialist prediction nor evaluates a router.
+
+F1 changes the A/C feed ratio at constant B composition by a step, whereas F8 randomly varies A, B and C feed composition, both in stream 4~\cite{downs1993tep}. Their physical overlap does not imply unavoidable confusion. In a supervised five-fault task without Normal, Chen et al.~\cite{chen2022cnnlstm} report 97.6--99.7\% for F1 and 85.5--94.4\% for F8 across six networks; their displayed worst-case confusion matrix assigns 40 F8 cases to F2 and none to F1. Our \cond{B0} instead assigns 67/168 local-unseen F8 decisions to F1. Detection must also be distinguished from diagnosis: Yin et al. report F8 detection of 95.9--98.6\% on Chiang's data~\cite{chiang2001fdd} and 100\% on Ricker-simulator data~\cite{yin2012comparison}. FaultExplainer permits F1/F8 and F2/F8 aliases in top-three assessment~\cite{khan2025faultexplainer}; we require an exact label.
+
+The F3/F15 near-floor local-unseen scores are compatible with their weak separation from Normal in Yin et al.'s two data sets~\cite{yin2012comparison} and non-detection by FaultExplainer's PCA stage~\cite{khan2025faultexplainer}. They do not imply difficulty in every diagnosis task. Feng and Zhao's centralized zero-sample classifier uses 20 human-defined attributes for each of 15 faults, trains on 12 and chooses among only three unseen faults per group, without Normal or abstention~\cite{feng2021attributes}. Its best classifier per group reaches 86--99\% on seven faults used here, including 86\% on F8, but 44\% on F10. High F3/F15 scores in that three-way task do not contradict difficulty separating them from Normal. These authored attributes and trained classifiers differ from our client-derived insights and in-context LLM decisions.
+
+The supplementary LLM shows a similar own-fault contrast alongside an adverse pooled local-unseen prototype comparison and a negative \cond{FULL}$-$\cond{SELF} contrast. This recurrence under different generation settings supports a configured-system observation, not a model-independent mechanism. Practical choice depends on fault frequencies and the relative costs of missed faults, false alarms and abstention, which this benchmark does not estimate.
+
+\section{Limitations}
+\label{sec:limits}
+The simulation uses one plant, a shared Normal reference and no site-specific heterogeneity or live communication. PV fleets are an application motivation only: no PV data, station heterogeneity or field diagnosis were evaluated. The prototype is a fixed-feature nearest-mean rule, not learned FedProto~\cite{tan2022fedproto}; the FedAvg reference is the only iterative federated training baseline. LLM and numerical systems receive unequal representations. Prompts name TEP and real fault labels, so prior model knowledge is uncontrolled. Reasoning budgets were fixed within each model and not varied as an experimental factor. A single server-side synthesis is not FoT's iterative trace exchange. The exchanged insights are inspectable, but no formal privacy mechanism or leakage audit was tested; prompts reach the inference services in clear. Prompt content, length and format change together; later \cond{S0}/\cond{PL0} serving also limits causal interpretation despite stable recorded primary-service fingerprints. The hypotheses, F1/F8 focus and FedAvg recipe were selected after exploratory results, and the specifications were local, not externally registered. These design choices limit mechanism, privacy and deployment claims.
+
+Equal fault weighting targets this eight-class mixture, and F3/F15 constitute one quarter of the fault outcome. One selected post-onset window per run estimates accuracy across a fixed 40-hour horizon, not detection delay. Sample size was informed by exploratory-cohort planning scenarios, not a guaranteed power bound; 24 runs per fault give limited precision for fault-specific comparisons. Run-resampling intervals condition on the realized responses and do not include variability from repeated model calls. With only 24 runs per fault, finite-sample interval coverage may differ from its nominal level; narrow empirical intervals do not remove that limitation. The study uses one English prompt family and fixed insight order; it does not test alternative orders, LLM-produced client insights or error propagation over rounds.
+
+The primary tests assume independent runs within fault and, for Family~B, run-wise sign invariance. Four exact duplicate model-facing input pairs qualify the independence interpretation; two pairs even cross true labels, so a deterministic text-only rule cannot classify both correctly. The numerical references have only 124 distinct signature vectors among 256 cases (maximum multiplicity 97), although their stored predictions were independently reproduced byte for byte. A flagged F2 case appears in its visible labeled example for seven requests; the prespecified point-only sensitivity does not change Family~A's estimate, but that leakage remains a limit. Pointwise secondary intervals have no multiplicity control, and the two primary families do not share a global 0.05 guarantee. The supplementary percentile intervals also have Monte Carlo variability. The second model's analysis was frozen after LLM requests had begun, so all its outcome and cross-model comparisons are exploratory descriptive. Among 224 pairs of byte-identical requests, the operational state and label agree in 217 (96.9\%); among the 191 pairs with two valid labels, 188 agree (98.4\%). Thus temperature zero did not guarantee identical decisions. Full JSON answer text is identical in 125 pairs; differences in the complete response bytes alone are not evidence of changed diagnosis. Abstentions and 81 LLM rejected or truncated responses materially affect operational accuracy. No claim of cost advantage follows from token counts without complete cost accounting.
+
+\section{Conclusion}
+\label{sec:conclusion}
+On 256 new \TEP{} runs, adding the receiver's own insight to a peer-insight LLM prompt raised own-fault accuracy by 20.8~pp while increasing false own-label assignments on Normal from 69 to 99 of 512 decisions. A content-free replacement for the peer insights showed a similar gain despite fewer prompt tokens. The peer-insight LLM beat the nearest-mean prototype on local-unseen F1 and lost sharply on F8; FedAvg remained stronger on F1, and both numerical references were more reliable on Normal. A second configured LLM gave a similar own-fault contrast alongside adverse and mixed comparisons. The single synthesis did not improve observed accuracy over the full insight set, and FedAvg remained stronger on pooled local-unseen faults. Text insights are a plausible exchange interface under extreme label skew, but their value must be assessed by fault, receiver role, abstention and numerical comparator before stronger causal or deployment claims. Future comparisons should match prompt length and own-insight controls, define practical equivalence margins, and test heterogeneous sites and iterative LLM-produced insights.
+
+
+
+\IEEEtriggeratref{21}
+\bibliographystyle{IEEEtran}
+\bibliography{manuscript/refs}
+
+\end{document}

@@ -1,0 +1,153 @@
+{
+  "schema": "fot-tep-study2-manuscript-snapshot-audit/1.0",
+  "snapshotUtc": "2026-10-07T14:54:40Z",
+  "sourceRepositoryCommitAudited": "064f05f35bd5f439f4cb27bd6e1617cb1bebdfba",
+  "manuscriptPath": "paper/manuscript/versione_tre_paper_submission.tex",
+  "manuscriptSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+  "buildWrapperPath": "paper/main.tex",
+  "buildWrapperSha256": "eeb721a652d127a513a89f6c152b23d8cc0c70c356757b36dc178774345586d4",
+  "bibliographyPath": "paper/manuscript/refs.bib",
+  "bibliographySha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5",
+  "tableCount": 8,
+  "tableArtifacts": [
+    {
+      "path": "paper/manuscript/generated/tab_t2_allfaults.tex",
+      "sha256": "e01750b3c4b6c7054831f9ea88b39726e368609c5c9818c28005f442b3566e43"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_arms.tex",
+      "sha256": "34edec4b5e209ec28bd3e9397e53ffbcb01a4fdb5b5edf5a837cb9575df53bb6"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_faults.tex",
+      "sha256": "377ff71a8790b071ed2b2bea7ee21fe4a6780dae6bfce1fb988140c5b4abe015"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_main.tex",
+      "sha256": "63ac8f25a3ea5a11b108412dd858872eda92e163f6f4b7f85a7ad450c4c1b785"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_ownlabels.tex",
+      "sha256": "68ebfc281fb6b9d84427d742abde7dfe01fda458b12097d4642a9c2fb0d70a20"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_partitions.tex",
+      "sha256": "e454257115026c4c2490ae430bd3d6fb9309d6f0c9fc0ece7e42d48ee72ab831"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_supplement.tex",
+      "sha256": "908da01b9a2e124de9d0a6b5452d73dd91e32fa2d5b6208ad028b2e3d4f718d2"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_usage.tex",
+      "sha256": "948e9e2cac87d59e468c245c4326c89b8a199d29ebf0207fe62ff2bb523e5a4b"
+    }
+  ],
+  "paperBuild": {
+    "command": "latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=<separate-build-directory> main.tex",
+    "engine": "pdfTeX 3.141592653-2.6-1.40.27; TeX Live 2025; latexmk 4.86a",
+    "pages": 10,
+    "pdfSha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
+    "undefinedCitationsOrReferences": false,
+    "overfullBoxes": false,
+    "visualInspection": "All ten rendered pages inspected; no clipping or table overflow observed. LaTeX reported some underfull boxes.",
+    "pdfBytes": 301996,
+    "pdfBitIdentity": "PDF metadata contains the build timestamp; repeated builds are not expected to be byte-identical."
+  },
+  "audit": {
+    "runner": "analysis/audit/run_package_audit.sh",
+    "independentRawResponsesChecked": 28672,
+    "tableNumericCellsChecked": 332,
+    "tableNumericMismatches": 0,
+    "additionalTextClaims": "Computed by audit scripts; direct comparison between printed claim values and prose was manually checked.",
+    "qwenRepeatAgreement": {
+      "identicalRequestPairs": 224,
+      "sameOutcomeAndLabel": 217,
+      "bothValidPairs": 191,
+      "sameLabelAmongBothValid": 188,
+      "identicalAnswerTextPairs": 125
+    },
+    "gptOssRepeatAgreement": {
+      "identicalRequestPairs": 224,
+      "sameOutcomeAndLabel": 200,
+      "bothValidPairs": 208,
+      "sameLabelAmongBothValid": 193,
+      "identicalAnswerTextPairs": 32
+    },
+    "relaxed1200CharacterSensitivity": {
+      "otherwiseRejectedResponses": 43,
+      "additionalCorrectAnswers": 2,
+      "fullMinusB0OwnFaultPp": 21.354,
+      "fullMinusA0OwnFaultPp": 5.208
+    },
+    "f3F15NetOwnFaultGains": 16,
+    "remainingSixFaultContrast": {
+      "fullCorrect": 135,
+      "b0Correct": 111,
+      "denominator": 144,
+      "differencePp": 16.667
+    },
+    "normalOwnLabelAssignments": {
+      "b0": 69,
+      "full": 99,
+      "f3F15ReceiversB0": 67,
+      "f3F15ReceiversFull": 99,
+      "receiverDenominator": 128
+    },
+    "localUnseenWrongAnswerDestinations": {
+      "b0": {
+        "normal": 255,
+        "wrongFault": 151
+      },
+      "full": {
+        "normal": 258,
+        "wrongFault": 178
+      },
+      "proto": {
+        "normal": 413,
+        "wrongFault": 112
+      },
+      "fedavg": {
+        "normal": 336,
+        "wrongFault": 28
+      }
+    },
+    "insightTextBytes": {
+      "naturalLanguage": 8114,
+      "structured": 7904
+    },
+    "citedInsightIdTraceability": {
+      "found": 2187,
+      "cited": 2210,
+      "parseableB0Responses": 2047,
+      "unparseable": 1
+    },
+    "unverifiedByPackage": "The 27,234-byte serialized class-mean representation; feature signatures, class means, fitted weights and producer code for PROTO/FedAvg.",
+    "recheckUtc": "2026-10-07T15:02:26Z",
+    "packageVerifier": "pass; 50 manifest artifacts, 256 cases, 14,336 request/response keys per model",
+    "combinedNormalizedSha256": "d269cdfc82a67566ae5b55c5a1d05c76fe0d96dc9360e976cb2252b1f2b94d5e",
+    "jointModelAnalysis": "byte-identical to pinned output",
+    "qwenAnalysis": {
+      "nonNumericFieldDifferences": 0,
+      "maximumNumericAbsoluteDifference": 4.5852210917018965e-14
+    },
+    "renderedMarkdownTables": {
+      "qwen": "byte-identical",
+      "gptOss": "byte-identical"
+    },
+    "latexTableCheck": {
+      "tables": 8,
+      "numericCells": 332,
+      "mismatches": 0,
+      "manuscriptSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd"
+    },
+    "execution": "Full independent audit runner completed successfully on the packaged paper snapshot and all eight packaged LaTeX tables.",
+    "runnerSafety": "Confirmed a relative output path resolving inside the package is rejected before directory creation."
+  },
+  "knownManuscriptNotes": [
+    "The manuscript text says the system prompt is shared; the archived AGG system instruction differs in the used_insight_ids wording.",
+    "The manuscript snapshot does not itself cite or link this public data package.",
+    "The phrase describing three duplicated own-fault runs should remain explicitly scoped to the 192-run Family-A denominator and its point-only exclusion sensitivity."
+  ],
+  "bibliographySanitizedCommentLines": true
+}

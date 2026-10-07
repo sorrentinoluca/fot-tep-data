@@ -1,16 +1,60 @@
 {
   "schema": "fot-tep-manuscript-build-record/1.0",
-  "sourcePath": "paper/versione_tre_paper_submission.tex",
-  "sourceSha256": "7a5cb41914fbff63649126428976f6ceb67a9478d1088175317d9decec9448c2",
-  "bibliographyPath": "paper/refs.bib",
-  "bibliographySha256": "8a56e59a1ce1b79077f3ea098fedf30796314d8b847d705a37a82a6f1928271f",
-  "bibliographyNote": "Bibliography entries are unchanged; internal authoring comments were removed for the public copy.",
+  "entryPoint": "paper/main.tex",
+  "sourcePath": "paper/manuscript/versione_tre_paper_submission.tex",
+  "sourceSha256": "61f92177e7b1f74752dd42bfaeae97f56a12b0badae7b4ab4cee0ed8cf3476bd",
+  "buildWrapperSha256": "eeb721a652d127a513a89f6c152b23d8cc0c70c356757b36dc178774345586d4",
+  "bibliographyPath": "paper/manuscript/refs.bib",
+  "bibliographySha256": "81daad8ed8117ba7443331c83f261739869397fb69fe476432bc3253a8dc0ad5",
+  "generatedTables": [
+    {
+      "path": "paper/manuscript/generated/tab_t2_allfaults.tex",
+      "sha256": "e01750b3c4b6c7054831f9ea88b39726e368609c5c9818c28005f442b3566e43"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_arms.tex",
+      "sha256": "34edec4b5e209ec28bd3e9397e53ffbcb01a4fdb5b5edf5a837cb9575df53bb6"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_faults.tex",
+      "sha256": "377ff71a8790b071ed2b2bea7ee21fe4a6780dae6bfce1fb988140c5b4abe015"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_main.tex",
+      "sha256": "63ac8f25a3ea5a11b108412dd858872eda92e163f6f4b7f85a7ad450c4c1b785"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_ownlabels.tex",
+      "sha256": "68ebfc281fb6b9d84427d742abde7dfe01fda458b12097d4642a9c2fb0d70a20"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_partitions.tex",
+      "sha256": "e454257115026c4c2490ae430bd3d6fb9309d6f0c9fc0ece7e42d48ee72ab831"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_supplement.tex",
+      "sha256": "908da01b9a2e124de9d0a6b5452d73dd91e32fa2d5b6208ad028b2e3d4f718d2"
+    },
+    {
+      "path": "paper/manuscript/generated/tab_t2_usage.tex",
+      "sha256": "948e9e2cac87d59e468c245c4326c89b8a199d29ebf0207fe62ff2bb523e5a4b"
+    }
+  ],
   "pdfPath": "paper/versione_tre_paper_submission.pdf",
-  "pdfSha256": "783002763627a59fd694fa59d9766ac247863fa078bf072f0a221e9dcb064106",
-  "pageCount": 9,
+  "pdfSha256": "40b14b23cddef0cab3007dc4720cbab9651dd672c9511c02222fc02093003886",
+  "pageCount": 10,
+  "buildEnvironment": {
+    "latexmk": "4.86a",
+    "pdfTeX": "3.141592653-2.6-1.40.27",
+    "texLive": "2025"
+  },
+  "buildCommand": "latexmk -pdf -cd -interaction=nonstopmode -halt-on-error -outdir=<separate-build-directory> study2_2026/paper/main.tex (from repository root)",
   "referencesIncluded": true,
   "undefinedCitationsOrReferences": false,
   "overfullBoxes": false,
-  "visualInspection": "All nine pages were rendered and inspected; no layout defects were recorded.",
-  "changeFromReviewedSource": "Title-only author revision. The source content outside the title is byte-identical to reviewed source SHA-256 739199f3d06e98787c3527c941b4da0e7c48f40c2f0fc8b6b249825cd2c79c9f."
+  "visualInspection": "All ten pages were rendered and inspected. No clipping or table overflow; some underfull boxes remain.",
+  "snapshotRelation": "Exact source snapshot copied from the author project and hashed in MANIFEST.json. The earlier review and build record apply to a prior source revision; no independent peer-review verdict is inferred for this later snapshot.",
+  "publicCopySanitization": "Comment-only lines removed from the bibliography; citation entries and fields retained.",
+  "pdfBytes": 301996,
+  "pdfBitIdentity": "PDF metadata contains the build timestamp, so repeated builds can differ in bytes; page content and rendering are checked."
 }
