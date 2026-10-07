@@ -1,0 +1,15 @@
+{
+  "schema": "fot-tep-response-archive-receipt/1.0",
+  "model": "qwen",
+  "plannedRequests": 14336,
+  "completedResponses": 14336,
+  "terminalHttp200": 14336,
+  "missingResponses": 0,
+  "uniqueRequestKeys": 14336,
+  "requestGridSha256": "fe5942b960609864d0973fc8a989ba7346159ed32c1184b26e6785d92776690a",
+  "sourceLedgerSha256": "d6dbbc6224fd5d6a4cdd980d859706ed789f7b76bf67fbd4dea418d9b8336455",
+  "normalizedRows": 14336,
+  "normalizedSourceSha256": "bbfae74804a7ee6cddbfd4c0d3cd167b2ba18d68b1d14703af353a3d6664ed17",
+  "normalizerSha256": "04925e99598cf80996e93f7cfdfe50cb66beaff0a82a046da35e637e5b281139",
+  "privacyScope": "Public export includes only request-linked raw response bytes, response hashes, terminal status, and normalized predictions. Database event logs and service metadata are excluded."
+}

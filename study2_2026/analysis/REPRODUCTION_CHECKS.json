@@ -1,0 +1,44 @@
+{
+  "schema": "fot-tep-offline-reproduction-checks/1.0",
+  "qwenNormalizer": {
+    "inputLedgerSha256": "d6dbbc6224fd5d6a4cdd980d859706ed789f7b76bf67fbd4dea418d9b8336455",
+    "normalizedOutputSha256": "bbfae74804a7ee6cddbfd4c0d3cd167b2ba18d68b1d14703af353a3d6664ed17",
+    "byteIdenticalToRecordedExport": true,
+    "keys": 14336,
+    "states": {
+      "valid": 11912,
+      "abstain": 2343,
+      "invalid": 43,
+      "truncated": 38
+    }
+  },
+  "combinedResponseScores": {
+    "sha256": "d269cdfc82a67566ae5b55c5a1d05c76fe0d96dc9360e976cb2252b1f2b94d5e",
+    "byteIdenticalToRecordedAnalysisInput": true,
+    "keysPerModel": 14336,
+    "gptOssStates": {
+      "valid": 11908,
+      "abstain": 2428
+    },
+    "derivedFromPackagedArchives": true
+  },
+  "qwenAnalysis": {
+    "recordedOutputSha256": "df8ea84c4930e6439b5c8b40fc3615f4539370c279a16f7ddcea83dc4307673a",
+    "recomputedOutputSha256": "77c346161154df8966754f31c76107ff3b54ada120049906b966ae6b52102abe",
+    "sourceAndCodeHashesMatch": true,
+    "maximumNumericDifference": 4.5852210917018965e-14,
+    "comparison": "All non-numeric fields match; numerical differences are at floating-point roundoff scale.",
+    "inputsSource": "Packaged normalized Qwen response archive decompressed byte for byte"
+  },
+  "jointAnalysis": {
+    "recordedOutputSha256": "f3e92d23f5791482285a11935f40f229f77e5a4f9200aff7965875762b5e30ee",
+    "recomputedOutputSha256": "f3e92d23f5791482285a11935f40f229f77e5a4f9200aff7965875762b5e30ee",
+    "byteIdentical": true
+  },
+  "executionScope": "Offline verification only. No inference calls, simulator executions, or remote service changes.",
+  "analysisEnvironment": {
+    "python": "3.13.9",
+    "numpy": "2.3.5",
+    "scipy": "1.16.3"
+  }
+}
